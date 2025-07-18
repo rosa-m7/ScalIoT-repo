@@ -12,14 +12,12 @@ RUN apt-get update && apt-get install -y \
 # Establecer directorio de trabajo
 WORKDIR /app
 
-
 # Copiar requirements primero (para mejor cache de Docker)
 COPY requirements.txt .
 
 # Actualizar pip e instalar dependencias
-RUN pip3 install --upgrade pip
-RUN pip3 cache purge
-RUN pip3 install -r requirements.txt --no-cache-dir
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar el resto del código
 COPY . .
