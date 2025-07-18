@@ -1,14 +1,6 @@
 from app import app
 from flask import render_template, request, flash, redirect, url_for, session
 from flask import jsonify
-
-# ✅ AGREGADO: Importaciones necesarias para manejo de fechas con zona horaria
-import datetime
-import pytz
-
-# ✅ AGREGADO: Importar las funciones de zona horaria desde app
-from app import get_ecuador_time, format_ecuador_time
-
 from controllers.funciones_home import obtenerroles, accesosReporte, generarReporteExcel
 # Importaciones necesarias
 
@@ -73,6 +65,7 @@ ref_ninos = db.reference('ninos')
 # @app.route('/')
 # def index():
 #     return "Bienvenido a la aplicación Flask"
+
 
 @app.route('/control_sesion')
 def control_sesion():
