@@ -9,6 +9,12 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
+
+
+# Forzar limpieza de caché
+RUN apt-get update && apt-get clean
+RUN pip cache purge
+
 # Establecer directorio de trabajo
 WORKDIR /app
 
