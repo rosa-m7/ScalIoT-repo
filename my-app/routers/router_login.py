@@ -203,47 +203,41 @@ def iniciar_sesion():
     Espera: id_nino, tipo_evaluacion (opcional), observaciones_inicio (opcional)
     """
     from flask import session as flask_session
-    
+    from datetime import datetime
     data = request.get_json()
-    id_nino = data.get('id_nino')
+    id_nino = data.get('id_nino')  # Ahora toma el id del niño seleccionado en el frontend
     tipo_evaluacion = data.get('tipo_evaluacion', 'diagnóstica')
     observaciones_inicio = data.get('observaciones_inicio', None)
-    id_usuario = flask_session.get('id')
+    id_usuario = flask_session.get('id')  # Evaluador siempre es el usuario logueado
     sincronizado_firebase = 0
     session_id_firebase = None
     estado = 'en_curso'
-    
+
     print(f"[DEBUG] id_nino recibido: {id_nino}")
     print(f"[DEBUG] id_usuario (logueado) recibido: {id_usuario}")
     print(f"[DEBUG] tipo_evaluacion: {tipo_evaluacion}")
-    
+
     if not id_nino or not id_usuario:
         print("[DEBUG] Faltan datos para iniciar la sesión")
         return jsonify({'error': 'Faltan datos para iniciar la sesión.'}), 400
-    
+
     try:
         # Buscar código_nino y nombre para Firebase
         with connectionBD() as conexion:
             with conexion.cursor(dictionary=True) as cursor:
                 cursor.execute("SELECT codigo_nino, CONCAT(nombre, ' ', apellido) as nombre_completo FROM nino WHERE id_nino = %s", (id_nino,))
                 nino = cursor.fetchone()
-        
         if not nino:
             print("[DEBUG] No se encontró el niño en la base de datos por id_nino")
             return jsonify({'error': 'No se encontró el niño/a en la base de datos.'}), 404
-        
         codigo_nino = nino['codigo_nino']
         nombre_nino = nino['nombre_completo']
-        
+
         # Firebase sync
         nodo_nino = f"nino-id-{id_nino}"
         ref_nino_firebase = ref_ninos.child(nodo_nino)
-        
-        # ✅ CAMBIO CRÍTICO: Usar zona horaria de Ecuador para Firebase
-        fecha_actual = get_ecuador_time().strftime('%Y-%m-%d_%H-%M-%S')
-        
+        fecha_actual = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         data_nino = ref_nino_firebase.get()
-        
         try:
             if data_nino is not None:
                 ref_nino_firebase.update({'nombre': nombre_nino})
@@ -258,33 +252,28 @@ def iniciar_sesion():
         except Exception as firebase_err:
             print(f"[DEBUG] Error sincronizando con Firebase: {firebase_err}")
             sincronizado_firebase = 0
-        
+
         # Insertar en la tabla 'sesion'
         print(f"[DEBUG] Insertando en sesion: id_nino={id_nino}, id_usuario={id_usuario}")
         with connectionBD() as conexion:
             with conexion.cursor() as cursor:
-                # ✅ CAMBIO CRÍTICO: Usar zona horaria de Ecuador para SQL
-                fecha_sesion_ecuador = format_ecuador_time()
                 cursor.execute("""
                     INSERT INTO sesion (
                         id_nino, id_usuario, session_id_firebase, fecha_sesion, tipo_evaluacion, estado, observaciones_inicio, sincronizado_firebase
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ) VALUES (%s, %s, %s, NOW(), %s, %s, %s, %s)
                 """, (
-                    id_nino, id_usuario, session_id_firebase, fecha_sesion_ecuador, tipo_evaluacion, estado, observaciones_inicio, sincronizado_firebase
+                    id_nino, id_usuario, session_id_firebase, tipo_evaluacion, estado, observaciones_inicio, sincronizado_firebase
                 ))
                 conexion.commit()
-        
         print("[DEBUG] Inserción en sesion completada")
-        
+
         # Activar la sesión en Firebase
         activa_ref = ref_evaluacion_actual.child('activa')
         current_state = activa_ref.get()
         if current_state == 1:
             return jsonify({'message': 'La sesión ya está activa.'}), 200
-        
         activa_ref.set(1)
         return jsonify({'message': 'Sesión iniciada correctamente.', 'activa': 1}), 200
-        
     except Exception as e:
         print(f"Error al iniciar la sesión: {e}")
         return jsonify({'error': 'Error al iniciar la sesión'}), 500
@@ -695,7 +684,10 @@ from controllers.funciones_home import generar_codigo_nino  # Asegúrate de que 
 @app.route('/ninos/agregar', methods=['GET', 'POST'])
 def agregar_nino():
     if request.method == 'POST':
+        # Generar código automáticamente
         codigo_nino = generar_codigo_nino()
+
+        # Recoger el resto de campos del formulario
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         fecha_nacimiento_str = request.form['fecha_nacimiento']
@@ -707,7 +699,7 @@ def agregar_nino():
         telefono_contacto = request.form['telefono_contacto']
         email_contacto = request.form['email_contacto']
         activo = True if request.form.get('activo') == 'on' else False
-        
+
         try:
             fecha_nacimiento = datetime.datetime.strptime(fecha_nacimiento_str, '%Y-%m-%d').date()
         except ValueError:
@@ -725,22 +717,20 @@ def agregar_nino():
                 "email_contacto": email_contacto, "activo": activo
             }
             return render_template('public/ninos/agregar_nino.html', dataLogin=dataLogin, nino=nino)
-        
-        # ✅ CAMBIOS: Usar zona horaria de Ecuador
-        fecha_registro = get_ecuador_time()
-        ultima_actualizacion = get_ecuador_time()
-        
+
+        fecha_registro = datetime.datetime.now()
+        ultima_actualizacion = datetime.datetime.now()
+
         resultado = guardar_ninoBD(
             codigo_nino, nombre, apellido, fecha_nacimiento, id_genero, peso, altura,
             tutor_responsable, telefono_contacto, email_contacto, observaciones, activo, fecha_registro
         )
-        
         if resultado > 0:
             flash(f'Niño agregado exitosamente con código {codigo_nino}!', 'success')
             return redirect(url_for('gestionar_ninos'))
         else:
             flash('Error al agregar el niño.', 'error')
-    
+
     dataLogin = {
         "id": session.get("id"),
         "rol": session.get("rol"),
@@ -754,22 +744,24 @@ def agregar_nino():
     return render_template('public/ninos/agregar_nino.html', dataLogin=dataLogin, nino=nino)
 
 
-
 @app.route('/ninos/editar/<int:id>', methods=['GET', 'POST'])
 def editar_nino(id):
     nino = obtener_nino_por_idBD(id)
     if not nino:
         flash('Niño no encontrado.', 'error')
         return redirect(url_for('gestionar_ninos'))
-    
+
     # Preparar nino para mostrar en el template (GET o POST inicial)
+    # Convertir fecha a string para el input HTML
     if 'fecha_nacimiento' in nino and isinstance(nino['fecha_nacimiento'], (datetime.datetime, datetime.date)):
         nino['fecha_nacimiento'] = nino['fecha_nacimiento'].strftime('%Y-%m-%d')
     elif 'fecha_nacimiento' not in nino or nino['fecha_nacimiento'] is None:
         nino['fecha_nacimiento'] = ''
-    
+
     if request.method == 'POST':
+        # No se actualiza código_nino (solo para referencia)
         codigo_nino = nino['codigo_nino']
+
         nombre = request.form['nombre']
         apellido = request.form['apellido']
         fecha_nacimiento_input_str = request.form['fecha_nacimiento']
@@ -781,7 +773,7 @@ def editar_nino(id):
         telefono_contacto = request.form['telefono_contacto']
         email_contacto = request.form['email_contacto']
         activo = 1 if request.form.get('activo') == '1' else 0
-        
+
         try:
             fecha_nacimiento_obj = datetime.datetime.strptime(fecha_nacimiento_input_str, '%Y-%m-%d').date()
         except ValueError:
@@ -792,15 +784,13 @@ def editar_nino(id):
                 "rol": session.get("rol"),
             }
             return render_template('public/ninos/editar_nino.html', nino=nino, dataLogin=dataLogin)
-        
-        # ✅ CAMBIO: Usar zona horaria de Ecuador
-        ultima_actualizacion = get_ecuador_time()
-        
+
+        ultima_actualizacion = datetime.datetime.now()
+
         resultado = actualizar_ninoBD(
             id, nombre, apellido, fecha_nacimiento_obj, id_genero, peso, altura,
             tutor_responsable, telefono_contacto, email_contacto, observaciones, activo
         )
-        
         if resultado > 0:
             flash('Niño actualizado exitosamente!', 'success')
             return redirect(url_for('gestionar_ninos'))
@@ -808,7 +798,7 @@ def editar_nino(id):
             flash('Error al actualizar el niño.', 'error')
             if fecha_nacimiento_obj:
                 nino['fecha_nacimiento'] = fecha_nacimiento_obj.strftime('%Y-%m-%d')
-    
+
     dataLogin = {
         "id": session.get("id"),
         "rol": session.get("rol"),
