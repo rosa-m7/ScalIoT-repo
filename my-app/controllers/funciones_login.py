@@ -208,7 +208,9 @@ def insertar_acceso_registro(id_usuario, tipo_acceso, cedula_ingresada, ip_addre
                     INSERT INTO acceso (id_usuario, fecha_acceso, ip_address, user_agent, tipo_acceso)
                     VALUES (%s, %s, %s, %s, %s)
                 """
-                fecha_acceso = datetime.now()
+                # Obtener la hora de Ecuador para guardar en la base de datos (corrige desfase horario en Cloud Run)
+                from app import get_ecuador_time
+                fecha_acceso = get_ecuador_time()
                 user_id_to_insert = id_usuario if id_usuario is not None else None 
                 cursor.execute(sql, (user_id_to_insert, fecha_acceso, ip_address, user_agent, tipo_acceso))
                 conexion_MySQLdb.commit()

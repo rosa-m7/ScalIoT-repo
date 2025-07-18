@@ -1224,7 +1224,9 @@ def generar_codigo_nino():
     Genera un código único para el niño en el formato NINO-YYYYMMDD-XYZ
     """
     try:
-        fecha_actual = datetime.now().strftime('%Y%m%d')
+        # Usar hora de Ecuador para el código (evita desfase horario en Cloud Run)
+        from app import get_ecuador_time
+        fecha_actual = get_ecuador_time().strftime('%Y%m%d')
 
         with connectionBD() as conexion:
             with conexion.cursor() as cursor:
@@ -1238,7 +1240,9 @@ def generar_codigo_nino():
     except Exception as e:
         print(f"Error generando código de niño: {e}")
         # En caso de error, usar un fallback
-        return f"NINO-{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+        # Fallback también usa hora de Ecuador
+        from app import get_ecuador_time
+        return f"NINO-{get_ecuador_time().strftime('%Y%m%d%H%M%S')}"
 
 
 def buscar_usuariosBD(termino_busqueda):
