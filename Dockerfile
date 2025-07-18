@@ -15,6 +15,10 @@ WORKDIR /app
 # Copiar requirements primero (para mejor cache de Docker)
 COPY requirements.txt .
 
+
+
+RUN pip uninstall -y pytz
+RUN pip install --no-cache-dir -r requirements.txt
 # Actualizar pip e instalar dependencias
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
