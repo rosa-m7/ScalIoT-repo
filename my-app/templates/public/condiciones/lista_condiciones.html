@@ -1,0 +1,66 @@
+{% extends 'public/base_cpanel.html' %} {# Asume que tienes un base_cpanel.html #}
+
+{% block title %}Gestión de Condiciones{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-4">Gestión de Condiciones</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div class="mb-2 mb-md-0">
+            <a href="{{ url_for('agregar_condicion') }}" class="btn btn-success me-2">Agregar Nueva Condición</a>
+<a href="{{ url_for('gestionar_nino_condiciones') }}" class="btn btn-secondary">Condiciones por Niño</a>
+        </div>
+        <form action="{{ url_for('buscar_condiciones') }}" method="GET" class="d-flex flex-grow-1 flex-md-grow-0 mt-2 mt-md-0">
+            <input class="form-control me-2" type="search" placeholder="Buscar por nombre, descripción o categoría" aria-label="Search" name="q" value="{{ search_term if search_term }}">
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </form>
+    </div>
+
+    {% if condiciones %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Condición</th>
+                    <th>Descripción</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for condicion in condiciones %}
+                <tr>
+                    <td>{{ condicion.id_condicion }}</td>
+                    <td>{{ condicion.nombre_condicion }}</td>
+                    <td>{{ condicion.descripcion | truncate(50, true) }}</td> {# Truncar para no desbordar #}
+                    <td>{{ condicion.categoria }}</td>
+                    <td>
+                        <a href="{{ url_for('editar_condicion', id=condicion.id_condicion) }}" class="btn btn-warning btn-sm mb-1">Editar</a>
+                        <a href="{{ url_for('eliminar_condicion', id=condicion.id_condicion) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar la condición: {{ condicion.nombre_condicion }}?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay condiciones registradas en la base de datos o no se encontraron resultados para la búsqueda.
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

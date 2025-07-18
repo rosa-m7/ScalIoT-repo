@@ -1,0 +1,132 @@
+{% extends 'public/base_cpanel.html' %}
+{% block title %}ScalIoT 🐞 | Usuarios {% endblock %}
+
+{% block body %}
+<div class="card content_consignaciones shadow-lg border-0 my-4 mx-3">
+  <section id="respuestaFiltroMes" class="p-4">
+    <h2 class="text-center mb-4">
+      Usuarios
+      <hr />
+    </h2>
+
+    <div class="d-flex justify-content-between flex-wrap mb-3">
+      <a href="./register-user" class="btn btn-success mb-2">
+        <i class="bi bi-person-plus-fill"></i> Nuevo Usuario
+      </a>
+      <form action="{{ url_for('buscar_usuarios') }}" method="GET" class="d-flex mb-2">
+        <input class="form-control me-2" type="search" name="q" placeholder="Buscar por cédula, nombre o email" aria-label="Buscar" value="{{ search_term if search_term }}">
+        <button class="btn btn-outline-primary" type="submit">Buscar</button>
+      </form>
+    </div>
+
+    <div class="table-responsive text-nowrap">
+      <table class="table table-hover table-bordered table-striped align-middle">
+        <thead class="table-dark text-white sticky-top">
+          <tr>
+            <th>ID</th>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            
+            <th>Rol</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if resp_usuariosBD %}
+            {% for usuario in resp_usuariosBD %}
+            <tr>
+              <td>{{ usuario.id_usuario }}</td>
+              <td>{{ usuario.cedula }}</td>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellido }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>{{ usuario.telefono }}</td>
+              
+              <td>
+                {% for rol in roles %}
+                  {% if rol.id_rol == usuario.id_rol %}
+                    {{ rol.nombre_rol }}
+                  {% endif %}
+                {% endfor %}
+              </td>
+              <td>
+                {% if usuario.activo %}
+                  <span class="badge bg-success">Activo</span>
+                {% else %}
+                  <span class="badge bg-danger">Desactivado</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="/mi-perfil/{{usuario.id_usuario}}" class="btn btn-success btn-sm" tooltip="Actualizar Registro">
+                  <i class="bi bi-arrow-clockwise"></i> Actualizar
+                </a>
+                <a onclick="eliminarUsuario('{{ usuario.id_usuario }}');" class="btn btn-danger btn-sm" style="color: white;"
+                  data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true"
+                  title="<span>Eliminar a {{ usuario.nombre }}</span>">
+                  <i class="bi bi-trash3"></i> Eliminar
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="9" class="text-center text-muted">No hay usuarios registrados o no se encontraron resultados.</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script>
+  function eliminarUsuario(id) {
+    if (confirm("¿Estas seguro que deseas eliminar el Usuario?")) {
+      let url = `/borrar-usuario/${id}`;
+      if (url) {
+        window.location.href = url;
+      }
+    }
+  }
+</script>
+{% endblock %}
+{% block customCSS %}
+<style>
+  .table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .table th, .table td {
+    vertical-align: middle !important;
+  }
+  .btn-outline-success:hover {
+    background-color: #198754;
+    color: #fff;
+  }
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  .table td code {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+    border-radius: 3px;
+    padding: 2px 5px;
+  }
+  .content_consignaciones {
+    border-radius: 0px !important;
+    background: #ffffff;
+  }
+  form.d-flex {
+    align-items: center;
+  }
+</style>
+{% endblock %}
+

@@ -1,0 +1,123 @@
+<aside id="layout-menu" class="layout-menu menu-vertical menu sidebar-vibrante">
+  <div class="app-brand demo">
+    <a href="{{ url_for('inicio') }}" class="app-brand-link">
+      <span class="app-brand-logo demo">
+        <img src="{{ url_for('static', filename='assets/img/logo.png') }}" alt="Logo" />
+      </span>
+    </a>
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+      <i class="bx bx-chevron-left bx-sm align-middle"></i>
+    </a>
+  </div>
+
+  <div class="menu-inner-shadow"></div>
+  <ul class="menu-inner py-4">
+  <li class="menu-item">
+    <a href="#" class="menu-link" onclick="mostrarInstrucciones(); return false;">
+      <i class="menu-icon bi bi-journal-bookmark"></i>
+      <div data-i18n="Tables">Instrucciones</div>
+    </a>
+  </li>
+
+
+    {% if dataLogin.rol == 1 %}
+      <li class="menu-item {% if request.path == '/reporte-accesos' %} active {% endif %}">
+        <a href="/reporte-accesos" class="menu-link">
+          <i class="menu-icon bi bi-file-lock-fill"></i>
+          <div data-i18n="Tables">Reporte Accesos</div>
+        </a>
+      </li>
+
+      
+        
+          
+      <li class="menu-item {% if request.path == '/lista-de-usuarios' %} active {% endif %}">
+        <a href="/lista-de-usuarios" class="menu-link">
+          <i class="menu-icon bi bi-person-lines-fill"></i>
+          <div data-i18n="Tables">Lista de Usuarios</div>
+        </a>
+      </li>
+
+      {# Gestión de Niños para Rol 1 (Admin) #}
+      <li class="menu-item {% if request.path in ['/ninos', '/condiciones'] %} open active {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="bi bi-person-heart me-3"></i>
+          <div data-i18n="Tables">Gestión de Niños</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% if request.path == '/ninos' %} active {% endif %}">
+            <a href="/ninos" class="menu-link">
+              <div data-i18n="Tables">Lista de Niños</div>
+            </a>
+          </li>
+          <li class="menu-item {% if request.path == '/condiciones' %} active {% endif %}">
+            <a href="/condiciones" class="menu-link">
+              <div data-i18n="Tables">Condiciones</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="menu-item {% if request.path == '/control_sesion' %} active {% endif %}">
+        <a href="/control_sesion" class="menu-link">
+          <i class="bi bi-play-circle me-3"></i>
+          <div data-i18n="Tables">Control Sesión</div>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if dataLogin.rol == 2 %}
+      {# Gestión de Niños para Rol 2 (Evaluador) #}
+      <li class="menu-item {% if request.path in ['/ninos', '/condiciones'] %} open active {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="bi bi-person-heart me-3"></i>
+          <div data-i18n="Tables">Gestión de Niños</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% if request.path == '/ninos' %} active {% endif %}">
+            <a href="/ninos" class="menu-link">
+              <div data-i18n="Tables">Lista de Niños</div>
+            </a>
+          </li>
+          <li class="menu-item {% if request.path == '/condiciones' %} active {% endif %}">
+            <a href="/condiciones" class="menu-link">
+              <div data-i18n="Tables">Condiciones</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <li class="menu-item {% if request.path == '/control_sesion' %} active {% endif %}">
+        <a href="/control_sesion" class="menu-link">
+          <i class="bi bi-play-circle me-3"></i>
+          <div data-i18n="Tables">Control Sesión</div>
+        </a>
+      </li>
+    {% endif %}
+
+    {% if dataLogin.rol in [1, 2, 3] %}
+      <li class="menu-item {% if request.path == '/graficas2' %} active {% endif %}">
+        <a href="/lista-de-graficas" class="menu-link">
+          <i class="bi bi-graph-up-arrow me-3"></i>
+          <div data-i18n="Tables">Gráficas</div>
+        </a>
+      </li>
+    {% endif %}
+
+    <li class="menu-item {% if '/mi-perfil' in request.path %} active {% endif %}">
+      <a href="/mi-perfil/{{ dataLogin.id }}" class="menu-link">
+        <i class="menu-icon bi bi-person-fill-gear"></i>
+        <div data-i18n="Tables">Mi Perfil</div>
+      </a>
+    </li>
+
+    <li class="menu-item">
+      <a href="{{ url_for('cerraSesion') }}" class="menu-link">
+        <i class="menu-icon tf-icons bx bi-box-arrow-right"></i>
+        <div data-i18n="Tables">Salir</div>
+      </a>
+    </li>
+  </ul>
+</aside>
+ </ul>
+</aside>

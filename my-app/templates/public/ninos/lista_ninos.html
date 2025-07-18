@@ -1,0 +1,102 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}Gestión de Niños{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-4">Gestión de Niños</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+        <div class="mb-2 mb-md-0">
+            <a href="{{ url_for('agregar_nino') }}" class="btn btn-success me-2">Agregar Nuevo Niño</a>
+            <a href="{{ url_for('reporte_ninos_excel') }}" class="btn btn-info">Descargar Excel</a>
+        </div>
+        <form action="{{ url_for('buscar_ninos') }}" method="GET" class="d-flex flex-grow-1 flex-md-grow-0 mt-2 mt-md-0">
+            <input class="form-control me-2" type="search" placeholder="Buscar por nombre o apellido" aria-label="Search" name="q" value="{{ search_term if search_term }}">
+            <button class="btn btn-outline-primary" type="submit">Buscar</button>
+        </form>
+    </div>
+
+    {% if ninos %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark">
+                <tr>
+
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>F. Nacimiento</th>
+                    <th>Género</th>
+                    <th>Peso (kg)</th>
+                    <th>Altura (cm)</th>
+                    <th>Observaciones</th>
+                    <th>Tutor</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Activo</th>
+                    <th>F. Registro</th>
+                    <th>Última Act.</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for nino in ninos %}
+                <tr>
+
+                    <td>{{ nino.nombre }}</td>
+                    <td>{{ nino.apellido }}</td>
+                    <td>{{ nino.fecha_nacimiento.strftime('%Y-%m-%d') if nino.fecha_nacimiento else '' }}</td>
+                    <td>
+                        {% if nino.id_genero == 1 %}
+                            Masculino
+                        {% elif nino.id_genero == 2 %}
+                            Femenino
+                        {% elif nino.id_genero == 3 %}
+                            Otro
+                        {% else %}
+                            Desconocido
+                        {% endif %}
+                    </td>
+                    <td>{{ nino.peso }}</td>
+                    <td>{{ nino.altura }}</td>
+                    <td>{{ nino.observaciones | truncate(30, true) }}</td>
+                    <td>{{ nino.tutor_responsable }}</td>
+                    <td>{{ nino.telefono_contacto }}</td>
+                    <td>{{ nino.email_contacto }}</td>
+                    <td>
+                        {% if nino.activo %}
+                            <span class="badge bg-success">Activo</span>
+                        {% else %}
+                            <span class="badge bg-danger">Desactivado</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ nino.fecha_registro.strftime('%Y-%m-%d %H:%M') if nino.fecha_registro else '' }}</td>
+                    <td>{{ nino.ultima_actualizacion.strftime('%Y-%m-%d %H:%M') if nino.ultima_actualizacion else '' }}</td>
+                    <td>
+                        <a href="{{ url_for('editar_nino', id=nino.id_nino) }}" class="btn btn-warning btn-sm mb-1">Editar</a>
+                        <a href="{{ url_for('eliminar_nino', id=nino.id_nino) }}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar a {{ nino.nombre }} {{ nino.apellido }}?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay niños registrados en la base de datos o no se encontraron resultados para la búsqueda.
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

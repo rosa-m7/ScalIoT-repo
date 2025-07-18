@@ -1,0 +1,107 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}
+    {{ page_title }}
+{% endblock %}
+
+{% block customCSS %}
+    <!-- Puedes añadir CSS personalizado aquí si lo necesitas -->
+    <style>
+        .form-container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+    </style>
+{% endblock %}
+
+{% block body %} {# Usar 'body' en lugar de 'content' #}
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow mb-4 form-container">
+                    <div class="card-header text-dark">
+                        <h3 class="h5 mb-0 fw-bold text-center">{{ page_title }}</h3>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    {% if nino_cond %}
+                    <form action="{{ url_for('editar_nino_condicion', id=nino_cond.id_nino_condicion) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="id_nino" class="form-label">Niño</label>
+                            <select class="form-select" id="id_nino" name="id_nino" disabled> {# Deshabilitado para no cambiar el niño asociado #}
+                                {% for nino in ninos %}
+                                    <option value="{{ nino.id_nino }}" {% if nino.id_nino == nino_cond.id_nino %} selected {% endif %}>
+                                        {{ nino.nombre }} {{ nino.apellido }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" name="id_nino" value="{{ nino_cond.id_nino }}"> {# Campo oculto para enviar el ID #}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_condicion" class="form-label">Condición</label>
+                            <select class="form-select" id="id_condicion" name="id_condicion" disabled> {# Deshabilitado para no cambiar la condición asociada #}
+                                {% for condicion in condiciones %}
+                                    <option value="{{ condicion.id_condicion }}" {% if condicion.id_condicion == nino_cond.id_condicion %} selected {% endif %}>
+                                        {{ condicion.nombre_condicion }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="hidden" name="id_condicion" value="{{ nino_cond.id_condicion }}"> {# Campo oculto para enviar el ID #}
+                        </div>
+                        <div class="mb-3">
+                            <label for="severidad" class="form-label">Severidad</label>
+                            <select class="form-select" id="severidad" name="severidad" required>
+                                <option value="">Seleccione la severidad</option>
+                                <option value="leve" {% if nino_cond.severidad == 'leve' %} selected {% endif %}>Leve</option>
+                                <option value="moderada" {% if nino_cond.severidad == 'moderada' %} selected {% endif %}>Moderada</option>
+                                <option value="severa" {% if nino_cond.severidad == 'severa' %} selected {% endif %}>Severa</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_diagnostico" class="form-label">Fecha de Diagnóstico</label>
+                            <input type="date" class="form-control" id="fecha_diagnostico" name="fecha_diagnostico" value="{{ nino_cond.fecha_diagnostico.strftime('%Y-%m-%d') if nino_cond.fecha_diagnostico else '' }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ nino_cond.observaciones }}</textarea>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="1" id="activo" name="activo" {% if nino_cond.activo %} checked {% endif %}>
+                            <label class="form-check-label" for="activo">
+                                Activo
+                            </label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning">Actualizar</button>
+                            <a href="{{ url_for('gestionar_nino_condiciones') }}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                    {% else %}
+                        <div class="alert alert-danger text-center" role="alert">
+                            No se encontró la relación niño-condición para editar.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+    <!-- Puedes añadir JS personalizado aquí si lo necesitas -->
+{% endblock %}

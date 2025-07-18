@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo_infantil.css') }}">
+    {% include 'public/includes/head.html' %}
+    {% block customCSS %}
+    <style>
+      #background-video {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -100;
+        filter: brightness(70%);
+      }
+
+      .layout-wrapper {
+        position: relative;
+        z-index: 1;
+      }
+
+      .full-screen-carousel-container {
+        position: relative;
+        width: 100%;
+        height: calc(100vh - 150px);
+        overflow: hidden;
+        margin: 20px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 5px solid #007bff;
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+        border-radius: 8px;
+      }
+
+      .full-screen-carousel-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: none;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .full-screen-carousel-img.active {
+        display: block;
+        opacity: 1;
+      }
+
+      #background-audio {
+        display: none;
+      }
+
+      #toggle-audio {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 999;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+
+      #toggle-audio:active {
+        transform: scale(0.98);
+      }
+    </style>
+    {% endblock %}
+  </head>
+  <body>
+    {% include 'public/includes/pre_loader.html' %}
+    {% include 'public/includes/navbar.html' %}
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Modal de Instrucciones -->
+        <div id="modalInstrucciones" style="display:none;position:fixed;z-index:2000;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;">
+          <div style="background:#fff;max-width:800px;width:90vw;max-height:90vh;overflow-y:auto;border-radius:16px;box-shadow:0 0 40px #007bff55;position:relative;padding:0;">
+            <button onclick="cerrarInstrucciones()" style="position:absolute;top:10px;right:20px;font-size:2rem;background:none;border:none;color:#007bff;cursor:pointer;">&times;</button>
+            <div id="contenidoInstrucciones"></div>
+          </div>
+        </div>
+        {% include 'public/includes/menu_sidebar.html' %}
+        <div class="layout-page">
+          <div class="content-wrapper">
+            <div class="container-xxl flex-grow-1 container-p-y">
+              {% include 'public/includes/messages.html' %}
+              {% block body %}
+
+              {% if dataLogin.rol in [1, 2, 3] %}
+              <video autoplay muted loop id="background-video">
+                <source src="{{ url_for('static', filename='fondos/videoFondo.mp4') }}" type="video/mp4">
+                Tu navegador no soporta videos HTML5.
+              </video>
+
+              <audio loop id="background-audio">
+                <source src="{{ url_for('static', filename='fondos/audiFondo.mp3') }}" type="audio/mpeg">
+                Tu navegador no soporta audio HTML5.
+              </audio>
+
+              <button id="toggle-audio">🔊 Activar sonido</button>
+              {% endif %}
+
+              {% if dataLogin.rol == 1 %}
+              <div class="text-center">
+                <h1 style="color: rgb(224, 201, 215);">BIENVENIDO ADMINISTRADOR</h1>
+                <div class="full-screen-carousel-container" id="adminCarousel">
+                  <img src="{{ url_for('static', filename='img/admin.png') }}" class="full-screen-carousel-img active" alt="Imagen Administrador">
+                  <img src="{{ url_for('static', filename='img/admin2.png') }}" class="full-screen-carousel-img" alt="Foto 3 del Administrador">
+                  <img src="{{ url_for('static', filename='img/foto1.png') }}" class="full-screen-carousel-img" alt="Foto 1 del Administrador">
+                  <img src="{{ url_for('static', filename='img/foto2.jpg') }}" class="full-screen-carousel-img" alt="Foto 2 del Administrador">
+                  
+                </div>
+              </div>
+              {% endif %}
+
+              {% if dataLogin.rol == 2 %}
+              <div class="text-center">
+                <h1 style="color: rgb(224, 201, 215);">BIENVENIDO EVALUADOR</h1>
+                <div class="full-screen-carousel-container" id="evaluatorCarousel">
+                  <img src="{{ url_for('static', filename='img/evaluador.png') }}" class="full-screen-carousel-img active" alt="Imagen Evaluador">
+                  <img src="{{ url_for('static', filename='img/foto1.png') }}" class="full-screen-carousel-img" alt="Foto 1 del Evaluador">
+                  <img src="{{ url_for('static', filename='img/admin2.png') }}" class="full-screen-carousel-img" alt="Foto 2 del Evaluador">
+                </div>
+              </div>
+              {% endif %}
+
+              {% if dataLogin.rol == 3 %}
+              <div class="text-center">
+                <h1 style="color: rgb(224, 201, 215);">BIENVENIDO SUPERVISOR</h1>
+                <div class="full-screen-carousel-container" id="supervisorCarousel">
+                  <img src="{{ url_for('static', filename='img/supervisor.png') }}" class="full-screen-carousel-img active" alt="Imagen Supervisor">
+                  <img src="{{ url_for('static', filename='img/foto1.png') }}" class="full-screen-carousel-img" alt="Foto 1 del Supervisor">
+                  <img src="{{ url_for('static', filename='img/admin2.png') }}" class="full-screen-carousel-img" alt="Foto 2 del Supervisor">
+                </div>
+              </div>
+              {% endif %}
+
+              {% endblock %}
+            </div>
+            <div class="content-backdrop fade"></div>
+          </div>
+        </div>
+      </div>
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+
+    {% include 'public/includes/js.html' %}
+<script>
+function mostrarInstrucciones() {
+  fetch('/instrucciones')
+    .then(resp => resp.text())
+    .then(html => {
+      document.getElementById('contenidoInstrucciones').innerHTML = html;
+      document.getElementById('modalInstrucciones').style.display = 'flex';
+    });
+}
+function cerrarInstrucciones() {
+  document.getElementById('modalInstrucciones').style.display = 'none';
+}
+</script>
+    {% block customJS %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Carrusel
+    function setupCarousel(carouselId) {
+      const container = document.getElementById(carouselId);
+      if (!container) return;
+
+      const images = container.querySelectorAll('.full-screen-carousel-img');
+      let current = 0;
+
+      function showImage(index) {
+        images.forEach((img, i) => img.classList.toggle('active', i === index));
+      }
+
+      function nextImage() {
+        current = (current + 1) % images.length;
+        showImage(current);
+      }
+
+      if (images.length > 0) {
+        showImage(current);
+        setInterval(nextImage, 2000);
+      }
+    }
+
+    {% if dataLogin.rol == 1 %}
+      setupCarousel('adminCarousel');
+    {% elif dataLogin.rol == 2 %}
+      setupCarousel('evaluatorCarousel');
+    {% elif dataLogin.rol == 3 %}
+      setupCarousel('supervisorCarousel');
+    {% endif %}
+
+    // Activar audio por defecto
+    const audio = document.getElementById('background-audio');
+    const botonAudio = document.getElementById('toggle-audio');
+    let audioActivo = false;
+
+    if (audio) {
+      audio.volume = 0.10; // Volumen bajo (15%)
+      audio.play().then(() => {
+        audioActivo = true;
+        if (botonAudio) botonAudio.textContent = '🔇 Silenciar sonido';
+      }).catch(() => {
+        console.log('Autoplay bloqueado. Requiere interacción.');
+      });
+    }
+
+    if (botonAudio && audio) {
+      botonAudio.addEventListener('click', function () {
+        if (!audioActivo) {
+          audio.play().then(() => {
+            audioActivo = true;
+            botonAudio.textContent = '🔇 Silenciar sonido';
+          });
+        } else {
+          audio.pause();
+          audioActivo = false;
+          botonAudio.textContent = '🔊 Activar sonido';
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}
+  </body>
+</html>

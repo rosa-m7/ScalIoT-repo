@@ -1,0 +1,429 @@
+{% extends 'public/base_cpanel.html' %}
+{% block title %}ScalIoT 🐞 | Perfil {% endblock %}
+{% block body %}
+<div class="card" style="border-radius: 0px !important">
+  <div class="row justify-content-center mb-2">
+    <div class="col-md-12">
+      <h3 class="text-center mt-5 mb-3">MI PERFIL</h3>
+      <hr />
+    </div>
+  </div>
+
+  <div class="row justify-content-center mb-2">
+    <div class="col-md-6"> {# Manteniendo el col-md-6 para la estructura #}
+      <form
+        class="form-horizontal mx-auto"
+        method="POST"
+        action="{{ url_for('actualizarPerfil', id=info_perfil_session.id_usuario) }}"
+        id="profileForm"
+        novalidate>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input
+              class="form-control"
+              type="text"
+              name="cedula"
+              value="{{ info_perfil_session.cedula }}" {# Acceso directo al atributo #}
+              readonly />
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input
+              type="text"
+              name="name"
+              value="{{ info_perfil_session.nombre }}" {# Acceso directo al atributo #}
+              class="form-control"
+              required />
+          </div>
+          <div class="mb-3">
+            <label for="surname" class="form-label">Apellido</label>
+            <input
+              class="form-control"
+              type="text"
+              name="surname"
+              value="{{ info_perfil_session.apellido }}" {# Acceso directo al atributo #}
+              />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              value="{{ info_perfil_session.email }}" {# Acceso directo al atributo #}
+              required />
+          </div>
+          
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input
+              type="text"
+              name="telefono"
+              class="form-control"
+              value="{{ info_perfil_session.telefono }}" {# Acceso directo al atributo #}
+              required />
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="activo" name="activo" value="1" {% if info_perfil_session.activo %}checked{% endif %}>
+            <label class="form-check-label" for="activo">
+              Activo
+            </label>
+          </div>
+          
+          <div>
+            
+            
+              
+              
+                
+              </option>
+            </select>
+            {%if dataLogin.rol != 1%}
+            
+            {%endif%}
+          </div>
+          <div class="mt-3">
+            <label for="selectRol" class="form-label">Rol</label>
+            <select class="form-select" name="selectRol" id="selectRol" {%if dataLogin.rol == 2 %} disabled {%endif%}> {# Añadido id #}
+              {% for rol in roles%}
+              <option value="{{rol.id_rol}}" {% if rol.id_rol == info_perfil_session.id_rol %} selected {% endif %}> {# Acceso directo al atributo #}
+                {{rol.nombre_rol}}
+              </option>
+              {%endfor%}
+            </select>
+            {%if dataLogin.rol != 1%}
+            <input name="selectRol" value="{{info_perfil_session.id_rol}}" hidden> {# Acceso directo al atributo #}
+            {%endif%}
+          </div>
+
+          <div id="evaluadorFields" style="display: none;">
+            <h5 class="mt-4 mb-3">Datos del Evaluador</h5>
+            <div class="mb-3">
+              <label for="especialidad" class="form-label">Especialidad</label>
+              <input
+                type="text"
+                class="form-control"
+                id="especialidad"
+                name="especialidad"
+                value="{{ info_perfil_session.especialidad if info_perfil_session else '' }}"
+                placeholder="Ej. Psicología Infantil" />
+            </div>
+            <div class="mb-3">
+              <label for="anos_experiencia" class="form-label">Años de Experiencia</label>
+              <input
+                type="number"
+                class="form-control"
+                id="anos_experiencia"
+                name="anos_experiencia"
+                value="{{ info_perfil_session.anos_experiencia if info_perfil_session else '' }}"
+                placeholder="Ej. 5"
+                min="0" />
+            </div>
+            <div class="mb-3">
+              <label for="certificaciones" class="form-label">Certificaciones</label>
+              <textarea
+                class="form-control"
+                id="certificaciones"
+                name="certificaciones"
+                rows="3"
+                placeholder="Ej. Certificación en TEA, TDAH">{{ info_perfil_session.certificaciones if info_perfil_session else '' }}</textarea>
+            </div>
+          </div>
+          {# Sección de cambio de contraseña #}
+          <h5 class="mt-4 mb-3">Cambiar Contraseña (Opcional)</h5>
+          {# Show "Contraseña Actual" if editing own profile OR if admin is editing #}
+          {% if dataLogin.id == info_perfil_session.id_usuario or dataLogin.rol == 1 %}
+          <div class="mb-3 form-password-toggle mt-3">
+            <label class="form-label" for="pass_actual">Contraseña Actual</label>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                class="form-control"
+                name="pass_actual"
+                id="pass_actual"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
+              <span class="input-group-text cursor-pointer">
+                <i class="bx bx-hide"></i>
+              </span>
+            </div>
+          </div>
+          {%endif%}
+
+          <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="new_pass_user">Nueva Clave</label>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                class="form-control"
+                name="new_pass_user"
+                id="new_pass_user"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
+              <span class="input-group-text cursor-pointer">
+                <i class="bx bx-hide"></i>
+              </span>
+            </div>
+            <div id="newPasswordHelp" class="form-text text-muted" style="display: none;">
+              La nueva clave debe tener al menos:
+              <ul>
+                <li id="newReqLength">8 caracteres de largo</li>
+                <li id="newReqUppercase">Una letra mayúscula (A-Z)</li>
+                <li id="newReqLowercase">Una letra minúscula (a-z)</li>
+                <li id="newReqNumber">Un número (0-9)</li>
+                <li id="newReqSpecialChar">Un carácter especial (@$!%*?&_)</li>
+              </ul>
+            </div>
+            <div class="invalid-feedback" id="newPasswordFeedback" style="display: none;">
+              La nueva contraseña no cumple con todos los requisitos.
+            </div>
+          </div>
+
+          {# Show "Repetir Nueva Clave" if editing own profile OR if admin is editing #}
+          {% if dataLogin.id == info_perfil_session.id_usuario or dataLogin.rol == 1 %}
+          <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="repetir_pass_user">
+              Repetir Nueva Clave
+            </label>
+            <div class="input-group input-group-merge">
+              <input
+                type="password"
+                class="form-control"
+                name="repetir_pass_user"
+                id="repetir_pass_user"
+                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                aria-describedby="password" />
+              <span class="input-group-text cursor-pointer">
+                <i class="bx bx-hide"></i>
+              </span>
+            </div>
+            <div class="invalid-feedback" id="repeatPasswordFeedback" style="display: none;">
+              Las contraseñas no coinciden.
+            </div>
+          </div>
+          {%endif%}
+        </div>
+        <div class="mb-3 text-center">
+          <button type="submit" class="btn rounded-pill btn-primary">
+            Actualizar Perfil {# Texto del botón unificado #}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const selectRol = document.getElementById('selectRol');
+    const evaluadorFields = document.getElementById('evaluadorFields');
+
+    // Elementos de la contraseña
+    const currentPasswordInput = document.getElementById('pass_actual');
+    const newPasswordInput = document.getElementById('new_pass_user');
+    const repeatPasswordInput = document.getElementById('repetir_pass_user');
+
+    // Elementos de feedback para la nueva contraseña
+    const newPasswordHelp = document.getElementById('newPasswordHelp');
+    const newPasswordFeedback = document.getElementById('newPasswordFeedback');
+    const repeatPasswordFeedback = document.getElementById('repeatPasswordFeedback');
+
+    // Elementos de la lista de requisitos para la nueva contraseña
+    const newReqLength = document.getElementById('newReqLength');
+    const newReqUppercase = document.getElementById('newReqUppercase');
+    const newReqLowercase = document.getElementById('newReqLowercase');
+    const newReqNumber = document.getElementById('newReqNumber');
+    const newReqSpecialChar = document.getElementById('newReqSpecialChar');
+
+    const profileForm = document.getElementById('profileForm');
+
+    // Función para mostrar u ocultar los campos del evaluador
+    function toggleEvaluadorFields() {
+      // Asumiendo que el ID del rol 'evaluador' es 2 (según tu script SQL)
+      if (selectRol.value === '2') { 
+        evaluadorFields.style.display = 'block';
+        // Opcional: hacer los campos requeridos si el rol es evaluador y tienen un valor inicial vacío
+        if (!document.getElementById('especialidad').value) {
+            document.getElementById('especialidad').setAttribute('required', 'true');
+        }
+        if (!document.getElementById('anos_experiencia').value) {
+            document.getElementById('anos_experiencia').setAttribute('required', 'true');
+        }
+      } else {
+        evaluadorFields.style.display = 'none';
+        // Remover el atributo required si no es evaluador
+        document.getElementById('especialidad').removeAttribute('required');
+        document.getElementById('anos_experiencia').removeAttribute('required');
+      }
+    }
+
+    // Función para validar la nueva contraseña y actualizar el feedback visual
+    function updateNewPasswordRequirements() {
+      const password = newPasswordInput.value;
+      const requirements = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password),
+        specialChar: /[@$!%*?&_]/.test(password)
+      };
+
+      // Actualizar el color de cada requisito
+      newReqLength.style.color = requirements.length ? 'green' : 'red';
+      newReqUppercase.style.color = requirements.uppercase ? 'green' : 'red';
+      newReqLowercase.style.color = requirements.lowercase ? 'green' : 'red';
+      newReqNumber.style.color = requirements.number ? 'green' : 'red';
+      newReqSpecialChar.style.color = requirements.specialChar ? 'green' : 'red';
+
+      return Object.values(requirements).every(Boolean); // Devuelve true si todos los requisitos se cumplen
+    }
+
+    // Función para validar que las contraseñas coincidan
+    function validatePasswordMatch() {
+      const newPassword = newPasswordInput.value;
+      const repeatPassword = repeatPasswordInput ? repeatPasswordInput.value : ''; // Asegura que exista el campo
+
+      if (newPassword === repeatPassword) {
+        if (repeatPasswordInput) {
+            repeatPasswordInput.classList.remove('is-invalid');
+            repeatPasswordInput.classList.add('is-valid');
+            repeatPasswordFeedback.style.display = 'none';
+        }
+        return true;
+      } else {
+        if (repeatPasswordInput) {
+            repeatPasswordInput.classList.remove('is-valid');
+            repeatPasswordInput.classList.add('is-invalid');
+            repeatPasswordFeedback.style.display = 'block';
+        }
+        return false;
+      }
+    }
+
+    // Evento al escribir en el campo de nueva contraseña
+    newPasswordInput.addEventListener('input', function() {
+      updateNewPasswordRequirements(); // Actualiza los colores en tiempo real
+      // Ocultar feedback de error de nueva contraseña mientras el usuario escribe
+      newPasswordInput.classList.remove('is-invalid', 'is-valid');
+      newPasswordFeedback.style.display = 'none';
+
+      // También validar la coincidencia si se está escribiendo una nueva contraseña
+      if (repeatPasswordInput && repeatPasswordInput.value.length > 0) {
+        validatePasswordMatch();
+      }
+    });
+
+    // Evento al escribir en el campo de repetir nueva contraseña
+    if (repeatPasswordInput) {
+        repeatPasswordInput.addEventListener('input', function() {
+            validatePasswordMatch();
+        });
+    }
+
+    // Mostrar mensaje de ayuda y resetear feedback al enfocar el campo de nueva contraseña
+    newPasswordInput.addEventListener('focus', function() {
+      newPasswordHelp.style.display = 'block'; // Muestra la lista de requisitos
+      updateNewPasswordRequirements(); // Asegura que los colores se actualicen al enfocar
+      newPasswordInput.classList.remove('is-invalid', 'is-valid'); // Limpiar clases de validación
+      newPasswordFeedback.style.display = 'none'; // Ocultar mensaje de error
+    });
+
+    // Ocultar mensaje de ayuda y validar al perder el foco del campo de nueva contraseña
+    newPasswordInput.addEventListener('blur', function() {
+      newPasswordHelp.style.display = 'none'; // Oculta la lista de requisitos
+      const isValid = updateNewPasswordRequirements(); // Valida al perder el foco
+
+      if (newPasswordInput.value.length > 0) { // Solo si hay algo escrito en la nueva contraseña
+          if (isValid) {
+              newPasswordInput.classList.remove('is-invalid');
+              newPasswordInput.classList.add('is-valid');
+              newPasswordFeedback.style.display = 'none';
+          } else {
+              newPasswordInput.classList.remove('is-valid');
+              newPasswordInput.classList.add('is-invalid');
+              newPasswordFeedback.style.display = 'block'; // Muestra el mensaje de error de Bootstrap
+          }
+      } else { // Si no se ha escrito nada, limpiar validación
+          newPasswordInput.classList.remove('is-invalid', 'is-valid');
+          newPasswordFeedback.style.display = 'none';
+      }
+
+      // Validar coincidencia al perder el foco de la nueva contraseña, si la de repetir no está vacía
+      if (repeatPasswordInput && repeatPasswordInput.value.length > 0) {
+          validatePasswordMatch();
+      }
+    });
+
+    // Evento al perder el foco del campo de repetir nueva contraseña
+    if (repeatPasswordInput) {
+        repeatPasswordInput.addEventListener('blur', function() {
+            validatePasswordMatch();
+        });
+    }
+
+
+    // Validar en el envío del formulario
+    profileForm.addEventListener('submit', function(event) {
+      let formIsValid = true;
+
+      // Si la nueva contraseña no está vacía, aplicar validación
+      if (newPasswordInput.value.length > 0) {
+        const isNewPasswordValid = updateNewPasswordRequirements();
+        const doPasswordsMatch = repeatPasswordInput ? validatePasswordMatch() : true; // Validar coincidencia solo si el campo existe
+
+        if (!isNewPasswordValid) {
+          newPasswordInput.classList.add('is-invalid');
+          newPasswordFeedback.style.display = 'block';
+          newPasswordHelp.style.display = 'block'; // Mostrar requisitos si hay error
+          formIsValid = false;
+        } else {
+          newPasswordInput.classList.remove('is-invalid');
+          newPasswordInput.classList.add('is-valid');
+          newPasswordFeedback.style.display = 'none';
+        }
+
+        if (!doPasswordsMatch) {
+            formIsValid = false;
+        }
+
+        // Si se está cambiando la contraseña, la contraseña actual debe ser requerida
+        // This check applies if the currentPasswordInput is visible (either self-editing or admin)
+        if (currentPasswordInput && currentPasswordInput.value.length === 0) {
+            currentPasswordInput.classList.add('is-invalid');
+            // Podrías añadir un mensaje de feedback específico para esto
+            formIsValid = false;
+        } else if (currentPasswordInput) {
+            currentPasswordInput.classList.remove('is-invalid');
+        }
+
+      } else {
+        // Si la nueva contraseña está vacía, no hay validación de complejidad ni coincidencia
+        newPasswordInput.classList.remove('is-invalid', 'is-valid');
+        newPasswordFeedback.style.display = 'none';
+        if (repeatPasswordInput) {
+            repeatPasswordInput.classList.remove('is-invalid', 'is-valid');
+            repeatPasswordFeedback.style.display = 'none';
+        }
+        if (currentPasswordInput) {
+            currentPasswordInput.classList.remove('is-invalid');
+        }
+      }
+
+      // Evitar el envío si el formulario no es válido
+      if (!formIsValid) {
+        event.preventDefault();
+      }
+    });
+
+
+    // Ejecutar al cargar la página para establecer el estado inicial
+    toggleEvaluadorFields();
+
+    // Escuchar cambios en el selector de rol
+    selectRol.addEventListener('change', toggleEvaluadorFields);
+  });
+</script>
+{% endblock %}

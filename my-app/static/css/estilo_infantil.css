@@ -1,0 +1,403 @@
+/* ===== ESTILOS PARA INTERFAZ INFANTIL (TONOS PROFUNDOS Y VIBRANTES) ===== */
+
+/* Importar fuentes amigables */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --color-primary: #4A90E2;
+  --color-secondary: #357ABD;
+  --color-accent: #66BB6A;
+  --color-warning: #FFD54F;
+  --color-info: #4FC3F7;
+  --bg-main: #E0F2F7;
+  --bg-secondary: #B3E5FC;
+  --bg-card: #E3F2FD;
+  --text-main: #2C3E50;
+  --text-secondary: #546E7A;
+  --text-light: #F8F8F8;
+  --border-radius: 18px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.12), 0 1.5px 4px rgba(0,0,0,0.10);
+}
+
+
+/* ===== ESTILO GENERAL ===== */
+body {
+    font-family: 'Nunito', 'Fredoka One', sans-serif !important;
+    background: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-secondary) 100%);
+    color: var(--text-main);
+    min-height: 100vh;
+    transition: background 0.5s;
+}
+
+/* Animación de entrada para tarjetas y formularios */
+.card, .form-control, .btn, .table {
+    animation: fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both;
+}
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: none; }
+}
+
+/* Sombras y bordes más suaves */
+.card, .form-control, .table, .modal-content {
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow);
+}
+
+.card, .table-container, .form-control {
+    background: linear-gradient(135deg, var(--bg-main) 0%, var(--bg-card) 100%) !important;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--color-info), var(--color-primary));
+    color: var(--text-light);
+    border: none;
+}
+
+.table tbody tr:hover {
+    background: rgba(74,144,226,0.09);
+}
+
+.form-control:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 10px rgba(79,195,247,0.25);
+}
+
+/* Botones llamativos y animación hover */
+.btn-primary, .btn-success, .btn-danger, .btn-info, .btn-warning {
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(74,144,226,0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover, .btn-success:hover, .btn-warning:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(74,144,226,0.18);
+}
+
+/* ===== SIDEBAR ===== */
+
+h1, h2, h3, .title-fun {
+  font-family: 'Fredoka One', cursive !important;
+  font-weight: 400 !important;
+  color: #4A90E2 !important;
+  font-size: 1.7rem !important;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px rgba(74,144,226,0.10);
+  -webkit-text-stroke: 0.5px #222;
+  text-stroke: 0.5px #222;
+  margin-bottom: 16px;
+  text-align: center !important;
+  background: none !important;
+  display: inline-block;
+  position: relative;
+  border: none;
+  padding-bottom: 0.2em;
+}
+
+h1::after, h2::after, h3::after, .title-fun::after {
+  content: '';
+  display: block;
+  width: 70%;
+  height: 0.5em;
+  background: #FFE082;
+  border-radius: 6px;
+  position: absolute;
+  left: 15%;
+  bottom: 0.15em;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+.titulo-icono {
+  font-size: 1.3em;
+  margin-right: 0.2em;
+  vertical-align: middle;
+  color: #FFD54F;
+}
+
+.sidebar,
+.sidebar-vibrante,
+#layout-menu.sidebar-vibrante {
+    background: linear-gradient(180deg, var(--color-primary) 0%, var(--color-secondary) 100%) !important;
+}
+
+.sidebar-vibrante .menu-item, .sidebar-vibrante .menu-link, .sidebar-vibrante .menu-icon {
+    background: transparent !important;
+    color: var(--text-light) !important;
+}
+
+.sidebar-vibrante .menu-item.active, .sidebar-vibrante .menu-link.active {
+    background: rgba(255,255,255,0.08) !important;
+    color: #FFD54F !important;
+    border-radius: var(--border-radius);
+}
+
+.sidebar-vibrante .menu-item:hover, .sidebar-vibrante .menu-link:hover {
+    background: rgba(255,255,255,0.15) !important;
+    color: #FFD54F !important;
+}
+
+.sidebar-vibrante .app-brand-logo img {
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.20));
+}
+
+.logo-area {
+    background: rgba(var(--color-secondary-rgb), 0.2); /* Usando rgba de color-secondary */
+    backdrop-filter: blur(10px);
+    border-radius: var(--border-radius);
+    margin: 10px 15px 30px;
+    padding: 15px;
+    text-align: center;
+}
+
+.logo-area img {
+    border-radius: 50%;
+    border: 4px solid var(--bg-card); /* Usando nuevo bg-card */
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s ease;
+}
+
+.logo-area img:hover {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Items del menú */
+.sidebar .nav-link {
+    color: var(--text-light) !important;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 5px 15px;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar .nav-link:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(var(--color-accent-rgb), 0.2); /* Usando rgba de color-accent */
+    transition: left 0.3s ease;
+}
+
+.sidebar .nav-link:hover:before {
+    left: 0;
+}
+
+.sidebar .nav-link:hover {
+    background: rgba(var(--color-accent-rgb), 0.3); /* Usando rgba de color-accent */
+    transform: translateX(10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.sidebar .nav-link.active {
+    background: var(--bg-card); /* Usando nuevo bg-card */
+    color: var(--color-primary) !important;
+    box-shadow: var(--shadow-soft);
+}
+
+.sidebar .nav-link i {
+    font-size: 20px;
+    margin-right: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25); /* Sombra más definida */
+}
+
+/* ===== CONTENIDO PRINCIPAL ===== */
+.main-content {
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary)); /* Usando nuevas variables */
+    min-height: 100vh;
+    border-radius: var(--border-radius-large) 0 0 var(--border-radius-large);
+    margin-left: 10px;
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== TARJETAS ===== */
+.card {
+    background: linear-gradient(135deg, #E0F2F7 0%, #B3E5FC 100%) !important; /* Fondo tenue sin blanco */
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-weight: 700;
+    text-align: center;
+    padding: 20px;
+}
+
+.card-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25); /* Sombra más definida */
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    padding: 12px 25px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(var(--color-secondary-rgb), 0.2); /* Usando rgba de color-secondary */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.btn:hover:before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--color-success), #7aa1a2);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--color-primary), #e74c3c);
+    color: white;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-accent), #3498db);
+    color: white;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--color-warning), #f39c12);
+    color: var(--text-primary);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ===== TABLAS ===== */
+.table-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    background: linear-gradient(135deg, #E0F2F7 0%, #B3E5FC 100%) !important;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--color-info), var(--color-primary));
+    color: var(--text-light);
+    border: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 15px;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.1), rgba(var(--color-accent-rgb), 0.15)); /* Usando rgba de primary/accent */
+    transform: scale(1.01);
+}
+
+.table tbody td {
+    padding: 15px;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1); /* Sutil línea de separación */
+    font-weight: 500;
+}
+
+/* ===== FORMULARIOS ===== */
+.form-control {
+    background: linear-gradient(135deg, #E0F2F7 0%, #B3E5FC 100%) !important;
+    border: 3px solid transparent;
+    border-radius: var(--border-radius);
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(var(--color-info-rgb), 0.3); /* Usando rgba de color-info */
+    transform: scale(1.02);
+}
+
+.form-label {
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        border-radius: 0;
+        padding: 20px 15px;
+    }
+
+    .sidebar {
+        border-radius: 0;
+    }
+
+    .card-title {
+        font-size: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 12px;
+    }
+}
+
+/* Definiciones RGB para uso en RGBA */
+:root {
+    --color-primary-rgb: 74, 144, 226; /* RGB de #4A90E2 */
+    --color-secondary-rgb: 53, 122, 189; /* RGB de #357ABD */
+    --color-accent-rgb: 109, 179, 242; /* RGB de #6DB3F2 */
+    --color-info-rgb: 79, 195, 247; /* RGB de #4FC3F7 */
+}

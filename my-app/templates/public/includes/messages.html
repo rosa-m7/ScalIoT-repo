@@ -1,0 +1,149 @@
+<!-- Alertas dinámicas con Flask -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      {% if category == 'success' %}
+        <div class="alert alert-custom-success text-center alert-dismissible fade show">
+          <strong>Felicitaciones</strong>: {{ message }} 😁
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% elif category == 'error' %}
+      <div class="alert alert-custom-success text-center alert-dismissible fade show">
+          <strong>Error</strong>: {{ message }} 😲
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@300;400;600;700;800&display=swap');
+
+:root {
+  --color-primary: #7aa1a2;
+  --color-secondary: #5f8c8d;
+  --color-accent: #a5c9ca;
+  --color-success: #bfe0e1;
+  --color-warning: #f5f7f8;
+  --color-info: #b1d0d0;
+
+  --bg-primary: #f0f4f5;
+  --bg-secondary: #e4f0f0;
+  --bg-card: #ffffff;
+
+  --text-primary: #2c3e50;
+  --text-secondary: #6b7b7c;
+  --text-light: #ffffff;
+
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+  --border-radius: 15px;
+  --border-radius-small: 8px;
+  --border-radius-large: 25px;
+}
+
+.alert-custom-success,
+.alert-custom-error {
+  border: none;
+  border-radius: var(--border-radius-large);
+  padding: 18px 28px;
+  margin: 10px auto; /* CLAVE para centrar el bloque de la alerta */
+  
+  /* Ajustes de ancho para que se vea "normal" y se ajuste */
+  width: 90%; /* Ocupa el 90% del ancho del padre */
+  max-width: 700px; /* Pero no más de 700px */
+  min-width: 300px; /* Evita que sea demasiado pequeño en pantallas muy estrechas */
+  
+  position: relative;
+  overflow: hidden;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  animation: slideInDown 0.5s ease-out;
+  box-shadow: var(--shadow-soft);
+  color: var(--text-light);
+  backdrop-filter: blur(8px);
+  
+  display: flex; /* Asegura que el contenido interno (texto, icono de cierre) también se centre si hay múltiples elementos */
+  justify-content: center; /* Centra horizontalmente el contenido interno */
+  align-items: center; /* Centra verticalmente el contenido interno (si hay espacio) */
+  text-align: center; /* Asegura que el texto en línea se centre */
+}
+
+/* 🎨 COLORES CON DEGRADADO */
+.alert-custom-success {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 50%, #52c41a 100%);
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+}
+
+.alert-custom-error {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #ff4757 100%);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.alert-custom-success strong,
+.alert-custom-error strong {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Ajustes para el botón de cierre */
+.alert-custom-success .btn-close,
+.alert-custom-error .btn-close {
+    filter: invert(1); /* Para que el icono blanco se vea bien en el degradado */
+    opacity: 0.8;
+    margin-left: 15px; /* Espacio entre el texto y el botón */
+    position: absolute; /* Para posicionarlo en la esquina */
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+@media (max-width: 768px) {
+  .alert-custom-success,
+  .alert-custom-error {
+    width: 95%; /* En pantallas pequeñas, ocupa más ancho */
+    padding: 16px 20px;
+    font-size: 14px;
+    min-width: unset; /* Reinicia el min-width para móviles si no lo necesitas */
+  }
+
+  .alert-custom-success strong,
+  .alert-custom-error strong {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const alerts = document.querySelectorAll('.alert-dismissible');
+
+  alerts.forEach(alert => {
+    setTimeout(() => {
+      if (alert && alert.classList.contains('show')) {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        } else {
+          alert.remove();
+        }
+      }
+    }, 5000); // Cierra después de 5 segundos
+  });
+});
+</script>

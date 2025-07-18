@@ -1,0 +1,87 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}Editar Niño{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Editar Niño</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    {% if nino %}
+                    <form action="{{ url_for('editar_nino', id=nino.id_nino) }}" method="POST">
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ nino.nombre }}" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="apellido" class="form-label">Apellido</label>
+                                <input type="text" class="form-control" id="apellido" name="apellido" value="{{ nino.apellido }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ nino.fecha_nacimiento if nino.fecha_nacimiento else '' }}" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="id_genero" class="form-label">Género</label>
+                                <select class="form-select" id="id_genero" name="id_genero" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="1" {% if nino.id_genero == 1 %}selected{% endif %}>Masculino</option>
+                                    <option value="2" {% if nino.id_genero == 2 %}selected{% endif %}>Femenino</option>
+                                    <option value="3" {% if nino.id_genero == 3 %}selected{% endif %}>Otro</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="peso" class="form-label">Peso (kg)</label>
+                                <input type="number" step="0.01" class="form-control" id="peso" name="peso" value="{{ nino.peso }}" required min="0">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="altura" class="form-label">Altura (cm)</label>
+                                <input type="number" step="0.01" class="form-control" id="altura" name="altura" value="{{ nino.altura }}" required min="0">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="observaciones" class="form-label">Observaciones Generales</label>
+<textarea class="form-control" id="observaciones" name="observaciones" rows="3">{{ nino.observaciones }}</textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tutor_responsable" class="form-label">Tutor Responsable</label>
+                                <input type="text" class="form-control" id="tutor_responsable" name="tutor_responsable" value="{{ nino.tutor_responsable }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono_contacto" class="form-label">Teléfono de Contacto</label>
+                                <input type="tel" class="form-control" id="telefono_contacto" name="telefono_contacto" value="{{ nino.telefono_contacto }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email_contacto" class="form-label">Email de Contacto</label>
+                            <input type="email" class="form-control" id="email_contacto" name="email_contacto" value="{{ nino.email_contacto }}">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="activo" name="activo" value="1" {% if nino.activo %}checked{% endif %}>
+                            <label class="form-check-label" for="activo">
+                                Activo
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Actualizar Niño</button>
+                        <a href="{{ url_for('gestionar_ninos') }}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                    {% else %}
+                    <p class="text-center">Niño no encontrado.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

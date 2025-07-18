@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login con Video de Fondo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Video de fondo -->
+    <div class="video-background">
+        <video autoplay muted loop>
+            <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+            <!-- Fallback para navegadores que no soportan video -->
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Alertas Flash centradas -->
+        <div class="flash-container">
+            <!-- Alertas dinámicas con Flask -->
+        <!-- Formulario de Login -->
+        <div class="container-xxl login-wrapper">
+            <div class="authentication-wrapper authentication-basic container-p-y">
+                <div class="authentication-inner">
+                    <div class="card login-card">
+                        <div class="card-body">
+                            <div class="app-brand justify-content-center mb-4">
+                                <span class="app-brand-logo">
+                                    <!-- Logo dinámico con Flask -->
+                                    <img class="logo" src="{{ url_for('static', filename='./assets/img/logo.png') }}" alt="Logo" />
+                                    <!-- Logo estático para pruebas (remover cuando uses Flask) -->
+                                    <!-- <img class="logo" src="https://via.placeholder.com/150x60/7aa1a2/ffffff?text=LOGO" alt="Logo" /> -->
+                                </span>
+                            </div>
+
+                            <form id="formAuthentication" class="mb-3" action="{{ url_for('loginCliente') }}" method="POST">
+                                <div class="mb-3">
+                                    <label for="cedula" class="form-label">Cédula</label>
+                                    <input type="text" class="form-control login-input" name="cedula" placeholder="Escribe tu cédula" autofocus required />
+                                </div>
+
+                                <div class="mb-3 form-password-toggle">
+                                    <label class="form-label" for="password">Clave</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="password" class="form-control login-input" name="pass_user" id="pass_user" placeholder="••••••••••••" required />
+                                        <span class="input-group-text cursor-pointer toggle-password" onclick="togglePassword()">
+                                            <i class="bx bx-hide" id="toggleIcon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <button class="btn btn-login w-100" type="submit">
+                                        Entrar ahora <i class="bi bi-arrow-right-circle"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        :root {
+            --color-primary: #7aa1a2;
+            --color-secondary: #5f8c8d;
+            --color-accent: #a5c9ca;
+            --color-success: #bfe0e1;
+            --color-warning: #f5f7f8;
+            --color-info: #b1d0d0;
+
+            --bg-primary: #f0f4f5;
+            --bg-secondary: #e4f0f0;
+            --bg-card: #ffffff;
+
+            --text-primary: #2c3e50;
+            --text-secondary: #6b7b7c;
+            --text-light: #ffffff;
+
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+            --border-radius: 15px;
+            --border-radius-small: 8px;
+            --border-radius-large: 25px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Overlay semitransparente con los colores originales */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(122, 161, 162, 0.85), 
+                rgba(199, 222, 221, 0.85));
+            z-index: -1;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        /* Contenedor para alertas flash */
+        .flash-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            z-index: 1000;
+        }
+
+        .alert {
+            border-radius: var(--border-radius-small);
+            box-shadow: var(--shadow-soft);
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            background-color: rgba(191, 224, 225, 0.95) !important;
+            border: 1px solid rgba(165, 201, 202, 0.3);
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.95) !important;
+            border-color: rgba(220, 53, 69, 0.3);
+        }
+
+        /* Estructura */
+        .login-wrapper {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+
+        .login-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            max-width: 400px;
+            margin: auto;
+            border: 1px solid rgba(165, 201, 202, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .login-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Inputs */
+        .login-input {
+            border-radius: var(--border-radius-small);
+            border: 1px solid var(--color-accent);
+            transition: 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .login-input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(122, 161, 162, 0.2);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        /* Botón */
+        .btn-login {
+            background-color: var(--color-primary);
+            border: none;
+            color: var(--text-light);
+            padding: 12px;
+            border-radius: var(--border-radius-small);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            background-color: var(--color-secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(122, 161, 162, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        /* Icono ocultar/mostrar */
+        .toggle-password i {
+            color: var(--color-secondary);
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover i {
+            color: var(--color-primary);
+        }
+
+        /* Logo - mantiene la configuración original */
+        .app-brand-logo img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        /* Labels */
+        .form-label {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        /* Efectos adicionales */
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .login-card {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .flash-container {
+                margin: 0 20px 20px 20px;
+            }
+        }
+
+        /* Animaciones suaves */
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Función para mostrar/ocultar contraseña
+        function togglePassword() {
+            const passwordInput = document.getElementById('pass_user');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bx-hide');
+                toggleIcon.classList.add('bx-show');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bx-show');
+                toggleIcon.classList.add('bx-hide');
+            }
+        }
+
+        // Animación de entrada
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginCard = document.querySelector('.login-card');
+            loginCard.classList.add('fade-in');
+        });
+
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

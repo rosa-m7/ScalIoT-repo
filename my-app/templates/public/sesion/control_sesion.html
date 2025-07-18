@@ -1,0 +1,313 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}Control de Sesión y Modo{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <h2 class="text-center mb-4">Control de Sesión y Modo</h2>
+
+    <div class="row mb-4">
+    <div class="col-md-12 mb-2">
+
+        <label for="ninoSelect" class="form-label">Seleccionar Niño/a</label>
+        <select id="ninoSelect" class="form-select" required>
+    <option value="">Seleccione un niño/a</option>
+</select>
+    </div>
+</div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div id="sistemaCard" class="card shadow mb-4" style="display:none;">
+        <div class="card-header text-dark">
+            <h3 class="h5 mb-0">Estado del Sistema</h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <p class="fs-5 fw-bold">
+                    Sistema: <span id="systemStatus" class="text-muted">Cargando...</span>
+                </p>
+            </div>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <button id="activateBtn" class="btn btn-success" disabled>Activar Sistema</button>
+                <button id="deactivateBtn" class="btn btn-danger" disabled>Desactivar Sistema</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        ninoSelect = document.getElementById('ninoSelect');
+        sistemaCard = document.getElementById('sistemaCard');
+        activateBtn = document.getElementById('activateBtn');
+        deactivateBtn = document.getElementById('deactivateBtn');
+        
+        ninoSelect.addEventListener('change', function() {
+            if (ninoSelect.value) {
+                sistemaCard.style.display = '';
+                activateBtn.disabled = false;
+                deactivateBtn.disabled = false;
+            } else {
+                sistemaCard.style.display = 'none';
+                activateBtn.disabled = true;
+                deactivateBtn.disabled = true;
+            }
+        });
+        // Inicialmente oculto/deshabilitado
+        sistemaCard.style.display = 'none';
+        activateBtn.disabled = true;
+        deactivateBtn.disabled = true;
+    });
+</script>
+
+    <div class="card shadow mt-4">
+        <div class="card-header text-dark">
+            <h3 class="h5 mb-0">Control de Modo</h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <p class="fs-5 fw-bold">
+                    Modo Actual: <span id="currentMode" class="text-info text-capitalize">Cargando...</span>
+                </p>
+            </div>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <button id="evaluacionBtn" class="btn btn-primary">Evaluación</button>
+                <button id="juegoBtn" class="btn btn-primary">Juego</button>
+                <button id="descansoBtn" class="btn btn-primary">Descanso</button>
+            </div>
+            <small class="form-text text-muted mt-2 d-block">El botón del modo actual estará deshabilitado.</small>
+        </div>
+    </div>
+
+    <div id="messageContainer" class="alert mt-4 hidden" role="alert"></div>
+</div>
+
+
+{% endblock %}
+
+<script>
+    window.ID_USUARIO_LOGUEADO = {{ dataLogin.id|tojson }};
+    window.ID_EVALUADOR_LOGUEADO = {{ dataLogin.id_evaluador|tojson }};
+</script>
+{% block customJS %}
+<script>
+    let currentModeSpan;
+    let evaluacionBtn;
+    let juegoBtn;
+    let descansoBtn;
+    let systemStatusSpan;
+    let activateBtn;
+    let deactivateBtn;
+    let messageContainer;
+
+    let currentFirebaseMode = "ninguno";
+    let currentSystemActiveState = 0;
+    let pendingSystemAction = '';
+    let ninoSelect;
+    let sistemaCard;
+    async function cargarNinos() {
+    try {
+        const resNino = await fetch('/obtener_ninos');
+        const dataNino = await resNino.json();
+        ninoSelect.innerHTML = '<option value="">Seleccione un niño/a</option>';
+        if (dataNino.ninos) {
+            dataNino.ninos.forEach(nino => {
+                const opt = document.createElement('option');
+                opt.value = nino.id;
+                opt.setAttribute('data-id', nino.id);
+                opt.textContent = nino.nombre;
+                ninoSelect.appendChild(opt);
+            });
+                // Seleccionar niño con id 1 si existe
+                let foundNino = false;
+                for (let i = 0; i < ninoSelect.options.length; i++) {
+                    if (ninoSelect.options[i].value == '1') {
+                        ninoSelect.selectedIndex = i;
+                        foundNino = true;
+                        break;
+                    }
+                }
+                if (!foundNino && ninoSelect.options.length > 1) {
+                    ninoSelect.selectedIndex = 1;
+                }
+            }
+        } catch (e) {
+            showMessage('No se pudieron cargar los niños', 'danger');
+        }
+        actualizarVisibilidadSistemaCard();
+    }
+    function actualizarVisibilidadSistemaCard() {
+        if (ninoSelect.value) {
+            sistemaCard.style.display = '';
+        } else {
+            sistemaCard.style.display = 'none';
+        }
+    }
+    function setupSelectListeners() {
+        ninoSelect.addEventListener('change', actualizarVisibilidadSistemaCard);
+    }
+    function showMessage(message, type) {
+        if (!messageContainer) {
+            messageContainer = document.getElementById('messageContainer');
+        }
+        if (!messageContainer) return;
+        messageContainer.textContent = message;
+        messageContainer.className = `alert mt-4 alert-${type}`;
+        messageContainer.classList.remove('hidden');
+        setTimeout(() => {
+            messageContainer.classList.add('hidden');
+        }, 5000);
+    }
+    function updateModeButtonsUI() {
+        evaluacionBtn.disabled = false;
+        juegoBtn.disabled = false;
+        descansoBtn.disabled = false;
+        evaluacionBtn.classList.remove('btn-secondary');
+        juegoBtn.classList.remove('btn-secondary');
+        descansoBtn.classList.remove('btn-secondary');
+        if (currentFirebaseMode === "evaluacion") {
+            evaluacionBtn.disabled = true;
+            evaluacionBtn.classList.add('btn-secondary');
+        } else if (currentFirebaseMode === "juego") {
+            juegoBtn.disabled = true;
+            juegoBtn.classList.add('btn-secondary');
+        } else if (currentFirebaseMode === "descanso") {
+            descansoBtn.disabled = true;
+            descansoBtn.classList.add('btn-secondary');
+        }
+    }
+    async function fetchModeState() {
+        try {
+            const response = await fetch('/api/modo/estado');
+            const data = await response.json();
+            if (response.ok) {
+                currentFirebaseMode = data.modo;
+                currentModeSpan.textContent = currentFirebaseMode.charAt(0).toUpperCase() + currentFirebaseMode.slice(1);
+                updateModeButtonsUI();
+            } else {
+                showMessage(`Error al obtener el modo: ${data.error}`, 'danger');
+            }
+        } catch (error) {
+            console.error('Error al conectar con la API de modo:', error);
+            showMessage('Error de conexión con el servidor (modo).', 'danger');
+        }
+    }
+    async function sendNewMode(newMode) {
+        try {
+            const response = await fetch('/api/modo/actualizar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ modo: newMode }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                showMessage(data.message, 'success');
+            } else {
+                showMessage(`Error: ${data.error}`, 'danger');
+            }
+        } catch (error) {
+            console.error('Error al enviar el nuevo modo:', error);
+            showMessage('Error de conexión al intentar actualizar el modo.', 'danger');
+        }
+    }
+    function updateSystemStatusUI() {
+        if (currentSystemActiveState === 1) {
+            systemStatusSpan.textContent = "ACTIVADO";
+            systemStatusSpan.classList.remove('text-muted', 'text-danger');
+            systemStatusSpan.classList.add('text-success');
+            activateBtn.disabled = true;
+            deactivateBtn.disabled = false;
+        } else {
+            systemStatusSpan.textContent = "DESACTIVADO";
+            systemStatusSpan.classList.remove('text-muted', 'text-success');
+            systemStatusSpan.classList.add('text-danger');
+            activateBtn.disabled = false;
+            deactivateBtn.disabled = true;
+        }
+    }
+    async function fetchSystemState() {
+        try {
+            const response = await fetch('/api/sesion/estado');
+            const data = await response.json();
+            if (response.ok) {
+                currentSystemActiveState = data.activa;
+                updateSystemStatusUI();
+            } else {
+                showMessage(`Error al obtener el estado del sistema: ${data.error}`, 'danger');
+            }
+        } catch (error) {
+            console.error('Error al conectar con la API de estado del sistema:', error);
+            showMessage('Error de conexión con el servidor (estado del sistema).', 'danger');
+        }
+    }
+    async function sendSystemAction(action) {
+    const url = action === 'activate' ? '/api/sesion/iniciar' : '/api/sesion/finalizar';
+    const ninoOption = ninoSelect.options[ninoSelect.selectedIndex];
+    const idNino = ninoOption ? ninoOption.getAttribute('data-id') : '';
+    if (!idNino) {
+        showMessage('Por favor, selecciona un niño/a.', 'danger');
+        return;
+    }
+    let body = { id_nino: idNino };
+    if (action === 'activate') {
+
+    }
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+        const data = await response.json();
+        if (response.ok) {
+            showMessage(data.message, 'success');
+        } else {
+            showMessage(`Error: ${data.error}`, 'danger');
+        }
+    } catch (error) {
+        console.error(`Error al ${action} el sistema:`, error);
+        showMessage(`Error de conexión al intentar ${action} el sistema.`, 'danger');
+    }
+}
+    document.addEventListener('DOMContentLoaded', () => {
+        ninoSelect = document.getElementById('ninoSelect');
+        sistemaCard = document.getElementById('sistemaCard');
+        cargarNinos();
+        setupSelectListeners();
+        currentModeSpan = document.getElementById('currentMode');
+        evaluacionBtn = document.getElementById('evaluacionBtn');
+        juegoBtn = document.getElementById('juegoBtn');
+        descansoBtn = document.getElementById('descansoBtn');
+        systemStatusSpan = document.getElementById('systemStatus');
+        activateBtn = document.getElementById('activateBtn');
+        deactivateBtn = document.getElementById('deactivateBtn');
+
+        evaluacionBtn.addEventListener('click', () => sendNewMode('evaluacion'));
+        juegoBtn.addEventListener('click', () => sendNewMode('juego'));
+        descansoBtn.addEventListener('click', () => sendNewMode('descanso'));
+        activateBtn.addEventListener('click', () => {
+            sendSystemAction('activate');
+        });
+        deactivateBtn.addEventListener('click', () => {
+            sendSystemAction('deactivate');
+        });
+        fetchModeState();
+        fetchSystemState();
+        setInterval(fetchModeState, 3000);
+        setInterval(fetchSystemState, 3000);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}Agregar Condición{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Agregar Nueva Condición</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ url_for('agregar_condicion') }}" method="POST">
+                        <div class="mb-3">
+                            <label for="nombre_condicion" class="form-label">Nombre de la Condición</label>
+                            <input type="text" class="form-control" id="nombre_condicion" name="nombre_condicion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <input type="text" class="form-control" id="categoria" name="categoria">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Guardar Condición</button>
+                        <a href="{{ url_for('gestionar_condiciones') }}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

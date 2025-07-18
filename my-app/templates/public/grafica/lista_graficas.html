@@ -1,0 +1,1140 @@
+{% extends 'public/base_cpanel.html' %}
+
+{% block title %}Step&Climb 🐞 | Gráficas{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-5">Gráfica de Sesiones</h2>
+
+    <div class="text-center mb-4">
+        <button class="btn btn-primary me-3" onclick="mostrarAnaliticaGeneral()">Analítica General</button>
+        <button class="btn btn-secondary me-3" onclick="mostrarAnaliticaPorNino()">Analítica por Niño</button>
+    </div>
+
+    <div id="contenedorAnaliticaGeneral" style="display: block;">
+        <div id="reporteFirebaseSection"> 
+            <h3 class="text-center mb-4">Análisis de Sesiones por Color</h3>
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-4">
+                    <label for="selectSessionDate" class="form-label">Fecha de Sesión:</label>
+                    <select id="selectSessionDate" class="form-select">
+                        <option value="" disabled selected>Seleccione una fecha</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="selectSessionMode" class="form-label">Modo de Sesión:</label>
+                    <select id="selectSessionMode" class="form-select" disabled>
+                        <option value="" disabled selected>Seleccione un modo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-10 text-center">
+                    <div class="alert alert-info" role="alert">
+                        <strong>Total de Activaciones para la sesión seleccionada: </strong> <span id="totalActivacionesDisplay">0</span>
+                    </div>
+                </div>
+            </div>
+            <div id="noRecordsMessage" class="alert alert-warning text-center" style="display: none;">
+                No existen registros para esta sesión.
+            </div>
+
+            <div id="chartsContainer">
+                <!-- Contenedor para Gráficas de Botones -->
+                <div id="noButtonRecordsMessage" class="alert alert-info text-center" style="display: none;">
+                    No hay registros de activación en botones.
+                </div>
+                <div class="row mb-4" id="buttonChartsRow">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h5 class="text-dark fw-bold">Activaciones de Botones</h5>
+                            </div>
+                            <div class="card-body" style="position: relative; height: 300px;">
+                                <canvas id="chartBotonesBarra"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h5 class="text-dark fw-bold">Porcentaje de Botones</h5>
+                            </div>
+                            <div class="card-body" style="position: relative; height: 300px;">
+                                <canvas id="chartBotonesAnillos"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contenedor para Gráficas de Escalones -->
+                <div id="noStepRecordsMessage" class="alert alert-info text-center" style="display: none;">
+                    No hay registros de activaciones en escalones.
+                </div>
+                <div class="row mb-4" id="stepChartsRow">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h5 class="text-dark fw-bold">Activaciones de Escalones</h5>
+                            </div>
+                            <div class="card-body" style="position: relative; height: 300px;">
+                                <canvas id="chartEscalonesBarra"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h5 class="text-dark fw-bold">Porcentaje de Escalones</h5>
+                            </div>
+                            <div class="card-body" style="position: relative; height: 300px;">
+                                <canvas id="chartEscalonesAnillos"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <div id="contenedorAnaliticaPorNino" style="display: none;">
+        <div class="d-flex justify-content-end mb-2">
+            <button id="btn-descargar-excel" class="btn btn-success" style="display:none;z-index:10;">
+                <i class="bi bi-file-earmark-excel"></i> Descargar Excel
+            </button>
+        </div>
+        <h3 class="text-center mt-4">Analítica por Niño</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="nino-selector-nino">1. SELECCIONE UN NIÑO</label>
+                    <select id="nino-selector-nino" class="form-control"></select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="sesion-selector-nino">2. SELECCIONE UNA SESIÓN</label>
+                    <select id="sesion-selector-nino" class="form-control" style="display: none;"></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard-container" class="mt-4"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+<script src="/static/libs/html2canvas.min.js"></script>
+
+<script>
+    // Instancias globales para destruir los charts de modo general (Analítica General)
+    let chartBotonesBarraInstance = null;
+    let chartBotonesAnillosInstance = null;
+    let chartEscalonesBarraInstance = null;
+    let chartEscalonesAnillosInstance = null;
+    // Instancias globales para destruir los charts de modo juego
+    let chartJuegoBarras = null, chartJuegoDona = null;
+
+    function renderJuegoBlock(juego) {
+        if (!juego || juego.mensaje) {
+            return `
+                <div class="card mb-4">
+                    <div class="card-header text-center bg-info text-white"><h4>Modo Juego</h4></div>
+                    <div class="card-body text-center text-muted">${juego && juego.mensaje ? juego.mensaje : 'N/A'}</div>
+                </div>
+            `;
+        }
+        // Extraer movimientos
+        let movimientos = juego.movimientos || {};
+        let botones = [], colores = [], activaciones = [], colorMap = {}, activacionesPorColor = {};
+        let totalActivaciones = 0;
+        for (const [key, val] of Object.entries(movimientos)) {
+            if (key === 'tiempos_movimientos') continue;
+            botones.push(key);
+            colores.push(val.color || '-');
+            activaciones.push(val['numero de activaciones'] || 0);
+            totalActivaciones += val['numero de activaciones'] || 0;
+            // Sumar por color para el doughnut
+            if(val.color) {
+                activacionesPorColor[val.color] = (activacionesPorColor[val.color] || 0) + (val['numero de activaciones'] || 0);
+            }
+        }
+        let totalMovs = movimientos.tiempos_movimientos ? Object.keys(movimientos.tiempos_movimientos).length : 0;
+        // Fechas
+        let inicio = juego.inicio ? new Date(juego.inicio).toLocaleString() : 'N/A';
+        let fin = juego.fin ? new Date(juego.fin).toLocaleString() : 'N/A';
+        // HTML contenedor para el gráfico
+        // Separar datos de escalones y botones
+        let escalones = [], escalonesActivaciones = [], botonesList = [], botonesActivaciones = [];
+        for (let i = 0; i < botones.length; i++) {
+            if (botones[i].toLowerCase().includes('escalon')) {
+                escalones.push(botones[i]);
+                escalonesActivaciones.push(activaciones[i]);
+            } else {
+                botonesList.push(botones[i]);
+                botonesActivaciones.push(activaciones[i]);
+            }
+        }
+        setTimeout(() => {
+            renderJuegoBarChartCustom('chart-juego-escalones', escalones, escalonesActivaciones, colores, 'Escalones');
+            renderJuegoBarChartCustom('chart-juego-botones', botonesList, botonesActivaciones, colores, 'Botones');
+        }, 0);
+        return `
+            <div class="card mb-4">
+                <div class="card-header text-center bg-info text-white"><h4>Modo Juego</h4></div>
+                <div class="card-body">
+                    <div class="row mb-2">
+                        <div class="col"><strong>Inicio:</strong> ${inicio}</div>
+                        <div class="col"><strong>Fin:</strong> ${fin}</div>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Total de Activaciones:</strong> ${totalActivaciones}<br>
+                        ${totalMovs ? `<strong>Total de movimientos registrados:</strong> ${totalMovs}<br>` : ''}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Escalones</h5><canvas id="chart-juego-escalones"></canvas></div></div>
+                        <div class="col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Botones</h5><canvas id="chart-juego-botones"></canvas></div></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderJuegoBarChartCustom(canvasId, labels, data, colores, titulo) {
+    if (window[canvasId + 'Instance']) {
+        window[canvasId + 'Instance'].destroy();
+        window[canvasId + 'Instance'] = null;
+    }
+    const colorMap = {
+        'anaranjado': '#fd7e14',
+        'azul': '#007bff',
+        'rosa': '#e83e8c',
+        'verde': '#28a745',
+        'amarillo': '#ffc107',
+        'morado': '#6f42c1',
+        'turquesa': '#20c997',
+        'gris': '#343a40',
+        'rojo': '#dc3545',
+        'celeste': '#17a2b8'
+    };
+    const backgroundColors = colores.map(c => colorMap[c] || '#adb5bd');
+    const ctxBar = document.getElementById(canvasId);
+    if (ctxBar) {
+        window[canvasId + 'Instance'] = new Chart(ctxBar.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: titulo,
+                    data: data,
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: titulo },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: function(value) { return Number.isInteger(value) ? value : Math.round(value); },
+                        font: { weight: 'bold' }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1,
+                        ticks: {
+                            precision: 0,
+                            stepSize: 1,
+                            autoSkip: true,
+                            maxTicksLimit: 7,
+                            callback: function(value) { return value; }
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            maxRotation: 0,
+                            minRotation: 0,
+                            padding: 10,
+                            autoSkip: false,
+                            callback: function(value, index, values) {
+                                // Muestra todo el texto, no trunca
+                                return this.getLabelForValue(value);
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        bottom: 40
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let val = context.parsed.y;
+                                return Number.isInteger(val) ? val : Math.round(val);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+function renderJuegoBarChart(botones, activaciones, colores) {
+        if (chartJuegoBarras) { chartJuegoBarras.destroy(); chartJuegoBarras = null; }
+        // Mapeo de colores por nombre a hex
+        const colorMap = {
+            'anaranjado': '#fd7e14',
+            'azul': '#007bff',
+            'rosa': '#e83e8c',
+            'verde': '#28a745',
+            'amarillo': '#ffc107',
+            'morado': '#6f42c1',
+            'turquesa': '#20c997',
+            'gris': '#343a40',
+            'rojo': '#dc3545',
+            'celeste': '#17a2b8'
+        };
+        const backgroundColors = colores.map(c => colorMap[c] || '#adb5bd');
+        const ctxBar = document.getElementById('chart-juego-barras');
+        if (ctxBar) {
+            chartJuegoBarras = new Chart(ctxBar.getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: botones,
+                    datasets: [{
+                        label: 'Activaciones',
+                        data: activaciones,
+                        backgroundColor: backgroundColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: true, text: 'Activaciones por Botón' },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            formatter: function(value) { return Number.isInteger(value) ? value : Math.round(value); },
+                            font: { weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            ticks: {
+                                precision: 0,
+                                stepSize: 1,
+                                autoSkip: true,
+                                maxTicksLimit: 7,
+                                callback: function(value) { return value; }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let val = context.parsed.y;
+                                    return Number.isInteger(val) ? val : Math.round(val);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+
+    // Instancias de gráficos para poder destruirlas y recrearlas
+    let chartEvaluacionInstance;
+
+    const reporteFirebaseSection = document.getElementById('reporteFirebaseSection');
+    const totalActivacionesDisplay = document.getElementById('totalActivacionesDisplay');
+    const ninoSelectorNino = document.getElementById('nino-selector-nino');
+    const sesionSelectorNino = document.getElementById('sesion-selector-nino');
+    const dashboardContainer = document.getElementById('dashboard-container');
+    const evaluacionContainer = document.getElementById('evaluacion-container');
+    const juegoContainer = document.getElementById('juego-container');
+    const descansoContainer = document.getElementById('descanso-container');
+    const evaluacionChart = document.getElementById('evaluacion-chart');
+    const evaluacionTiempoTotal = document.getElementById('evaluacion-tiempo-total');
+
+    // --- NAVEGACIÓN ENTRE SECCIONES ---
+    function mostrarAnaliticaGeneral() {
+        document.getElementById('contenedorAnaliticaGeneral').style.display = 'block';
+        document.getElementById('contenedorAnaliticaPorNino').style.display = 'none';
+        inicializarFiltrosAnaliticaGeneral();
+    }
+
+    function mostrarAnaliticaPorNino() {
+        document.getElementById('contenedorAnaliticaGeneral').style.display = 'none';
+        document.getElementById('contenedorAnaliticaPorNino').style.display = 'block';
+        cargarNinosParaAnalisis();
+    }
+
+    // --- LÓGICA DE ANALÍTICA GENERAL (POR COLOR) ---
+    async function inicializarFiltrosAnaliticaGeneral() {
+        try {
+            // Obtener fechas únicas por día
+            const responseFechas = await fetch('/api/fechas_sesiones_general');
+            const fechas = await responseFechas.json();
+
+            const fechaSelect = document.getElementById('selectSessionDate');
+            const modoSelect = document.getElementById('selectSessionMode');
+
+            // Limpiar opciones previas
+            fechaSelect.innerHTML = '<option value="" disabled selected>Seleccione una fecha</option>';
+            modoSelect.innerHTML = '<option value="" disabled selected>Seleccione un modo</option>';
+
+            fechas.forEach(fecha => {
+                fechaSelect.innerHTML += `<option value="${fecha}">${fecha}</option>`;
+            });
+
+            // Modos fijos del sistema
+            const modos = [
+                { key: 'modoevaluacion', label: 'Evaluación' },
+                { key: 'modojuego', label: 'Juego' }
+            ];
+            modos.forEach(modo => {
+                modoSelect.innerHTML += `<option value="${modo.key}">${modo.label}</option>`;
+            });
+
+            fechaSelect.addEventListener('change', () => {
+                modoSelect.disabled = !fechaSelect.value;
+                cargarDatosFiltrados();
+            });
+            modoSelect.addEventListener('change', cargarDatosFiltrados);
+
+        } catch (error) {
+            console.error('Error al inicializar filtros:', error);
+        }
+    }
+
+    async function cargarDatosFiltrados() {
+        const fecha = document.getElementById('selectSessionDate').value;
+        const modo = document.getElementById('selectSessionMode').value;
+
+        const chartsContainer = document.getElementById('chartsContainer');
+        const noRecordsMessage = document.getElementById('noRecordsMessage');
+
+        if (!fecha || !modo) {
+            chartsContainer.style.display = 'none';
+            noRecordsMessage.style.display = 'none';
+            destroyAllGeneralCharts();
+            return;
+        }
+
+        try {
+            // Ahora la consulta es por día y modo
+            const response = await fetch(`/api/datos_sesion_filtrada?fecha=${fecha}&modo=${modo}`);
+            const data = await response.json();
+
+            if (data.error) throw new Error(data.error);
+
+            document.getElementById('totalActivacionesDisplay').textContent = data.total_activaciones;
+
+            if (data.total_activaciones > 0) {
+                chartsContainer.style.display = 'block';
+                noRecordsMessage.style.display = 'none';
+                renderColorCharts(data.colores_botones, data.colores_escalones);
+            } else {
+                chartsContainer.style.display = 'none';
+                noRecordsMessage.style.display = 'block';
+                noRecordsMessage.textContent = 'No se encontraron registros para esta selección.';
+                destroyAllGeneralCharts();
+            }
+        } catch (error) {
+            console.error('Error al cargar datos filtrados:', error);
+            chartsContainer.style.display = 'none';
+            noRecordsMessage.style.display = 'block';
+            noRecordsMessage.textContent = 'Error al cargar los datos. Intente de nuevo.';
+            destroyAllGeneralCharts();
+        }
+    }
+
+    function renderColorCharts(buttonData, stepData) {
+        const buttonLabels = Object.keys(buttonData);
+        const buttonValues = Object.values(buttonData);
+        const stepLabels = Object.keys(stepData);
+        const stepValues = Object.values(stepData);
+
+        // Gráficos de Botones
+        if (buttonValues.reduce((a, b) => a + b, 0) > 0) {
+            document.getElementById('buttonChartsRow').style.display = 'flex';
+            document.getElementById('noButtonRecordsMessage').style.display = 'none';
+            renderChart('chartBotonesBarra', 'bar', buttonLabels, buttonValues, 'Activaciones de Botones por Color');
+            renderChart('chartBotonesAnillos', 'doughnut', buttonLabels, buttonValues, 'Porcentaje de Botones por Color');
+        } else {
+            document.getElementById('buttonChartsRow').style.display = 'none';
+            document.getElementById('noButtonRecordsMessage').style.display = 'block';
+        }
+
+        // Gráficos de Escalones
+        if (stepValues.reduce((a, b) => a + b, 0) > 0) {
+            document.getElementById('stepChartsRow').style.display = 'flex';
+            document.getElementById('noStepRecordsMessage').style.display = 'none';
+            renderChart('chartEscalonesBarra', 'bar', stepLabels, stepValues, 'Activaciones de Escalones por Color');
+            renderChart('chartEscalonesAnillos', 'doughnut', stepLabels, stepValues, 'Porcentaje de Escalones por Color');
+        } else {
+            document.getElementById('stepChartsRow').style.display = 'none';
+            document.getElementById('noStepRecordsMessage').style.display = 'block';
+        }
+    }
+
+    // --- LÓGICA DE ANALÍTICA POR NIÑO ---
+    function cargarNinosParaAnalisis() {
+        fetch("{{ url_for('obtener_ninos') }}") 
+            .then(response => response.json())
+            .then(data => {
+                ninoSelectorNino.innerHTML = '<option value="" disabled selected>Elige un niño</option>';
+                if (data.ninos) {
+                    data.ninos.forEach(nino => {
+                        ninoSelectorNino.innerHTML += `<option value="nino-id-${nino.id}">${nino.nombre}</option>`;
+                    });
+                }
+            }).catch(error => console.error('Error al cargar los niños:', error));
+    }
+
+    ninoSelectorNino.addEventListener('change', async (event) => {
+        const ninoId = event.target.value;
+        dashboardContainer.innerHTML = '';
+        sesionSelectorNino.innerHTML = '<option value="">Seleccione una sesión...</option>';
+        sesionSelectorNino.style.display = 'none';
+
+        if (!ninoId) return;
+
+        try {
+            const response = await fetch(`/api/fechas_sesiones/${ninoId}`);
+            const timestamps = await response.json();
+            if (timestamps.length > 0) {
+                timestamps.forEach(tsObj => {
+                    const option = document.createElement('option');
+                    option.value = tsObj.ts_global;
+                    option.textContent = tsObj.ts_nino.replace('_', ' a las '); // Muestra la fecha original del niño
+                    sesionSelectorNino.appendChild(option);
+                });
+                sesionSelectorNino.style.display = 'block';
+            } else {
+                dashboardContainer.innerHTML = '<p class="text-muted">Este niño no tiene sesiones registradas.</p>';
+            }
+        } catch (error) {
+            console.error('Error al cargar sesiones:', error);
+            dashboardContainer.innerHTML = '<p class="text-danger">No se pudieron cargar las sesiones.</p>';
+        }
+    });
+
+    sesionSelectorNino.addEventListener('change', async (event) => {
+        const session_ts = event.target.value;
+        const ninoId = ninoSelectorNino.value;
+        dashboardContainer.innerHTML = '';
+
+        if (!session_ts || !ninoId) return;
+
+        try {
+            const response = await fetch(`/api/datos_graficas_sesion?nino_id=${ninoId}&session_ts=${session_ts}`);
+            const data = await response.json();
+            renderDashboard(data);
+        } catch (error) {
+            console.error('Error al cargar analíticas:', error);
+            dashboardContainer.innerHTML = '<p class="text-danger">No se pudieron cargar las analíticas de la sesión.</p>';
+        }
+    });
+
+    function renderDashboard(data) {
+        // Mostrar/ocultar botón Excel según selección
+        const ninoSelect = document.getElementById('nino-selector-nino');
+        const sesionSelect = document.getElementById('sesion-selector-nino');
+        const btnExcel = document.getElementById('btn-descargar-excel');
+        if (ninoSelect && sesionSelect && ninoSelect.value && sesionSelect.value) {
+            btnExcel.style.display = 'inline-block';
+        } else {
+            btnExcel.style.display = 'none';
+        }
+        if (btnExcel && !btnExcel.dataset.listener) {
+            btnExcel.addEventListener('click', async function() {
+                await exportarAnaliticaNinoExcel();
+            });
+            btnExcel.dataset.listener = 'true';
+        }
+    
+        const dashboardContainer = document.getElementById('dashboard-container');
+        dashboardContainer.innerHTML = '';
+        destroyAllNinoCharts();
+
+        if (!data) {
+            dashboardContainer.innerHTML = '<div class="alert alert-danger">Error: Datos de la sesión no válidos o incompletos.</div>';
+            return;
+        }
+
+        // --- Modo Evaluación ---
+        let evalHtml = '';
+        const evaluacion = data.evaluacion;
+        if (evaluacion && !evaluacion.mensaje) {
+            console.log('Evaluacion recibida:', evaluacion);
+            evalHtml = `
+                <div class="card mb-4">
+                    <div class="card-header text-center bg-success text-white"><h4>Modo Evaluación</h4></div>
+                    <div class="card-body">
+                        <div class="row text-center mb-3">
+                            <div class="col"><strong>Inicio:</strong> ${
+    evaluacion.inicio_sesion ? new Date(evaluacion.inicio_sesion).toLocaleString() :
+    (evaluacion.inicio ? new Date(evaluacion.inicio).toLocaleString() : 'N/A')
+}</div>
+                            <div class="col"><strong>Fin:</strong> ${
+    evaluacion.fin_sesion ? new Date(evaluacion.fin_sesion).toLocaleString() :
+    (evaluacion.fin ? new Date(evaluacion.fin).toLocaleString() : 'N/A')
+}</div>
+                            <div class="col"><strong>Duración:</strong> ${evaluacion.tiempo_total ? evaluacion.tiempo_total.toFixed(2) + 's' : 'N/A'}</div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-botones-activacion-nino"></canvas></div></div>
+                            <div class="col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-escalones-activacion-nino"></canvas></div></div>
+                        </div>
+                        <hr>
+                        <div class="row mt-4">
+                            <div class="col-12"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-aciertos-desaciertos-nino"></canvas></div></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            evalHtml = `
+                <div class="card mb-4">
+                    <div class="card-header text-center bg-success text-white"><h4>Modo Evaluación</h4></div>
+                    <div class="card-body text-center text-muted">${evaluacion && evaluacion.mensaje ? evaluacion.mensaje : 'N/A'}</div>
+                </div>
+            `;
+        }
+
+        // --- Modo Juego ---
+        let juegoHtml = renderJuegoBlock(data.juego);
+
+        // --- Modo Descanso ---
+        let descansoHtml = '';
+        const descanso = data.descanso;
+        if (descanso && !descanso.mensaje) {
+            // Muestra inicio y fin de forma legible
+            const inicio = descanso.inicio ? new Date(descanso.inicio).toLocaleString() : 'N/A';
+            const fin = descanso.fin ? new Date(descanso.fin).toLocaleString() : 'N/A';
+            descansoHtml = `
+                <div class="card mb-4">
+                    <div class="card-header text-center bg-secondary text-white"><h4>Modo Descanso</h4></div>
+                    <div class="card-body text-center">
+                        <div><strong>Inicio:</strong> ${inicio}</div>
+                        <div><strong>Fin:</strong> ${fin}</div>
+                    </div>
+                </div>
+            `;
+        } else {
+            descansoHtml = `
+                <div class="card mb-4">
+                    <div class="card-header text-center bg-secondary text-white"><h4>Modo Descanso</h4></div>
+                    <div class="card-body text-center text-muted">${descanso && descanso.mensaje ? descanso.mensaje : 'N/A'}</div>
+                </div>
+            `;
+        }
+
+        // Bloque de diagnóstico general + informe automático interpretativo
+        let diagnosticoHtml = `
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark"><h5>Diagnóstico General de la Sesión</h5></div>
+                        <div class="card-body">
+                            <textarea id="diagnostico-textarea" class="form-control mb-2" rows="3" maxlength="200" placeholder="Escribe aquí el diagnóstico general (máx. 200 caracteres)..."></textarea>
+                            <button id="diagnostico-guardar" class="btn btn-primary">Guardar</button>
+                            <small id="diagnostico-charcount" class="text-muted float-end">0/200</small>
+                            <div id="diagnostico-guardado-msg" class="mt-2" style="display:none;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4 border-info">
+                        <div class="card-header bg-info text-dark"><h5>Informe Automático Interpretativo Modo Eval.</h5></div>
+                        <div class="card-body">
+                            <div id="informe-automatico" style="min-height: 110px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        dashboardContainer.innerHTML = evalHtml + juegoHtml + descansoHtml + diagnosticoHtml;
+
+        // Renderizar informe automático
+        renderInformeAutomaticoInterpretativo(data.evaluacion, document.getElementById('informe-automatico'));
+
+        // --- FIN BLOQUE DIAGNÓSTICO E INFORME ---
+
+
+        // Diagnóstico: solo cuadro de texto editable, guardar y recuperar
+        const diagnosticoTextarea = document.getElementById('diagnostico-textarea');
+        const diagnosticoGuardar = document.getElementById('diagnostico-guardar');
+        const diagnosticoCharcount = document.getElementById('diagnostico-charcount');
+        const diagnosticoGuardadoMsg = document.getElementById('diagnostico-guardado-msg');
+        // No autollenar ni analizar, solo permitir editar y guardar manualmente si existe
+        if (typeof data.diagnostico === 'string' && data.diagnostico.length > 0) {
+            diagnosticoTextarea.value = data.diagnostico;
+            diagnosticoCharcount.textContent = data.diagnostico.length + '/200';
+        } else {
+            diagnosticoTextarea.value = '';
+            diagnosticoCharcount.textContent = '0/200';
+        }
+        diagnosticoTextarea.addEventListener('input', function() {
+            diagnosticoCharcount.textContent = this.value.length + '/200';
+        });
+        diagnosticoGuardar.addEventListener('click', async function() {
+            const texto = diagnosticoTextarea.value.slice(0, 200);
+            diagnosticoTextarea.value = texto;
+            diagnosticoCharcount.textContent = texto.length + '/200';
+            diagnosticoGuardadoMsg.style.display = 'none';
+            diagnosticoGuardar.disabled = true;
+            try {
+                // Extraer nino_id y session_ts de los selects
+                const nino_id = document.getElementById('nino-selector-nino').value;
+                const session_ts = document.getElementById('sesion-selector-nino').value;
+                const resp = await fetch('/api/guardar_diagnostico_sesion', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nino_id, session_ts, diagnostico: texto })
+                });
+                const result = await resp.json();
+                if (resp.ok) {
+                    diagnosticoGuardadoMsg.textContent = 'Diagnóstico guardado correctamente.';
+                    diagnosticoGuardadoMsg.className = 'alert alert-success mt-2';
+                } else {
+                    diagnosticoGuardadoMsg.textContent = result.error || 'Error al guardar.';
+                    diagnosticoGuardadoMsg.className = 'alert alert-danger mt-2';
+                }
+            } catch (e) {
+                diagnosticoGuardadoMsg.textContent = 'Error al guardar.';
+                diagnosticoGuardadoMsg.className = 'alert alert-danger mt-2';
+            }
+            diagnosticoGuardadoMsg.style.display = 'block';
+            diagnosticoGuardar.disabled = false;
+        });
+
+        // --- FUNCIONES DE INFORME AUTOMÁTICO ---
+        function renderInformeAutomaticoInterpretativo(evaluacion, container) {
+            if (!evaluacion || evaluacion.mensaje) {
+                container.innerHTML = '<span class="text-muted">No disponible</span>';
+                return;
+            }
+            let res = evaluacion.resultados_data || {};
+            let total_ordenes = (res.aciertos || 0) + (res.desaciertos || 0);
+            let correctas = res.aciertos || 0;
+            let incorrectas = res.desaciertos || 0;
+            let tiempo_total = evaluacion.tiempo_total || 0;
+            let inicio_sesion = evaluacion.inicio_sesion;
+            let fin_sesion = evaluacion.fin_sesion;
+            let precision = total_ordenes ? (correctas / total_ordenes) * 100 : 0;
+            let tiempo_prom = total_ordenes ? tiempo_total / total_ordenes : 0;
+            let duracion_min = 0;
+            if (inicio_sesion && fin_sesion) {
+                let ini = new Date(inicio_sesion);
+                let fin = new Date(fin_sesion);
+                duracion_min = (fin - ini) / 60000;
+            } else if (tiempo_total) {
+                duracion_min = tiempo_total / 60;
+            }
+            // Motricidad fina vs gruesa
+            let bot_data = evaluacion.botones_data || {activados:0, no_activados:0};
+            let esc_data = evaluacion.escalones_data || {activados:0, no_activados:0};
+            let bot_total = bot_data.activados + bot_data.no_activados;
+            let esc_total = esc_data.activados + esc_data.no_activados;
+            let bot_precision = bot_total > 0 ? (bot_data.activados / bot_total) * 100 : 0;
+            let esc_precision = esc_total > 0 ? (esc_data.activados / esc_total) * 100 : 0;
+            // Interpretaciones largas
+            let velocidad_txt = interpretarVelocidadLargo(tiempo_prom);
+            let precision_txt = interpretarPrecisionLargo(precision);
+            let resistencia_txt = interpretarResistenciaLargo(duracion_min);
+            let regularidad_txt = analizarRegularidadLargo(evaluacion);
+            let motricidad_comp = '';
+            if (bot_total > 0 && esc_total > 0) {
+                motricidad_comp += `<b>Motricidad fina (botones):</b> ${bot_precision.toFixed(1)}% acierto. <br>`;
+                motricidad_comp += `<b>Motricidad gruesa (escalones):</b> ${esc_precision.toFixed(1)}% acierto. <br>`;
+                if (bot_precision > 70 && esc_precision === 0) {
+                    motricidad_comp += '<i>Dificultades marcadas en coordinación corporal o motricidad gruesa: requiere atención a la ejecución de movimientos amplios (escalones).</i><br>';
+                    motricidad_comp += '<i>Mejor rendimiento en botones - habilidad manual fina destacada.</i><br>';
+                } else if (bot_precision > esc_precision) {
+                    motricidad_comp += '<i>Mejor rendimiento en botones - habilidad manual fina destacada.</i><br>';
+                } else if (esc_precision > bot_precision) {
+                    motricidad_comp += '<i>Mejor rendimiento en escalones - buena coordinación corporal.</i><br>';
+                } else {
+                    motricidad_comp += '<i>Rendimiento bajo en ambos o muy similar - posible déficit global o emocional.</i><br>';
+                }
+            }
+            let informe =
+                `<b>1. Velocidad de respuesta:</b> ${tiempo_prom.toFixed(2)} segundos por orden<br><span>${velocidad_txt}</span><br><br>` +
+                `<b>2. Precisión o ejecución motora:</b> ${precision.toFixed(1)}% de respuestas correctas<br><span>${precision_txt}</span><br><br>` +
+                `<b>3. Motricidad fina vs gruesa:</b><br>${motricidad_comp}<br>` +
+                `<b>4. Regularidad del rendimiento:</b><br>${regularidad_txt}<br><br>` +
+                `<b>5. Duración total de la sesión:</b> ${duracion_min.toFixed(2)} minutos<br><span>${resistencia_txt}</span>`;
+            if (!total_ordenes || tiempo_total === 0) {
+                container.innerHTML = '<span class="text-muted">No disponible</span>';
+            } else {
+                container.innerHTML = informe;
+            }
+        }
+        // Interpretaciones largas y con cuadradito de color
+        function interpretarVelocidadLargo(segundos) {
+            if (segundos < 15) return colorBox('green') + 'Buena coordinación y tiempo de reacción';
+            if (segundos <= 25) return colorBox('orange') + 'Coordinación promedio, posible distracción';
+            return colorBox('red') + 'Posible lentitud motora, inseguridad o baja atención';
+        }
+        function interpretarPrecisionLargo(porcentaje) {
+            if (porcentaje > 70) return colorBox('green') + 'Alta precisión motora y comprensión de instrucciones';
+            if (porcentaje >= 40) return colorBox('orange') + 'Desempeño intermitente o dificultad en mantener foco';
+            return colorBox('red') + 'Dificultades motrices, baja comprensión o desatención persistente';
+        }
+        function interpretarResistenciaLargo(minutos) {
+            if (minutos >= 5) return colorBox('green') + 'Buena resistencia física y atención';
+            return colorBox('red') + 'Fatiga temprana, frustración o poca tolerancia al esfuerzo';
+        }
+        function colorBox(color) {
+            let border = color === 'orange' ? '#ffa500' : color;
+            return `<span style="display:inline-block;width:18px;height:18px;margin-right:6px;vertical-align:middle;border-radius:4px;background:${color};border:2px solid ${border};"></span>`;
+        }
+        function analizarRegularidadLargo(evaluacion) {
+            // Simula la lógica Python: requiere al menos 4 órdenes
+            let ordenes = [];
+            if (evaluacion.botones_data && evaluacion.escalones_data) {
+                for (let i = 0; i < (evaluacion.botones_data.activados + evaluacion.botones_data.no_activados); i++) {
+                    ordenes.push([i, i < evaluacion.botones_data.activados]);
+                }
+                for (let i = 0; i < (evaluacion.escalones_data.activados + evaluacion.escalones_data.no_activados); i++) {
+                    ordenes.push([i, i < evaluacion.escalones_data.activados]);
+                }
+            }
+            if (ordenes.length < 4) return 'No hay suficientes datos para analizar la regularidad.';
+            let tendencia = [];
+            for (let i = 1; i < ordenes.length; i++) {
+                if (ordenes[i][1] && !ordenes[i-1][1]) tendencia.push('mejora');
+                else if (!ordenes[i][1] && ordenes[i-1][1]) tendencia.push('decae');
+            }
+            if (tendencia.filter(x => x === 'mejora').length > tendencia.filter(x => x === 'decae').length)
+                return 'Adaptación tardía: mejora durante la sesión.';
+            if (tendencia.filter(x => x === 'decae').length > tendencia.filter(x => x === 'mejora').length)
+                return 'Fatiga o problemas de atención sostenida.';
+            return 'Rendimiento estable o inconsistente.';
+        }
+        function getMotricidad(precision, tiempo_prom) {
+            if (precision >= 90 && tiempo_prom < 2) return 'alta';
+            if (precision >= 75 && tiempo_prom < 3) return 'media';
+            return 'baja';
+        }
+        function interpretarPrecision(precision) {
+            if (precision >= 90) return 'excelente';
+            if (precision >= 75) return 'adecuada';
+            if (precision >= 50) return 'mejorable';
+            return 'baja';
+        }
+        function interpretarVelocidad(tp) {
+            if (tp < 2) return 'rápida';
+            if (tp < 3) return 'adecuada';
+            if (tp < 5) return 'lenta';
+            return 'muy lenta';
+        }
+        function interpretarResistencia(duracion) {
+            if (duracion >= 10) return 'buena';
+            if (duracion >= 5) return 'media';
+            return 'baja';
+        }
+        function analizarRegularidad(evaluacion) {
+            // Simula la lógica Python: requiere al menos 4 órdenes
+            let ordenes = [];
+            if (evaluacion.botones_data && evaluacion.escalones_data) {
+                for (let i = 0; i < (evaluacion.botones_data.activados + evaluacion.botones_data.no_activados); i++) {
+                    ordenes.push([i, i < evaluacion.botones_data.activados]);
+                }
+                for (let i = 0; i < (evaluacion.escalones_data.activados + evaluacion.escalones_data.no_activados); i++) {
+                    ordenes.push([i, i < evaluacion.escalones_data.activados]);
+                }
+            }
+            if (ordenes.length < 4) return 'no hay suficientes datos para analizar la regularidad';
+            let tendencia = [];
+            for (let i = 1; i < ordenes.length; i++) {
+                if (ordenes[i][1] && !ordenes[i-1][1]) tendencia.push('mejora');
+                else if (!ordenes[i][1] && ordenes[i-1][1]) tendencia.push('decae');
+            }
+            if (tendencia.filter(x => x === 'mejora').length > tendencia.filter(x => x === 'decae').length)
+                return 'adaptación tardía: mejora durante la sesión';
+            if (tendencia.filter(x => x === 'decae').length > tendencia.filter(x => x === 'mejora').length)
+                return 'fatiga o problemas de atención sostenida';
+            return 'rendimiento estable o inconsistente';
+        }
+
+        // Renderizar gráficas SOLO si hay datos de evaluación
+        if (evaluacion && !evaluacion.mensaje) {
+            renderNinoChart('chart-botones-activacion-nino', 'bar', ['Activados', 'No Activados'], [evaluacion.botones_data.activados, evaluacion.botones_data.no_activados], 'Activación de Botones');
+            renderNinoChart('chart-escalones-activacion-nino', 'bar', ['Activados', 'No Activados'], [evaluacion.escalones_data.activados, evaluacion.escalones_data.no_activados], 'Activación de Escalones');
+            renderNinoChart('chart-aciertos-desaciertos-nino', 'doughnut', ['Aciertos', 'Desaciertos'], [evaluacion.resultados_data.aciertos, evaluacion.resultados_data.desaciertos], 'Aciertos vs Desaciertos', ['#28a745', '#dc3545']);
+        }
+    }
+
+    // Instancias de gráficos para la sección 'Por Niño'
+    let chartBotonesBarraNinoInstance, chartEscalonesBarraNinoInstance, chartAciertosNinoInstance, chartDesaciertosNinoInstance;
+    let chartBotonesAnillosNinoInstance = null, chartEscalonesAnillosNinoInstance = null;
+
+    function renderNinoChart(canvasId, type, labels, data, title, colors) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+
+        let chartInstance;
+        switch(canvasId) {
+            case 'chart-botones-activacion-nino': chartInstance = chartBotonesBarraNinoInstance; break;
+            case 'chart-escalones-activacion-nino': chartInstance = chartEscalonesBarraNinoInstance; break;
+            case 'chart-aciertos-nino': chartInstance = chartAciertosNinoInstance; break;
+            case 'chart-desaciertos-nino': chartInstance = chartDesaciertosNinoInstance; break;
+        }
+
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        let backgroundColors = undefined;
+        if (type === 'bar') {
+            backgroundColors = ['#28a745', '#dc3545'];
+        } else if (type === 'doughnut') {
+            if (colors && Array.isArray(colors)) {
+                backgroundColors = colors;
+            } else if (canvasId.includes('aciertos') && labels.length === 1) {
+                backgroundColors = ['#28a745'];
+            } else if (canvasId.includes('desaciertos') && labels.length === 1) {
+                backgroundColors = ['#dc3545'];
+            } else if (labels.length === 2 && labels.includes('Aciertos') && labels.includes('Desaciertos')) {
+                backgroundColors = ['#28a745', '#dc3545'];
+            }
+        }
+
+        const newChart = new Chart(canvas.getContext('2d'), {
+            type: type,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: title,
+                    data: data,
+                    backgroundColor: backgroundColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: type === 'doughnut' },
+                    title: { display: true, text: title },
+                    datalabels: type === 'bar' ? {
+                        anchor: 'end',
+                        align: 'top',
+                        formatter: function(value) { return Number.isInteger(value) ? value : Math.round(value); },
+                        font: { weight: 'bold' }
+                    } : undefined
+                },
+                scales: type === 'bar' ? {
+                    y: {
+                        beginAtZero: true,
+                        stepSize: 1,
+                        ticks: {
+                            precision: 0,
+                            stepSize: 1,
+                            autoSkip: true,
+                            maxTicksLimit: 7,
+                            callback: function(value) { return value; }
+                        }
+                    }
+                } : undefined,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let val = context.parsed.y !== undefined ? context.parsed.y : context.parsed;
+                                return Number.isInteger(val) ? val : Math.round(val);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Guardar la nueva instancia
+        switch(canvasId) {
+            case 'chart-botones-activacion-nino': chartBotonesBarraNinoInstance = newChart; break;
+            case 'chart-escalones-activacion-nino': chartEscalonesBarraNinoInstance = newChart; break;
+            case 'chart-aciertos-nino': chartAciertosNinoInstance = newChart; break;
+            case 'chart-desaciertos-nino': chartDesaciertosNinoInstance = newChart; break;
+        }
+    }
+
+    function destroyAllNinoCharts() {
+        if (chartBotonesBarraNinoInstance) chartBotonesBarraNinoInstance.destroy();
+        if (chartEscalonesBarraNinoInstance) chartEscalonesBarraNinoInstance.destroy();
+        if (chartAciertosNinoInstance) chartAciertosNinoInstance.destroy();
+        if (chartDesaciertosNinoInstance) chartDesaciertosNinoInstance.destroy();
+    }
+
+    // --- FUNCIONES GENÉRICAS DE GRÁFICOS ---
+    function renderChart(canvasId, type, labels, data, title) {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        
+        let chartInstance;
+        if (canvasId.includes('Nino')) {
+            if (canvasId.includes('Barra')) chartInstance = canvasId.includes('Botones') ? chartBotonesBarraNinoInstance : chartEscalonesBarraNinoInstance;
+            else chartInstance = canvasId.includes('Botones') ? chartBotonesAnillosNinoInstance : chartEscalonesAnillosNinoInstance;
+        } else {
+            if (canvasId.includes('Barra')) chartInstance = canvasId.includes('Botones') ? chartBotonesBarraInstance : chartEscalonesBarraInstance;
+            else chartInstance = canvasId.includes('Botones') ? chartBotonesAnillosInstance : chartEscalonesAnillosInstance;
+        }
+
+        if (chartInstance) chartInstance.destroy();
+
+        const newChartInstance = new Chart(canvas.getContext('2d'), {
+            type: type,
+            data: { labels: labels, datasets: [{ label: title, data: data, backgroundColor: obtenerColoresParaGrafico(labels, canvasId) }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: type === 'doughnut' }, title: { display: true, text: title } } }
+        });
+
+        if (canvasId.includes('Nino')) {
+            if (canvasId.includes('Barra')) { if (canvasId.includes('Botones')) chartBotonesBarraNinoInstance = newChartInstance; else chartEscalonesBarraNinoInstance = newChartInstance; }
+            else { if (canvasId.includes('Botones')) chartBotonesAnillosNinoInstance = newChartInstance; else chartEscalonesAnillosNinoInstance = newChartInstance; }
+        } else {
+            if (canvasId.includes('Barra')) { if (canvasId.includes('Botones')) chartBotonesBarraInstance = newChartInstance; else chartEscalonesBarraInstance = newChartInstance; }
+            else { if (canvasId.includes('Botones')) chartBotonesAnillosInstance = newChartInstance; else chartEscalonesAnillosInstance = newChartInstance; }
+        }
+    }
+
+    function obtenerColoresParaGrafico(labels, canvasId) {
+        const mapaColores = {
+            // Colores para Botones
+            'anaranjado': '#FFA500',
+            'azul': '#0000FF',
+            'rosa': '#FFC0CB',
+            'verde': '#008000',
+            'amarillo': '#FFFF00',
+            'morado': '#800080',
+
+            // Colores para Escalones (algunos se repiten, se usa el mismo mapeo)
+            // 'azul': '#0000FF', // ya definido
+            // 'verde': '#008000', // ya definido
+            // 'amarillo': '#FFFF00', // ya definido
+            // 'anaranjado': '#FFA500' // ya definido
+        };
+
+        return labels.map(label => mapaColores[label.toLowerCase()] || '#CCCCCC'); // Gris por defecto
+    }
+
+    function destroyAllGeneralCharts() {
+        if (chartBotonesBarraInstance) chartBotonesBarraInstance.destroy();
+        if (chartBotonesAnillosInstance) chartBotonesAnillosInstance.destroy();
+        if (chartEscalonesBarraInstance) chartEscalonesBarraInstance.destroy();
+        if (chartEscalonesAnillosInstance) chartEscalonesAnillosInstance.destroy();
+    }
+    
+    function destroyAllNinoCharts() {
+        if (chartBotonesBarraNinoInstance) chartBotonesBarraNinoInstance.destroy();
+        if (chartBotonesAnillosNinoInstance) chartBotonesAnillosNinoInstance.destroy();
+        if (chartEscalonesBarraNinoInstance) chartEscalonesBarraNinoInstance.destroy();
+        if (chartEscalonesAnillosNinoInstance) chartEscalonesAnillosNinoInstance.destroy();
+    }
+
+    // --- EXPORTAR ANALÍTICA POR NIÑO A EXCEL ---
+    async function exportarAnaliticaNinoExcel() {
+        const wb = XLSX.utils.book_new();
+        const ws_data = [];
+        // Nombre del niño y fecha de sesión
+        let ninoNombre = '';
+        let fechaSesion = '';
+        const ninoSelect = document.getElementById('nino-selector-nino');
+        if (ninoSelect && ninoSelect.selectedIndex > 0) {
+            ninoNombre = ninoSelect.options[ninoSelect.selectedIndex].text;
+        }
+        const sesionSelect = document.getElementById('sesion-selector-nino');
+        if (sesionSelect && sesionSelect.selectedIndex > 0) {
+            fechaSesion = sesionSelect.options[sesionSelect.selectedIndex].text;
+        }
+        ws_data.push(['Analítica por Niño']);
+        ws_data.push(['Niño:', ninoNombre]);
+        ws_data.push(['Fecha de sesión:', fechaSesion]);
+        ws_data.push([]);
+
+        // Informe interpretativo: cada línea en una fila
+        const informeDiv = document.getElementById('informe-automatico');
+        if (informeDiv) {
+            ws_data.push(['Informe Interpretativo']);
+            const lineas = informeDiv.innerText.split(/\r?\n/).filter(x => x.trim());
+            for (const linea of lineas) {
+                ws_data.push([linea]);
+            }
+            ws_data.push([]);
+        }
+
+        // IDs y títulos de gráficas
+        const chartInfo = [
+            {id: 'chart-botones-activacion-nino', titulo: 'Activaciones de Botones'},
+            {id: 'chart-escalones-activacion-nino', titulo: 'Activaciones de Escalones'},
+            {id: 'chart-aciertos-desaciertos-nino', titulo: 'Aciertos vs Desaciertos'}
+        ];
+        // Guardar la posición de cada imagen
+        let imageRows = [];
+        for (const info of chartInfo) {
+            ws_data.push([info.titulo]);
+            imageRows.push(ws_data.length); // fila donde irá la imagen
+            ws_data.push(['']); // imagen irá aquí
+            ws_data.push([]);
+        }
+
+        // Crear hoja
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, 'Analítica');
+
+        // Insertar imágenes en celdas correspondientes si la función está disponible
+        for (let i = 0; i < chartInfo.length; i++) {
+            const canvas = document.getElementById(chartInfo[i].id);
+            if (canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                if (typeof XLSX.utils.sheet_add_image === 'function') {
+                    XLSX.utils.sheet_add_image(ws, {
+                        image: imgData,
+                        tl: { col: 0, row: imageRows[i] },
+                        ext: { width: 500, height: 260 }
+                    });
+                } else {
+                    // Fallback: agrega el link base64 si SheetJS no soporta imágenes
+                    const cellRef = XLSX.utils.encode_cell({c:0, r:imageRows[i]});
+                    ws[cellRef] = { t:'s', v:`[Ver gráfica]`, l:{ Target: imgData } };
+                }
+            }
+        }
+        XLSX.writeFile(wb, 'analitica_nino.xlsx');
+    }
+
+    // --- INICIALIZACIÓN ---
+    document.addEventListener('DOMContentLoaded', () => {
+        mostrarAnaliticaGeneral();
+    });
+
+    // Esta función debe estar en el ámbito global
+    function mostrarAnaliticaPorNino() {
+        document.getElementById('contenedorAnaliticaGeneral').style.display = 'none';
+        document.getElementById('contenedorAnaliticaPorNino').style.display = 'block';
+        cargarNinosParaAnalisis();
+    }
+// --- FIN DE FUNCIONES ---
+</script>
+
+{% endblock %}
