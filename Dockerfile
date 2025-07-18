@@ -15,15 +15,9 @@ WORKDIR /app
 # Copiar requirements primero (para mejor cache de Docker)
 COPY requirements.txt .
 
-# Actualizar pip e instalar pip-tools
+# Actualizar pip e instalar dependencias
 RUN pip install --upgrade pip
-RUN pip install pip-tools
-
-# Generar requirements resueltos
-RUN pip-compile --resolver=backtracking --allow-unsafe requirements.txt
-
-# Instalar dependencias con resolución forzada
-RUN pip install --no-cache-dir -r requirements.txt --force-reinstall
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar el resto del código
 COPY . .
@@ -31,5 +25,5 @@ COPY . .
 # Exponer puerto
 EXPOSE 8080
 
-# Comando para ejecutar Flask
-CMD ["python", "-m", "flask", "--app", "app", "run", "--host=0.0.0.0", "--port=8080"]
+# Comando corregido para ejecutar Flask
+CMD ["python", "-m", "flask", "--app", "my-app.run", "run", "--host=0.0.0.0", "--port=8080"]
