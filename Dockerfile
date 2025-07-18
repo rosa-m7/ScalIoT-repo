@@ -15,9 +15,15 @@ WORKDIR /app
 # Copiar requirements primero (para mejor cache de Docker)
 COPY requirements.txt .
 
-# Actualizar pip e instalar dependencias con resolución de conflictos
+# Actualizar pip e instalar pip-tools
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir --force-reinstall -r requirements.txt
+RUN pip install pip-tools
+
+# Generar requirements resueltos
+RUN pip-compile --resolver=backtracking --allow-unsafe requirements.txt
+
+# Instalar dependencias con resolución forzada
+RUN pip install --no-cache-dir -r requirements.txt --force-reinstall
 
 # Copiar el resto del código
 COPY . .
