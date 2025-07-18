@@ -827,11 +827,48 @@ def buscar_ninos():
 
 @app.route('/ninos/reporte-excel')
 def reporte_ninos_excel():
-    # Similar, puedes añadir verificación de sesión aquí
-    # Esta función debería generar un archivo Excel y devolverlo como respuesta.
-    # Necesitarías una función `generarReporteExcel_ninos()` que use una librería como pandas o openpyxl.
-    flash('Funcionalidad de reporte Excel no implementada en este ejemplo.', 'info')
-    return redirect(url_for('gestionar_ninos'))
+    try:
+        import pandas as pd
+        from io import BytesIO
+        from flask import send_file
+
+        # Obtener los datos de los niños
+        ninos = lista_ninoBD()
+        # Preparar los datos para el DataFrame
+        data = []
+        for n in ninos:
+            data.append({
+                'Nombre': n.get('nombre', ''),
+                'Apellido': n.get('apellido', ''),
+                'Fecha de Nacimiento': n.get('fecha_nacimiento').strftime('%Y-%m-%d') if n.get('fecha_nacimiento') else '',
+                'Género': 'Masculino' if n.get('id_genero') == 1 else 'Femenino' if n.get('id_genero') == 2 else 'Otro' if n.get('id_genero') == 3 else 'Desconocido',
+                'Peso (kg)': n.get('peso', ''),
+                'Altura (cm)': n.get('altura', ''),
+                'Observaciones': n.get('observaciones', ''),
+                'Tutor Responsable': n.get('tutor_responsable', ''),
+                'Teléfono': n.get('telefono_contacto', ''),
+                'Email': n.get('email_contacto', ''),
+                'Activo': 'Sí' if n.get('activo') else 'No',
+                'Fecha de Registro': n.get('fecha_registro').strftime('%Y-%m-%d %H:%M') if n.get('fecha_registro') else '',
+                'Última Actualización': n.get('ultima_actualizacion').strftime('%Y-%m-%d %H:%M') if n.get('ultima_actualizacion') else ''
+            })
+        df = pd.DataFrame(data)
+        output = BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='Niños')
+        output.seek(0)
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name='reporte_ninos.xlsx',
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    except ImportError:
+        flash('Falta la librería pandas. Instálala con: pip install pandas xlsxwriter', 'error')
+        return redirect(url_for('gestionar_ninos'))
+    except Exception as e:
+        flash(f'Error al generar el reporte: {e}', 'error')
+        return redirect(url_for('gestionar_ninos'))
 
 # --- Otras rutas de tu aplicación (login, etc.) ---
 # @app.route('/loginCliente')
@@ -963,13 +1000,7 @@ def buscar_condiciones():
     }
     return render_template('public/condiciones/lista_condiciones.html', condiciones=condiciones, dataLogin=dataLogin, search_term=search_term)
 
-@app.route('/condiciones/reporte-excel')
-def reporte_condiciones_excel():
-    """
-    Ruta para generar y descargar un reporte Excel de todas las condiciones.
-    """
-    # Similar, puedes añadir verificación de sesión aquí
-    return generarReporteExcel_condiciones()
+
 
 # --- Rutas para la gestión de Niño-Condiciones ---
 

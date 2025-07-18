@@ -46,8 +46,8 @@
                     No hay registros de activación en botones.
                 </div>
                 <div class="row mb-4" id="buttonChartsRow">
-                    <div class="col-md-6">
-                        <div class="card">
+                    <div class="col-12 col-md-6">
+                        <div class="card w-100 mb-4">
                             <div class="card-header text-center">
                                 <h5 class="text-dark fw-bold">Activaciones de Botones</h5>
                             </div>
@@ -56,8 +56,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
+                    <div class="col-12 col-md-6">
+                        <div class="card w-100 mb-4">
                             <div class="card-header text-center">
                                 <h5 class="text-dark fw-bold">Porcentaje de Botones</h5>
                             </div>
@@ -73,8 +73,8 @@
                     No hay registros de activaciones en escalones.
                 </div>
                 <div class="row mb-4" id="stepChartsRow">
-                    <div class="col-md-6">
-                        <div class="card">
+                    <div class="col-12 col-md-6">
+                        <div class="card w-100 mb-4">
                             <div class="card-header text-center">
                                 <h5 class="text-dark fw-bold">Activaciones de Escalones</h5>
                             </div>
@@ -83,8 +83,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="card">
+                    <div class="col-12 col-md-6">
+                        <div class="card w-100 mb-4">
                             <div class="card-header text-center">
                                 <h5 class="text-dark fw-bold">Porcentaje de Escalones</h5>
                             </div>
@@ -106,13 +106,13 @@
         </div>
         <h3 class="text-center mt-4">Analítica por Niño</h3>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="nino-selector-nino">1. SELECCIONE UN NIÑO</label>
                     <select id="nino-selector-nino" class="form-control"></select>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="sesion-selector-nino">2. SELECCIONE UNA SESIÓN</label>
                     <select id="sesion-selector-nino" class="form-control" style="display: none;"></select>
@@ -194,8 +194,8 @@
                         ${totalMovs ? `<strong>Total de movimientos registrados:</strong> ${totalMovs}<br>` : ''}
                     </div>
                     <div class="row">
-                        <div class="col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Escalones</h5><canvas id="chart-juego-escalones"></canvas></div></div>
-                        <div class="col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Botones</h5><canvas id="chart-juego-botones"></canvas></div></div>
+                        <div class="col-12 col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Escalones</h5><canvas id="chart-juego-escalones"></canvas></div></div>
+                        <div class="col-12 col-md-6"><div class="chart-container" style="position: relative; height:400px"><h5 class="text-center">Botones</h5><canvas id="chart-juego-botones"></canvas></div></div>
                     </div>
                 </div>
             </div>
@@ -603,8 +603,8 @@ function renderJuegoBarChart(botones, activaciones, colores) {
                         </div>
                         <hr>
                         <div class="row">
-                            <div class="col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-botones-activacion-nino"></canvas></div></div>
-                            <div class="col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-escalones-activacion-nino"></canvas></div></div>
+                            <div class="col-12 col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-botones-activacion-nino"></canvas></div></div>
+                            <div class="col-12 col-md-6"><div class="chart-container" style="position: relative; height:300px"><canvas id="chart-escalones-activacion-nino"></canvas></div></div>
                         </div>
                         <hr>
                         <div class="row mt-4">
@@ -653,7 +653,7 @@ function renderJuegoBarChart(botones, activaciones, colores) {
         // Bloque de diagnóstico general + informe automático interpretativo
         let diagnosticoHtml = `
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-12 col-md-6">
                     <div class="card mb-4">
                         <div class="card-header bg-warning text-dark"><h5>Diagnóstico General de la Sesión</h5></div>
                         <div class="card-body">
@@ -664,8 +664,8 @@ function renderJuegoBarChart(botones, activaciones, colores) {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card mb-4 border-info">
+                <div class="col-12 col-md-6">
+                    <div class="card mb-4 border-info w-100">
                         <div class="card-header bg-info text-dark"><h5>Informe Automático Interpretativo Modo Eval.</h5></div>
                         <div class="card-body">
                             <div id="informe-automatico" style="min-height: 110px;"></div>
