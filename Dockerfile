@@ -16,7 +16,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 
-
+RUN pip install --dry-run -r requirements.txt 2>&1 | grep -i pytz || true
 RUN pip uninstall -y pytz
 RUN pip install --no-cache-dir -r requirements.txt
 # Actualizar pip e instalar dependencias
