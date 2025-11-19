@@ -1,0 +1,592 @@
+{
+  "evaluacionActual": {
+    "activa": 0
+  },
+  "modo": "descanso",
+  "ninos": {
+    "nino-id-1": {
+      "nombre": "Defecto Defecto",
+      "sesiones": {
+        " 2025-08-01_11-33": true,
+        "2025-07-08_16-52-58": true,
+        "2025-07-09_01-52-10": true,
+        "2025-07-10_12-14-19": true,
+        "2025-07-10_12-14-22": true,
+        "2025-07-10_12-14-24": true,
+        "2025-07-14_02-13-13": true,
+        "2025-07-14_04-44-25": true,
+        "2025-07-15_18-43-28": true,
+        "2025-07-15_18-53-59": true,
+        "2025-07-15_18-55-08": true,
+        "2025-07-16_17-14-32": true,
+        "2025-07-16_19-05-37": true,
+        "2025-07-16_19-13-02": true,
+        "2025-07-18_01-07-35": true,
+        "2025-07-18_05-24-32": true,
+        "2025-07-18_09-51-42": true,
+        "2025-07-18_09-55-44": true,
+        "2025-07-18_14-16-09": true,
+        "2025-07-18_14-44-56": true,
+        "2025-08-01_10-37-36": true,
+        "2025-08-01_10-40-52": true,
+        "2025-08-01_11-20-05": true,
+        "2025-08-01_11-33": true
+      }
+    },
+    "nino-id-2": {
+      "nombre": "Juana Velez",
+      "sesiones": {
+        "2025-07-09_01-58-19": true,
+        "2025-07-15_18-44-49": true,
+        "2025-07-18_01-08-22": true
+      }
+    },
+    "nino-id-3": {
+      "nombre": "Victoria Aguilar",
+      "sesiones": {
+        "2025-07-09_01-56-35": true,
+        "2025-07-16_19-16-55": true
+      }
+    },
+    "nino-id-4": {
+      "nombre": "Joaquin Contreras",
+      "sesiones": {
+        "2025-07-18_15-06-15": true
+      }
+    },
+    "nino-id-5": {
+      "nombre": "Jhomayra Velez",
+      "sesiones": {
+        "2025-08-01_11-30-30": true
+      }
+    }
+  },
+  "sesiones": {
+    "2025-07-16_19-16": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-07-16T19:18:24.256536",
+      "inicio_sesion": "2025-07-16T19:16:56.707767",
+      "mododescanso": {
+        "fin": "2025-07-16T19:17:56.723406",
+        "inicio": "2025-07-16T19:17:07.441750"
+      },
+      "modoevaluacion": {
+        "fin": "2025-07-16T19:18:24.131899",
+        "inicio": "2025-07-16T19:18:17.990432"
+      },
+      "modojuego": {
+        "fin": "2025-07-16T19:18:17.723952",
+        "inicio": "2025-07-16T19:17:56.862215"
+      }
+    },
+    "2025-07-18_09-51": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-07-18T09:54:04.946711",
+      "inicio_sesion": "2025-07-18T09:51:43.510590",
+      "mododescanso": {
+        "fin": "2025-07-18T09:52:37.520812",
+        "inicio": "2025-07-18T09:51:44.294795"
+      },
+      "modojuego": {
+        "fin": "2025-07-18T09:54:04.543038",
+        "inicio": "2025-07-18T09:52:37.654176"
+      }
+    },
+    "2025-07-18_14-49": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-07-18T14:52:06.101667",
+      "inicio_sesion": "2025-07-18T14:49:06.042417",
+      "modoevaluacion": {
+        "botones": {
+          "boton001": {
+            "color": "anaranjado",
+            "correcta": false,
+            "orden_numero": 6,
+            "timestamp": "2025-07-18T14:51:34.570841",
+            "tipo_feedback": "auditiva"
+          },
+          "boton002": {
+            "color": "azul",
+            "correcta": true,
+            "orden_numero": 9,
+            "timestamp": "2025-07-18T14:51:56.926509",
+            "tipo_feedback": "auditiva"
+          },
+          "boton003": {
+            "color": "rosa",
+            "correcta": false,
+            "orden_numero": 2,
+            "timestamp": "2025-07-18T14:50:15.082202",
+            "tipo_feedback": "auditiva"
+          },
+          "boton004": {
+            "color": "verde",
+            "correcta": true,
+            "orden_numero": 3,
+            "timestamp": "2025-07-18T14:50:27.275643",
+            "tipo_feedback": "auditiva"
+          },
+          "boton005": {
+            "color": "amarillo",
+            "correcta": true,
+            "orden_numero": 7,
+            "timestamp": "2025-07-18T14:51:41.410471",
+            "tipo_feedback": "auditiva"
+          },
+          "boton006": {
+            "color": "morado",
+            "correcta": true,
+            "orden_numero": 8,
+            "timestamp": "2025-07-18T14:51:48.478293",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "escalones": {
+          "escalon001": {
+            "color": "azul",
+            "correcta": false,
+            "orden_numero": 4,
+            "timestamp": "2025-07-18T14:50:58.137453",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon002": {
+            "color": "verde",
+            "correcta": true,
+            "orden_numero": 10,
+            "timestamp": "2025-07-18T14:52:04.870530",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon003": {
+            "color": "amarillo",
+            "correcta": true,
+            "orden_numero": 5,
+            "timestamp": "2025-07-18T14:51:03.758469",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon004": {
+            "color": "anaranjado",
+            "correcta": false,
+            "orden_numero": 1,
+            "timestamp": "2025-07-18T14:49:44.202666",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "fin": "2025-07-18T14:52:05.819272",
+        "inicio": "2025-07-18T14:49:09.965261"
+      },
+      "resultados_evaluacion": {
+        "respuestas_correctas": 6,
+        "respuestas_incorrectas": 4,
+        "tiempo_total": 175.56,
+        "total_ordenes": 10
+      }
+    },
+    "2025-08-01_01-33": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-08-01T02:01:04.964791",
+      "inicio_sesion": "2025-08-01T01:33:46.272499",
+      "mododescanso": {
+        "fin": "2025-08-01T01:34:13.272108",
+        "inicio": "2025-08-01T01:33:46.405169"
+      },
+      "modoevaluacion": {
+        "botones": {
+          "boton001": {
+            "color": "anaranjado",
+            "correcta": false,
+            "orden_numero": 10,
+            "timestamp": "2025-08-01T02:01:03.774612",
+            "tipo_feedback": "auditiva"
+          },
+          "boton002": {
+            "color": "azul",
+            "correcta": false,
+            "orden_numero": 2,
+            "timestamp": "2025-08-01T01:59:09.187475",
+            "tipo_feedback": "auditiva"
+          },
+          "boton003": {
+            "color": "rosa",
+            "correcta": true,
+            "orden_numero": 9,
+            "timestamp": "2025-08-01T02:00:32.951835",
+            "tipo_feedback": "auditiva"
+          },
+          "boton004": {
+            "color": "verde",
+            "correcta": false,
+            "orden_numero": 4,
+            "timestamp": "2025-08-01T01:59:40.798635",
+            "tipo_feedback": "auditiva"
+          },
+          "boton005": {
+            "color": "amarillo",
+            "correcta": true,
+            "orden_numero": 3,
+            "timestamp": "2025-08-01T01:59:09.202562",
+            "tipo_feedback": "auditiva"
+          },
+          "boton006": {
+            "color": "morado",
+            "correcta": true,
+            "orden_numero": 8,
+            "timestamp": "2025-08-01T02:00:28.772308",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "escalones": {
+          "escalon001": {
+            "color": "azul",
+            "correcta": true,
+            "orden_numero": 1,
+            "timestamp": "2025-08-01T01:58:38.345816",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon002": {
+            "color": "verde",
+            "correcta": true,
+            "orden_numero": 5,
+            "timestamp": "2025-08-01T02:00:05.202690",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon003": {
+            "color": "amarillo",
+            "correcta": true,
+            "orden_numero": 6,
+            "timestamp": "2025-08-01T02:00:15.935865",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon004": {
+            "color": "anaranjado",
+            "correcta": true,
+            "orden_numero": 7,
+            "timestamp": "2025-08-01T02:00:16.503919",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "fin": "2025-08-01T02:01:04.714628",
+        "inicio": "2025-08-01T01:58:13.980989"
+      },
+      "modojuego": {
+        "fin": "2025-08-01T01:58:13.703465",
+        "inicio": "2025-08-01T01:34:13.410367",
+        "movimientos": {
+          "boton001": {
+            "color": "anaranjado",
+            "numero de activaciones": 3
+          },
+          "boton002": {
+            "color": "azul",
+            "numero de activaciones": 6
+          },
+          "boton003": {
+            "color": "rosa",
+            "numero de activaciones": 2
+          },
+          "boton004": {
+            "color": "verde",
+            "numero de activaciones": 3
+          },
+          "boton005": {
+            "color": "amarillo",
+            "numero de activaciones": 2
+          },
+          "boton006": {
+            "color": "morado",
+            "numero de activaciones": 5
+          },
+          "escalon001": {
+            "color": "azul",
+            "numero de activaciones": 32
+          },
+          "escalon002": {
+            "color": "verde",
+            "numero de activaciones": 2
+          },
+          "escalon003": {
+            "color": "amarillo",
+            "numero de activaciones": 7
+          },
+          "escalon004": {
+            "color": "anaranjado",
+            "numero de activaciones": 5
+          },
+          "tiempos_movimientos": {
+            "2025-08-01T013743140912": true,
+            "2025-08-01T013743533560": true,
+            "2025-08-01T013744946249": true,
+            "2025-08-01T013745339578": true,
+            "2025-08-01T013746045234": true,
+            "2025-08-01T013747206480": true,
+            "2025-08-01T013748280609": true,
+            "2025-08-01T013749309518": true,
+            "2025-08-01T013750314154": true,
+            "2025-08-01T013751412539": true,
+            "2025-08-01T013752442724": true,
+            "2025-08-01T013753455268": true,
+            "2025-08-01T013754524281": true,
+            "2025-08-01T013755522539": true,
+            "2025-08-01T013756554200": true,
+            "2025-08-01T013757711347": true,
+            "2025-08-01T013758728317": true,
+            "2025-08-01T013800015986": true,
+            "2025-08-01T013801261575": true,
+            "2025-08-01T013802368545": true,
+            "2025-08-01T013804146203": true,
+            "2025-08-01T013805323883": true,
+            "2025-08-01T013806341591": true,
+            "2025-08-01T013807892418": true,
+            "2025-08-01T013808924391": true,
+            "2025-08-01T013810012212": true,
+            "2025-08-01T013811002607": true,
+            "2025-08-01T013812401662": true,
+            "2025-08-01T013813734105": true,
+            "2025-08-01T013814111462": true,
+            "2025-08-01T013859635258": true,
+            "2025-08-01T013902649138": true,
+            "2025-08-01T013906920527": true,
+            "2025-08-01T013912018362": true,
+            "2025-08-01T013918267406": true,
+            "2025-08-01T013927025287": true,
+            "2025-08-01T013928410047": true,
+            "2025-08-01T013931051781": true,
+            "2025-08-01T013935581077": true,
+            "2025-08-01T013941465837": true,
+            "2025-08-01T013943986803": true,
+            "2025-08-01T013945037276": true,
+            "2025-08-01T013946183126": true,
+            "2025-08-01T013947766237": true,
+            "2025-08-01T013949128130": true,
+            "2025-08-01T013950345091": true,
+            "2025-08-01T013951748565": true,
+            "2025-08-01T013952795312": true,
+            "2025-08-01T015522369328": true,
+            "2025-08-01T015522753630": true,
+            "2025-08-01T015523170862": true,
+            "2025-08-01T015523566105": true,
+            "2025-08-01T015541283051": true,
+            "2025-08-01T015541691459": true,
+            "2025-08-01T015542094477": true,
+            "2025-08-01T015542488102": true,
+            "2025-08-01T015542877620": true,
+            "2025-08-01T015543265215": true,
+            "2025-08-01T015543658770": true,
+            "2025-08-01T015544064428": true,
+            "2025-08-01T015710249704": true,
+            "2025-08-01T015728886174": true,
+            "2025-08-01T015730741407": true,
+            "2025-08-01T015731921129": true,
+            "2025-08-01T015733318731": true,
+            "2025-08-01T015743490043": true,
+            "2025-08-01T015745232435": true
+          }
+        }
+      },
+      "resultados_evaluacion": {
+        "respuestas_correctas": 7,
+        "respuestas_incorrectas": 3,
+        "tiempo_total": 170.43,
+        "total_ordenes": 10
+      }
+    },
+    "2025-08-01_10-37": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-08-01T10:40:56.711192",
+      "inicio_sesion": "2025-08-01T10:37:38.308993",
+      "mododescanso": {
+        "fin": "2025-08-01T10:40:56.363964",
+        "inicio": "2025-08-01T10:37:42.079416"
+      }
+    },
+    "2025-08-01_11-20": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-08-01T11:22:24.273982",
+      "inicio_sesion": "2025-08-01T11:20:06.061438",
+      "mododescanso": {
+        "fin": "2025-08-01T11:22:24.124776",
+        "inicio": "2025-08-01T11:21:51.226346"
+      },
+      "modojuego": {
+        "fin": "2025-08-01T11:21:51.081695",
+        "inicio": "2025-08-01T11:20:21.205808",
+        "movimientos": {
+          "boton001": {
+            "color": "anaranjado",
+            "numero de activaciones": 2
+          },
+          "boton002": {
+            "color": "azul",
+            "numero de activaciones": 1
+          },
+          "boton003": {
+            "color": "rosa",
+            "numero de activaciones": 1
+          },
+          "boton004": {
+            "color": "verde",
+            "numero de activaciones": 1
+          },
+          "escalon001": {
+            "color": "azul",
+            "numero de activaciones": 6
+          },
+          "escalon003": {
+            "color": "amarillo",
+            "numero de activaciones": 3
+          },
+          "escalon004": {
+            "color": "anaranjado",
+            "numero de activaciones": 3
+          },
+          "tiempos_movimientos": {
+            "2025-08-01T112042253555": true,
+            "2025-08-01T112046511957": true,
+            "2025-08-01T112048558059": true,
+            "2025-08-01T112050233032": true,
+            "2025-08-01T112056211325": true,
+            "2025-08-01T112100777039": true,
+            "2025-08-01T112106076393": true,
+            "2025-08-01T112107311082": true,
+            "2025-08-01T112107743980": true,
+            "2025-08-01T112108905844": true,
+            "2025-08-01T112109352927": true,
+            "2025-08-01T112109780029": true,
+            "2025-08-01T112110201758": true,
+            "2025-08-01T112110634176": true,
+            "2025-08-01T112111052523": true,
+            "2025-08-01T112112136696": true,
+            "2025-08-01T112113093463": true
+          }
+        }
+      }
+    },
+    "2025-08-01_11-33": {
+      "estadosesion": "finalizada",
+      "fin_sesion": "2025-08-01T11:38:09.077640",
+      "inicio_sesion": "2025-08-01T11:33:09.279325",
+      "mododescanso": {
+        "fin": "2025-08-01T11:33:57.282749",
+        "inicio": "2025-08-01T11:33:48.440014"
+      },
+      "modoevaluacion": {
+        "botones": {
+          "boton001": {
+            "color": "anaranjado",
+            "correcta": false,
+            "orden_numero": 6,
+            "timestamp": "2025-08-01T11:37:16.160914",
+            "tipo_feedback": "auditiva"
+          },
+          "boton002": {
+            "color": "azul",
+            "correcta": false,
+            "orden_numero": 10,
+            "timestamp": "2025-08-01T11:38:07.802496",
+            "tipo_feedback": "auditiva"
+          },
+          "boton003": {
+            "color": "rosa",
+            "correcta": true,
+            "orden_numero": 9,
+            "timestamp": "2025-08-01T11:37:36.970832",
+            "tipo_feedback": "auditiva"
+          },
+          "boton004": {
+            "color": "verde",
+            "correcta": false,
+            "orden_numero": 1,
+            "timestamp": "2025-08-01T11:35:55.809212",
+            "tipo_feedback": "auditiva"
+          },
+          "boton005": {
+            "color": "amarillo",
+            "correcta": true,
+            "orden_numero": 3,
+            "timestamp": "2025-08-01T11:36:08.705032",
+            "tipo_feedback": "auditiva"
+          },
+          "boton006": {
+            "color": "morado",
+            "correcta": true,
+            "orden_numero": 8,
+            "timestamp": "2025-08-01T11:37:28.845581",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "escalones": {
+          "escalon001": {
+            "color": "azul",
+            "correcta": true,
+            "orden_numero": 7,
+            "timestamp": "2025-08-01T11:37:22.316729",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon002": {
+            "color": "verde",
+            "correcta": true,
+            "orden_numero": 2,
+            "timestamp": "2025-08-01T11:36:02.712620",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon003": {
+            "color": "amarillo",
+            "correcta": false,
+            "orden_numero": 5,
+            "timestamp": "2025-08-01T11:36:45.288964",
+            "tipo_feedback": "auditiva"
+          },
+          "escalon004": {
+            "color": "anaranjado",
+            "correcta": true,
+            "orden_numero": 4,
+            "timestamp": "2025-08-01T11:36:14.422590",
+            "tipo_feedback": "auditiva"
+          }
+        },
+        "fin": "2025-08-01T11:38:08.809838",
+        "inicio": "2025-08-01T11:35:21.602114"
+      },
+      "modojuego": {
+        "fin": "2025-08-01T11:35:21.312845",
+        "inicio": "2025-08-01T11:33:57.418437",
+        "movimientos": {
+          "boton001": {
+            "color": "anaranjado",
+            "numero de activaciones": 3
+          },
+          "boton003": {
+            "color": "rosa",
+            "numero de activaciones": 2
+          },
+          "boton005": {
+            "color": "amarillo",
+            "numero de activaciones": 1
+          },
+          "boton006": {
+            "color": "morado",
+            "numero de activaciones": 1
+          },
+          "escalon001": {
+            "color": "azul",
+            "numero": 25
+          },
+          "tiempos_movimientos": {
+            "2025-08-01T113427309147": true,
+            "2025-08-01T113434241571": true,
+            "2025-08-01T113436328678": true,
+            "2025-08-01T113438717382": true,
+            "2025-08-01T113440525124": true,
+            "2025-08-01T113442123651": true,
+            "2025-08-01T113448478235": true
+          }
+        }
+      },
+      "resultados_evaluacion": {
+        "respuestas_correctas": 6,
+        "respuestas_incorrectas": 4,
+        "tiempo_total": 166.87,
+        "total_ordenes": 10
+      }
+    }
+  }
+}
