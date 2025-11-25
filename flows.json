@@ -1,0 +1,2937 @@
+[
+    {
+        "id": "b986fdac7f3580e8",
+        "type": "tab",
+        "label": "Sistema Escalera y Pared (Completo)",
+        "disabled": false,
+        "info": "Flujo completo para el sistema de escalera y pared interactiva, con gauge y conteo de activaciones para los 3 escalones y 4 botones."
+    },
+    {
+        "id": "45447f0cb3bf8961",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Escalón 1",
+        "topic": "escalera/sensores/escalon/azul",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 20,
+        "wires": [
+            [
+                "d5de6a3711d9936e",
+                "4e0f108117ca4fe1"
+            ]
+        ]
+    },
+    {
+        "id": "d5de6a3711d9936e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Escalón 1",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    msg.payload = msg.payload.estado;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 20,
+        "wires": [
+            [
+                "ea64a07c2ef61a33"
+            ]
+        ]
+    },
+    {
+        "id": "ea64a07c2ef61a33",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "E1 Estado",
+        "group": "ui_group_escaleras",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Escalón 1",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "9d2d9868310f9b1b",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_escaleras",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "E1 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "2fb4967b88e7dea5",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Escalón 2",
+        "topic": "escalera/sensores/escalon/verde",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 180,
+        "wires": [
+            [
+                "3f79638e4bab5f0e",
+                "bada4769450878a0"
+            ]
+        ]
+    },
+    {
+        "id": "3f79638e4bab5f0e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Escalón 2",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    msg.payload = msg.payload.estado;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "20c286e32cfc2087"
+            ]
+        ]
+    },
+    {
+        "id": "20c286e32cfc2087",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "E2 Estado",
+        "group": "6b7f1d58578e154c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Escalón 2",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "d692ca168a5ca083",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "6b7f1d58578e154c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "E2 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "ac13090c64bd2e10",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Escalón 3",
+        "topic": "escalera/sensores/escalon/amarillo",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "4b0c548268f3470e",
+                "8a6828dcfc734882"
+            ]
+        ]
+    },
+    {
+        "id": "4b0c548268f3470e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Escalón 3",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    msg.payload = msg.payload.estado;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 180,
+        "wires": [
+            [
+                "abcbe922e1d8e498"
+            ]
+        ]
+    },
+    {
+        "id": "abcbe922e1d8e498",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "E3 Estado",
+        "group": "ui_group_escaleras",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Escalón 3",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "0d866ceeb22ca763",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_escaleras",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "name": "E3 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "3a60ff6b443e4a4a",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 1",
+        "topic": "pared/sensores/boton/anaranjado",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 300,
+        "wires": [
+            [
+                "a8eb567605549c99",
+                "28acb5e3e80b5cec"
+            ]
+        ]
+    },
+    {
+        "id": "160f33ad8cbd4f4f",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B1 Estado",
+        "group": "ui_group_botones_pared",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 1",
+        "label": "Estado",
+        "format": "{{msg.payload}}",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "f939911e826f667a",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_botones_pared",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "B1 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "e8dd29a875f848fe",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 2",
+        "topic": "pared/sensores/boton/azul",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 340,
+        "wires": [
+            [
+                "00edd30541a87617",
+                "e4763f0a8089bd9a"
+            ]
+        ]
+    },
+    {
+        "id": "00edd30541a87617",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt2",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "9cd9a42ce322273b"
+            ]
+        ]
+    },
+    {
+        "id": "9cd9a42ce322273b",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B2 Estado",
+        "group": "3f9a2f98584d85ec",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 2",
+        "label": "Estado",
+        "format": "{{msg.payload}}",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "1adcb72b357503bd",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "3f9a2f98584d85ec",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "B2 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "e60f646986806df2",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 3",
+        "topic": "pared/sensores/boton/rosa",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 380,
+        "wires": [
+            [
+                "774268f379467bd7",
+                "b9821715b88ab7f8"
+            ]
+        ]
+    },
+    {
+        "id": "774268f379467bd7",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt3",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 500,
+        "wires": [
+            [
+                "deb7b46b0a7e8f1a"
+            ]
+        ]
+    },
+    {
+        "id": "deb7b46b0a7e8f1a",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B3 Estado",
+        "group": "ui_group_botones_pared",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 3",
+        "label": "Estado",
+        "format": "{{msg.payload}}",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "7711a6d7fd4ad247",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_botones_pared",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "B3 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "30189bd103bd2e92",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 4",
+        "topic": "pared/sensores/boton/verde",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 420,
+        "wires": [
+            [
+                "da651423e9cabf39",
+                "b70bf8e91bc75f2e"
+            ]
+        ]
+    },
+    {
+        "id": "086a530c67e3bb17",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B4 Estado",
+        "group": "3f9a2f98584d85ec",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 4",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "5330c3c61ef37008",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "3f9a2f98584d85ec",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "B4 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 700,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "a8eb567605549c99",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt1",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 340,
+        "wires": [
+            [
+                "160f33ad8cbd4f4f"
+            ]
+        ]
+    },
+    {
+        "id": "28acb5e3e80b5cec",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar conteo bt1",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 380,
+        "wires": [
+            [
+                "f939911e826f667a"
+            ]
+        ]
+    },
+    {
+        "id": "e4763f0a8089bd9a",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Proceso conteo bt2",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 460,
+        "wires": [
+            [
+                "1adcb72b357503bd"
+            ]
+        ]
+    },
+    {
+        "id": "b9821715b88ab7f8",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Proceso conteo bt3",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color;\n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null;\n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 540,
+        "wires": [
+            [
+                "7711a6d7fd4ad247"
+            ]
+        ]
+    },
+    {
+        "id": "da651423e9cabf39",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Proceso conteo bt4",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color;\n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null;\n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 620,
+        "wires": [
+            [
+                "5330c3c61ef37008"
+            ]
+        ]
+    },
+    {
+        "id": "b70bf8e91bc75f2e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt4",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 580,
+        "wires": [
+            [
+                "086a530c67e3bb17"
+            ]
+        ]
+    },
+    {
+        "id": "4e0f108117ca4fe1",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar conteo esc1",
+        "func": "// Obtener el color del escalón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst escalonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!escalonColor) {\n    node.warn(\"Error: Payload de escalón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este escalón específico (por color)\nlet lastState = flow.get(`last_state_escalon_${escalonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`escalon_${escalonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`escalon_${escalonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_escalon_${escalonColor}`, currentState); // Guardar el último estado actualizado\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 60,
+        "wires": [
+            [
+                "9d2d9868310f9b1b"
+            ]
+        ]
+    },
+    {
+        "id": "bada4769450878a0",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar conteo esc2",
+        "func": "// Obtener el color del escalón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst escalonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!escalonColor) {\n    node.warn(\"Error: Payload de escalón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este escalón específico (por color)\nlet lastState = flow.get(`last_state_escalon_${escalonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`escalon_${escalonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`escalon_${escalonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_escalon_${escalonColor}`, currentState); // Guardar el último estado actualizado\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 100,
+        "wires": [
+            [
+                "d692ca168a5ca083"
+            ]
+        ]
+    },
+    {
+        "id": "8a6828dcfc734882",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar conteo esc3",
+        "func": "// Obtener el color del escalón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst escalonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!escalonColor) {\n    node.warn(\"Error: Payload de escalón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este escalón específico (por color)\nlet lastState = flow.get(`last_state_escalon_${escalonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`escalon_${escalonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`escalon_${escalonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_escalon_${escalonColor}`, currentState); // Guardar el último estado actualizado\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "0d866ceeb22ca763"
+            ]
+        ]
+    },
+    {
+        "id": "34e0efa7b4e30e9f",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Escalón 4",
+        "topic": "escalera/sensores/escalon/anaranjado",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 260,
+        "wires": [
+            [
+                "244faf093291ed2b",
+                "a2099d9e078a2270"
+            ]
+        ]
+    },
+    {
+        "id": "244faf093291ed2b",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Escalón 4",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    msg.payload = msg.payload.estado;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 260,
+        "wires": [
+            [
+                "f8ce14347758018a"
+            ]
+        ]
+    },
+    {
+        "id": "f8ce14347758018a",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "E4 Estado",
+        "group": "6b7f1d58578e154c",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Escalón 4",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "c89864960e2e7c63",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "6b7f1d58578e154c",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "E4 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 700,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "a2099d9e078a2270",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar conteo esc4",
+        "func": "// Obtener el color del escalón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst escalonColor = msg.payload.color;\n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!escalonColor) {\n    node.warn(\"Error: Payload de escalón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null;\n}\n\n// Recuperar el último estado y el conteo de activaciones para este escalón específico (por color)\nlet lastState = flow.get(`last_state_escalon_${escalonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`escalon_${escalonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`escalon_${escalonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_escalon_${escalonColor}`, currentState); // Guardar el último estado actualizado\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 300,
+        "wires": [
+            [
+                "c89864960e2e7c63"
+            ]
+        ]
+    },
+    {
+        "id": "358624e05e36a5b4",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 5",
+        "topic": "pared/sensores/boton/amarillo",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 460,
+        "wires": [
+            [
+                "64066e20fc85d4b9",
+                "3d0cf8efc757a82a"
+            ]
+        ]
+    },
+    {
+        "id": "7a1a3402f9140b52",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B5 Estado",
+        "group": "ui_group_botones_pared",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 5",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "1a2888e1de6cfcc3",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_botones_pared",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "B5 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 700,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "64066e20fc85d4b9",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Proceso conteo bt5",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color; \n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null; \n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 700,
+        "wires": [
+            [
+                "1a2888e1de6cfcc3"
+            ]
+        ]
+    },
+    {
+        "id": "3d0cf8efc757a82a",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt5",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 660,
+        "wires": [
+            [
+                "7a1a3402f9140b52"
+            ]
+        ]
+    },
+    {
+        "id": "5743aaa5a63e74b8",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Botón 6",
+        "topic": "pared/sensores/boton/morado",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 500,
+        "wires": [
+            [
+                "eb2916403db70a29",
+                "5db9803135528674"
+            ]
+        ]
+    },
+    {
+        "id": "3db966bacd7ca018",
+        "type": "ui_gauge",
+        "z": "b986fdac7f3580e8",
+        "name": "B6 Estado",
+        "group": "3f9a2f98584d85ec",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Botón 6",
+        "label": "Estado",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#00ff00",
+            "#ff0000",
+            "#f0f000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 690,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "b17792cb56d28500",
+        "type": "ui_text",
+        "z": "b986fdac7f3580e8",
+        "group": "3f9a2f98584d85ec",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "name": "B6 Activaciones",
+        "label": "Activaciones:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 700,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "eb2916403db70a29",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Proceso conteo bt6",
+        "func": "// Obtener el color del botón del payload del mensaje\n// Asumiendo que msg.payload tiene una propiedad 'color' (como en el JSON del ESP32)\nconst buttonColor = msg.payload.color;\n\n// Manejar el caso si por alguna razón el color no está presente en el payload\nif (!buttonColor) {\n    node.warn(\"Error: Payload de botón sin la propiedad 'color'. No se puede rastrear el conteo.\");\n    return null;\n}\n\n// Recuperar el último estado y el conteo de activaciones para este botón específico (por color)\nlet lastState = flow.get(`last_state_boton_${buttonColor}`) || 0; // Default a 0 si no está configurado\nlet activationCount = flow.get(`boton_${buttonColor}_activation_count`) || 0; // Default a 0 si no está configurado\n\n// Verificar si msg.payload existe y tiene la propiedad 'estado'\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let currentState = msg.payload.estado;\n\n    // Detectar una transición de 0 a 1 (una activación)\n    if (lastState === 0 && currentState === 1) {\n        activationCount++; // Incrementar el conteo\n        flow.set(`boton_${buttonColor}_activation_count`, activationCount); // Guardar el conteo actualizado\n    }\n\n    // Guardar el estado actual para la próxima comparación de mensajes\n    flow.set(`last_state_boton_${buttonColor}`, currentState);\n\n    // Preparar el payload para el nodo gauge/text\n    // Este nodo de función enviará el conteo actual\n    msg.payload = activationCount;\n    return msg;\n}\n\n// Si el payload no contiene 'estado' o no es un objeto, no enviar nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 780,
+        "wires": [
+            [
+                "b17792cb56d28500"
+            ]
+        ]
+    },
+    {
+        "id": "5db9803135528674",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar bt6",
+        "func": "if (msg.payload && typeof msg.payload === 'object' && msg.payload.hasOwnProperty('estado')) {\n    let estadoOriginal = msg.payload.estado;\n    let estadoInvertido;\n\n    if (estadoOriginal === 0) {\n        estadoInvertido = 1;\n    } else if (estadoOriginal === 1) {\n        estadoInvertido = 0;\n    } else {\n        // Manejar otros casos si 'estado' no es 0 ni 1 (opcional)\n        // Por ejemplo, podrías dejarlo sin cambios o asignar un valor por defecto\n        estadoInvertido = estadoOriginal; // O podrías poner null;\n    }\n\n    msg.payload = estadoInvertido;\n    return msg;\n}\n// Si no se encuentra 'estado' o el payload no es un objeto, no se envía nada.\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 740,
+        "wires": [
+            [
+                "3db966bacd7ca018"
+            ]
+        ]
+    },
+    {
+        "id": "a8650394aad3c082",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Responder Solicitudes",
+        "func": "// Función mejorada para responder solicitudes y mantener estado\n// Variables de contexto para almacenar sonidos actuales\nvar escaleras_sound = context.get(\"escaleras_sound\") || \"perro\";\nvar botones_sound = context.get(\"botones_sound\") || \"gato\";\n\n// Verificar si es una solicitud de sonidos\nif (msg.payload && typeof msg.payload === 'string') {\n    try {\n        var request = JSON.parse(msg.payload);\n        if (request.request === \"current_sounds\") {\n            // Enviar sonidos actuales\n            var msg_escaleras = {\n                topic: \"escalera/status/sonido_escaleras\",\n                payload: escaleras_sound\n            };\n            var msg_botones = {\n                topic: \"escalera/status/sonido_botones\",\n                payload: botones_sound\n            };\n\n            node.warn(\"Enviando sonidos actuales: escaleras=\" + escaleras_sound + \", botones=\" + botones_sound);\n            return [msg_escaleras, msg_botones];\n        }\n    } catch (e) {\n        node.warn(\"Error al parsear JSON: \" + e.message);\n        // No es JSON válido, ignorar\n    }\n}\n\n// Si llega aquí, no es una solicitud válida\nreturn null;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 1220,
+        "wires": [
+            [
+                "2a0a7587e6766d94"
+            ],
+            [
+                "4e978387da92e8a2"
+            ]
+        ]
+    },
+    {
+        "id": "2a0a7587e6766d94",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "Status Escaleras",
+        "topic": "escalera/status/sonido_escaleras",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 1650,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "4e978387da92e8a2",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "Status Botones",
+        "topic": "escalera/status/sonido_botones",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 1640,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "5fe6f776063dac03",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "Solicitudes",
+        "topic": "escalera/control/request_sounds",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1140,
+        "y": 1220,
+        "wires": [
+            [
+                "a8650394aad3c082"
+            ]
+        ]
+    },
+    {
+        "id": "init_sounds",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Inicializar Sonidos",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 2,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1130,
+        "y": 1160,
+        "wires": [
+            [
+                "init_context"
+            ]
+        ]
+    },
+    {
+        "id": "init_context",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Inicializar Contexto",
+        "func": "// Inicializar valores por defecto si no existen\nif (!context.get(\"escaleras_sound\")) {\n    context.set(\"escaleras_sound\", \"perro\");\n    node.warn(\"Inicializando sonido escaleras: perro\");\n}\n\nif (!context.get(\"botones_sound\")) {\n    context.set(\"botones_sound\", \"gato\");\n    node.warn(\"Inicializando sonido botones: gato\");\n}\n\n// Enviar estados iniciales\nvar msg_escaleras = {\n    topic: \"escalera/status/sonido_escaleras\",\n    payload: context.get(\"escaleras_sound\")\n};\n\nvar msg_botones = {\n    topic: \"escalera/status/sonido_botones\",\n    payload: context.get(\"botones_sound\")\n};\n\nnode.warn(\"Enviando estados iniciales\");\nreturn [msg_escaleras, msg_botones];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1160,
+        "wires": [
+            [
+                "2a0a7587e6766d94"
+            ],
+            [
+                "4e978387da92e8a2"
+            ]
+        ]
+    },
+    {
+        "id": "fcc150e8542e681d",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "main_group",
+        "name": "Interruptor Principal",
+        "order": 1,
+        "width": 4,
+        "height": 3,
+        "format": "<div\n    style=\"text-align:center;padding:20px;background:#4A90E2;border-radius:20px;margin:5px;border:2px solid #e0e0e0;display:flex;justify-content:center;align-items:center;gap:15px;\">\n    <!-- Botón ENCENDIDO/APAGADO -->\n    <div style=\"display:flex;flex-direction:column;align-items:center;\">\n        <button ng-click=\"toggleLight()\" style=\"width:80px;height:86px;border:none;border-radius:20px;cursor:pointer;font-size:10px;font-weight:bold;transition:transform 0.2s;user-select:none;background:#e74c3c;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 8px rgba(0,0,0,0.2);\" id=\"switchButton\">\n            <span style=\"font-size:30px;\" id=\"buttonIcon\">🔴</span>\n            <span id=\"buttonText\">APAGADO</span>\n        </button>\n    </div>\n\n    <!-- Indicador de bombilla -->\n    <div style=\"display:flex;flex-direction:column;align-items:center;\">\n        <div style=\"width:86px;height:80px;border:none;border-radius:20px;font-size:50px;display:flex;align-items:center;justify-content:center;transition:background 0.3s;background:#666666;box-shadow:0 4px 8px rgba(0,0,0,0.2);\"\n            id=\"lightIndicator\">💡</div>\n    </div>\n</div>\n\n<style>\n    .light-on-indicator {\n        background: #FFD700 !important;\n        box-shadow: 0 0 15px #FFD700, 0 4px 8px rgba(0, 0, 0, 0.2) !important;\n    }\n\n    .light-on-button {\n        background: #27ae60 !important;\n        box-shadow: 0 0 10px rgba(39, 174, 96, 0.5), 0 4px 8px rgba(0, 0, 0, 0.2) !important;\n    }\n\n    #switchButton:active {\n        transform: scale(0.95);\n    }\n\n    #switchButton:hover {\n        transform: scale(1.02);\n    }\n</style>\n\n<script>\n    (function(scope) {\n        scope.isOn = false;\n        \n        // Cache elementos DOM una sola vez\n        const lightIndicator = document.getElementById('lightIndicator');\n        const switchButton = document.getElementById('switchButton');\n        const buttonText = document.getElementById('buttonText');\n        const buttonIcon = document.getElementById('buttonIcon');\n        \n        scope.toggleLight = function() {\n            scope.isOn = !scope.isOn;\n            \n            if (scope.isOn) {\n                // Encender\n                lightIndicator.className = 'light-on-indicator';\n                switchButton.className = 'light-on-button';\n                buttonText.textContent = 'ENCENDIDO';\n                buttonIcon.textContent = '🟢';\n            } else {\n                // Apagar\n                lightIndicator.className = '';\n                switchButton.className = '';\n                buttonText.textContent = 'APAGADO';\n                buttonIcon.textContent = '🔴';\n            }\n            \n            // Enviar datos a Node-RED\n            scope.send({ payload: scope.isOn, topic: \"foco_power\" });\n        };\n    })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "78c151059a2c6e1c"
+            ]
+        ]
+    },
+    {
+        "id": "78c151059a2c6e1c",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Control Principal",
+        "func": "var isOn = msg.payload;\nvar action = isOn ? \"turn_on\" : \"turn_off\";\n\n// Configurar comando HA\nmsg.url = `http://localhost:8123/api/services/light/${action}`;\nmsg.method = \"POST\";\nmsg.headers = {\n    \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n    \"Content-Type\": \"application/json\"\n};\nmsg.payload = {\"entity_id\": \"light.foco\"};\n\n// Guardar estado para controlar visibilidad\nflow.set(\"foco_on\", isOn);\nflow.set(\"foco_state\", isOn);\n\n// Mensaje para controlar visibilidad de grupos\nvar visibility_msg = {\n    payload: isOn,\n    topic: \"control_group_visibility\"\n};\nflow.set(\"foco_state\", isOn);\n\nvar state_msg = {\n    topic: \"nodered/foco/state_update\",\n    payload: JSON.stringify({\n        is_on: isOn,\n        timestamp: new Date().toISOString()\n    })\n};\n\nreturn [msg, visibility_msg, state_msg];",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1140,
+        "y": 120,
+        "wires": [
+            [
+                "7b59ba9a7abf57fa"
+            ],
+            [
+                "7b5ea46751fe9f63"
+            ],
+            [
+                "7f97fba93ffbdd91"
+            ]
+        ]
+    },
+    {
+        "id": "7b5ea46751fe9f63",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Actualizar Visibilidad",
+        "func": "// Enviar estado a todos los templates de control\nvar state_msg = {\n    payload: msg.payload,\n    topic: \"foco_state_update\"\n};\n\nreturn [state_msg, state_msg, state_msg];",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 60,
+        "wires": [
+            [
+                "9e9fe42b3b3f276b"
+            ],
+            [
+                "cfd24b6797846bfc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "9e9fe42b3b3f276b",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "89c050fa3e558c46",
+        "name": "Control Brillo",
+        "order": 1,
+        "width": 7,
+        "height": 3,
+        "format": "<!-- Control de brillo optimizado para RPi -->\n<div ng-show=\"focoOn\"\n  style=\"text-align: center; padding: 20px; background: #4A90E2; border-radius: 20px; margin: 5px; border: 2px solid #e0e0e0; position: relative; display: flex; justify-content: center; align-items: center; gap: 15px;\">\n\n  <!-- Botón Menos -->\n  <div style=\"display: flex; flex-direction: column; align-items: center;\">\n    <button ng-click=\"decreaseBrightness()\"\n            class=\"brightness-btn decrease-btn\">\n      🌙\n    </button>\n  </div>\n\n  <!-- Barra de brillo visual y táctil -->\n  <div style=\"flex: 1; position: relative; height: 80px; display: flex; align-items: center; justify-content: center;\">\n    <div id=\"brightnessBar\"\n      style=\"width: 100%; height: 20px; background: rgba(255,255,255,0.3); border-radius: 12px; border: 2px solid #e0e0e0; position: relative; cursor: pointer;\"\n      ng-click=\"clickBrightness($event)\">\n      <div id=\"brightnessProgress\" style=\"height: 100%;\n                  background: #F9A825;\n                  width: {{(brightness/10)*100}}%;\n                  border-radius: 10px;\n                  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);\n                  transition: width 0.1s ease;\"></div>\n    </div>\n  </div>\n\n  <!-- Botón Más -->\n  <div style=\"display: flex; flex-direction: column; align-items: center;\">\n    <button ng-click=\"increaseBrightness()\"\n            class=\"brightness-btn increase-btn\">\n      ☀️\n    </button>\n  </div>\n</div>\n\n<style>\n  .brightness-btn {\n    background: #27ae60;\n    border: none;\n    border-radius: 50%;\n    width: 80px;\n    height: 80px;\n    color: white;\n    font-size: 30px;\n    cursor: pointer;\n    transition: transform 0.2s ease;\n    user-select: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n  }\n\n  .decrease-btn {\n    background: #e74c3c;\n  }\n\n  .brightness-btn:hover {\n    transform: scale(1.02);\n  }\n\n  .brightness-btn:active {\n    transform: scale(0.95);\n  }\n</style>\n\n<script>\n  (function(scope) {\n    scope.focoOn = false;\n    scope.brightness = 5;\n    \n    // Función optimizada para actualizar brillo\n    scope.updateBrightness = function() {\n      scope.send({\n        payload: scope.brightness,\n        topic: \"brightness\"\n      });\n    };\n    \n    scope.increaseBrightness = function() {\n      if (scope.brightness >= 10) return;\n      scope.brightness++;\n      scope.updateBrightness();\n    };\n    \n    scope.decreaseBrightness = function() {\n      if (scope.brightness <= 1) return;\n      scope.brightness--;\n      scope.updateBrightness();\n    };\n    \n    // Click simplificado en la barra\n    scope.clickBrightness = function(event) {\n      const bar = event.currentTarget;\n      const rect = bar.getBoundingClientRect();\n      const x = event.clientX - rect.left;\n      const percentage = Math.max(0, Math.min(1, x / rect.width));\n      const newBrightness = Math.round(percentage * 9) + 1; // 1-10 range\n      \n      if (newBrightness !== scope.brightness) {\n        scope.brightness = newBrightness;\n        scope.updateBrightness();\n      }\n    };\n    \n    // Watcher optimizado\n    scope.$watch('msg', function(msg) {\n      if (msg && msg.topic === 'foco_state_update') {\n        scope.focoOn = msg.payload;\n      }\n    });\n  })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1570,
+        "y": 120,
+        "wires": [
+            [
+                "92576423f80e3e0f"
+            ]
+        ]
+    },
+    {
+        "id": "ab62e32f013ab287",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Ajustar Brillo",
+        "func": "var current = flow.get(\"brightness\") || 5;\nvar new_brightness = current + msg.payload;\n\n// Limitar rango\nif (new_brightness < 1) new_brightness = 1;\nif (new_brightness > 10) new_brightness = 10;\n\nflow.set(\"brightness\", new_brightness);\n\n// Actualizar slider\nvar slider_msg = {\n    payload: new_brightness,\n    topic: \"update_slider\"\n};\n\n// Aplicar brillo\nvar brightness_msg = {\n    payload: new_brightness,\n    topic: \"brightness\"\n};\n\nreturn [slider_msg, brightness_msg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 140,
+        "wires": [
+            [
+                "9e9fe42b3b3f276b"
+            ],
+            [
+                "92576423f80e3e0f"
+            ]
+        ]
+    },
+    {
+        "id": "92576423f80e3e0f",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Aplicar Brillo",
+        "func": "if (!flow.get(\"foco_on\")) return null;\n\nvar brightness = Math.round((msg.payload / 10) * 255);\nflow.set(\"brightness\", msg.payload);\n\nmsg.url = \"http://localhost:8123/api/services/light/turn_on\";\nmsg.method = \"POST\";\nmsg.headers = {\n    \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n    \"Content-Type\": \"application/json\"\n};\nmsg.payload = {\n    \"entity_id\": \"light.foco\",\n    \"brightness\": brightness\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1750,
+        "y": 160,
+        "wires": [
+            [
+                "7b59ba9a7abf57fa"
+            ]
+        ]
+    },
+    {
+        "id": "cfd24b6797846bfc",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "8c66c7995e67b857",
+        "name": "Selector Color",
+        "order": 1,
+        "width": 4,
+        "height": 6,
+        "format": "<!-- Control de foco completo cuando está activado -->\n<div ng-show=\"focoOn\"\n  style=\"text-align: center; padding: 15px; background: #4A90E2; border-radius: 15px; margin: 2px; border: 1px solid #e0e0e0; position: relative; max-width: 250px; min-height: 100px; box-sizing: border-box;\">\n  \n  <!-- Círculo del color seleccionado -->\n  <div style=\"width: 50px;\n              height: 50px;\n              border-radius: 50%;\n              background: {{customColor}};\n              margin: 0 auto 15px auto;\n              border: 3px solid white;\n              box-shadow: 0 3px 6px rgba(0,0,0,0.2);\">\n  </div>\n  \n  <!-- Paleta de colores compacta (6 colores en 2 filas) -->\n  <div style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; justify-items: center;\">\n    <div ng-click=\"setQuickColor('#FF0000')\"\n         style=\"width: 35px; height: 35px; background: #FF0000; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n    <div ng-click=\"setQuickColor('#00FF00')\"\n         style=\"width: 35px; height: 35px; background: #00FF00; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n    <div ng-click=\"setQuickColor('#0000FF')\"\n         style=\"width: 35px; height: 35px; background: #0000FF; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n    <div ng-click=\"setQuickColor('#FFFF00')\"\n         style=\"width: 35px; height: 35px; background: #FFFF00; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n    <div ng-click=\"setQuickColor('#FF69B4')\"\n         style=\"width: 35px; height: 35px; background: #FF69B4; border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n    <div ng-click=\"setQuickColor('#FFFFFF')\"\n         style=\"width: 35px; height: 35px; background: #FFFFFF; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.1s ease;\"\n         onmouseover=\"this.style.transform='scale(1.1)'\"\n         onmouseout=\"this.style.transform='scale(1)'\">\n    </div>\n  </div>\n  \n  <!-- Controles RGB con barras táctiles -->\n  <div style=\"background: rgba(255,255,255,0.9); border-radius: 10px; padding: 12px; margin: 0 auto; max-width: 220px;\">\n    \n    <!-- Control Rojo -->\n    <div style=\"margin-bottom: 10px;\">\n      <div style=\"display: flex; align-items: center; gap: 6px;\">\n        <div style=\"width: 20px; height: 20px; background: #FF0000; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 3px rgba(0,0,0,0.2); flex-shrink: 0;\"></div>\n        <div style=\"flex: 1; position: relative;\">\n          <div id=\"redBar\" \n               style=\"width: 100%; height: 16px; background: linear-gradient(to right, #000, #FF0000); border-radius: 8px; border: 1px solid #ccc; position: relative; cursor: pointer;\"\n               ng-mousedown=\"startDragRed($event)\">\n            <div style=\"position: absolute; top: -4px; left: {{(redValue/255)*100}}%; width: 24px; height: 24px; background: white; border-radius: 50%; border: 2px solid #ccc; box-shadow: 0 2px 3px rgba(0,0,0,0.2); transform: translateX(-50%);\"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n    \n    <!-- Control Verde -->\n    <div style=\"margin-bottom: 10px;\">\n      <div style=\"display: flex; align-items: center; gap: 6px;\">\n        <div style=\"width: 20px; height: 20px; background: #00FF00; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 3px rgba(0,0,0,0.2); flex-shrink: 0;\"></div>\n        <div style=\"flex: 1; position: relative;\">\n          <div id=\"greenBar\" \n               style=\"width: 100%; height: 16px; background: linear-gradient(to right, #000, #00FF00); border-radius: 8px; border: 1px solid #ccc; position: relative; cursor: pointer;\"\n               ng-mousedown=\"startDragGreen($event)\">\n            <div style=\"position: absolute; top: -4px; left: {{(greenValue/255)*100}}%; width: 24px; height: 24px; background: white; border-radius: 50%; border: 2px solid #ccc; box-shadow: 0 2px 3px rgba(0,0,0,0.2); transform: translateX(-50%);\"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n    \n    <!-- Control Azul -->\n    <div style=\"margin-bottom: 5px;\">\n      <div style=\"display: flex; align-items: center; gap: 6px;\">\n        <div style=\"width: 20px; height: 20px; background: #0000FF; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 3px rgba(0,0,0,0.2); flex-shrink: 0;\"></div>\n        <div style=\"flex: 1; position: relative;\">\n          <div id=\"blueBar\" \n               style=\"width: 100%; height: 16px; background: linear-gradient(to right, #000, #0000FF); border-radius: 8px; border: 1px solid #ccc; position: relative; cursor: pointer;\"\n               ng-mousedown=\"startDragBlue($event)\">\n            <div style=\"position: absolute; top: -4px; left: {{(blueValue/255)*100}}%; width: 24px; height: 24px; background: white; border-radius: 50%; border: 2px solid #ccc; box-shadow: 0 2px 3px rgba(0,0,0,0.2); transform: translateX(-50%);\"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n    \n  </div>\n</div>\n\n<script>\n  (function(scope) {\n    scope.focoOn = false;\n    scope.customColor = \"#ffffff\";\n    scope.redValue = 255;\n    scope.greenValue = 255;\n    scope.blueValue = 255;\n    scope.isDraggingRed = false;\n    scope.isDraggingGreen = false;\n    scope.isDraggingBlue = false;\n   \n    scope.updateCustomColor = function() {\n      var hex = \"#\" + \n        (\"0\" + scope.redValue.toString(16)).slice(-2) +\n        (\"0\" + scope.greenValue.toString(16)).slice(-2) +\n        (\"0\" + scope.blueValue.toString(16)).slice(-2);\n      scope.customColor = hex;\n      \n      scope.send({\n        payload: {r: scope.redValue, g: scope.greenValue, b: scope.blueValue},\n        topic: \"custom_color\"\n      });\n    };\n   \n    scope.setQuickColor = function(color) {\n      scope.customColor = color;\n      var r = parseInt(color.substr(1,2), 16);\n      var g = parseInt(color.substr(3,2), 16);\n      var b = parseInt(color.substr(5,2), 16);\n      scope.redValue = r;\n      scope.greenValue = g;\n      scope.blueValue = b;\n      scope.updateCustomColor();\n    };\n    \n    scope.startDragRed = function(event) {\n      scope.isDraggingRed = true;\n      scope.updateRedFromPosition(event);\n      event.preventDefault();\n    };\n    \n    scope.startDragGreen = function(event) {\n      scope.isDraggingGreen = true;\n      scope.updateGreenFromPosition(event);\n      event.preventDefault();\n    };\n    \n    scope.startDragBlue = function(event) {\n      scope.isDraggingBlue = true;\n      scope.updateBlueFromPosition(event);\n      event.preventDefault();\n    };\n    \n    scope.updateRedFromPosition = function(event) {\n      const bar = document.getElementById('redBar');\n      const rect = bar.getBoundingClientRect();\n      const x = event.clientX - rect.left;\n      const percentage = Math.max(0, Math.min(1, x / rect.width));\n      scope.redValue = Math.round(percentage * 255);\n      scope.updateCustomColor();\n      scope.$apply();\n    };\n    \n    scope.updateGreenFromPosition = function(event) {\n      const bar = document.getElementById('greenBar');\n      const rect = bar.getBoundingClientRect();\n      const x = event.clientX - rect.left;\n      const percentage = Math.max(0, Math.min(1, x / rect.width));\n      scope.greenValue = Math.round(percentage * 255);\n      scope.updateCustomColor();\n      scope.$apply();\n    };\n    \n    scope.updateBlueFromPosition = function(event) {\n      const bar = document.getElementById('blueBar');\n      const rect = bar.getBoundingClientRect();\n      const x = event.clientX - rect.left;\n      const percentage = Math.max(0, Math.min(1, x / rect.width));\n      scope.blueValue = Math.round(percentage * 255);\n      scope.updateCustomColor();\n      scope.$apply();\n    };\n    \n    // Event listeners optimizados\n    var mouseMoveHandler = function(event) {\n      if (scope.isDraggingRed) {\n        scope.updateRedFromPosition(event);\n      } else if (scope.isDraggingGreen) {\n        scope.updateGreenFromPosition(event);\n      } else if (scope.isDraggingBlue) {\n        scope.updateBlueFromPosition(event);\n      }\n    };\n\n    var mouseUpHandler = function() {\n      scope.isDraggingRed = false;\n      scope.isDraggingGreen = false;\n      scope.isDraggingBlue = false;\n    };\n\n    document.addEventListener('mousemove', mouseMoveHandler);\n    document.addEventListener('mouseup', mouseUpHandler);\n\n    // Click directo en las barras\n    var clickHandler = function(event) {\n      var redBar = document.getElementById('redBar');\n      var greenBar = document.getElementById('greenBar');\n      var blueBar = document.getElementById('blueBar');\n      \n      if (redBar && redBar.contains(event.target)) {\n        scope.updateRedFromPosition(event);\n      } else if (greenBar && greenBar.contains(event.target)) {\n        scope.updateGreenFromPosition(event);\n      } else if (blueBar && blueBar.contains(event.target)) {\n        scope.updateBlueFromPosition(event);\n      }\n    };\n\n    document.addEventListener('click', clickHandler);\n   \n    scope.$watch('msg', function(msg) {\n      if (msg && msg.topic === 'foco_state_update') {\n        scope.focoOn = msg.payload;\n      }\n    });\n    \n    // Cleanup cuando se destruye el scope\n    scope.$on('$destroy', function() {\n      document.removeEventListener('mousemove', mouseMoveHandler);\n      document.removeEventListener('mouseup', mouseUpHandler);\n      document.removeEventListener('click', clickHandler);\n    });\n    \n  })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1580,
+        "y": 60,
+        "wires": [
+            [
+                "8b23f4a5f9585b41"
+            ]
+        ]
+    },
+    {
+        "id": "354b0beffadc38c4",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Control Botones",
+        "func": "// Actualizar contexto con el nuevo sonido de botones\ncontext.set(\"botones_sound\", msg.payload);\n\n// Log para debugging\nnode.warn(\"Sonido de botones cambiado a: \" + msg.payload);\n\n// Pasar el mensaje sin modificaciones\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1780,
+        "y": 1120,
+        "wires": [
+            [
+                "5bf0ed3624cbbf88"
+            ]
+        ]
+    },
+    {
+        "id": "837dea91e38e2fad",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Control Escaleras",
+        "func": "// Actualizar contexto con el nuevo sonido de escaleras\ncontext.set(\"escaleras_sound\", msg.payload);\n\n// Log para debugging\nnode.warn(\"Sonido de escaleras cambiado a: \" + msg.payload);\n\n// Pasar el mensaje sin modificaciones\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1790,
+        "y": 1060,
+        "wires": [
+            [
+                "09085985267f91b2"
+            ]
+        ]
+    },
+    {
+        "id": "5bf0ed3624cbbf88",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "Botones",
+        "topic": "escalera/control/sonido_botones",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 1940,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "09085985267f91b2",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "Escaleras",
+        "topic": "escalera/control/sonido_escaleras",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 1960,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "e7dbb521e727b770",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Sonido Template",
+        "func": "// Solo procesar si el mensaje viene del template con un sonido de animal\nif (msg.payload && typeof msg.payload === 'string' && \n    ['perro', 'gato', 'vaca', 'pajarito'].includes(msg.payload)) {\n    \n    // Crear mensaje con el topic correcto para MQTT\n    return {\n        payload: msg.payload,\n        topic: \"escalera/control/sonido_escaleras\"\n    };\n}\n\n// Si es mensaje de control de visibilidad, pasarlo al template\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.modo) {\n    return msg;\n}\n\n// Ignorar otros mensajes\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1560,
+        "y": 1060,
+        "wires": [
+            [
+                "837dea91e38e2fad"
+            ]
+        ]
+    },
+    {
+        "id": "29da4a6c83ca3fc6",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Control Visibilidad",
+        "func": "const modo = msg.payload;\nconst mostrar = modo === 'juego';\n\n// Solo enviar mensaje de visibilidad cuando cambia el modo\nreturn {\n    payload: {\n        show: mostrar,\n        modo: modo\n    }\n};",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 1080,
+        "wires": [
+            [
+                "7f63b4c7d60d5f40",
+                "f901742bbb158a5e",
+                "160f3e5feb2f7415",
+                "5d2af563a5622408"
+            ]
+        ]
+    },
+    {
+        "id": "7f63b4c7d60d5f40",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "f45923fb44a58130",
+        "name": "Botones Sonidos Escaleras",
+        "order": 1,
+        "width": 10,
+        "height": 4,
+        "format": "<div ng-show=\"showButtons\" class=\"animal-buttons-container\">\n    <style>\n        .animal-buttons-container {\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            gap: 10px;\n            padding: 15px;\n            background: #4A90E2;\n            border-radius: 15px;\n            margin: 5px;\n            border: 2px solid #e0e0e0;\n            max-width: 550px;\n            max-height: 250px;\n            width: 100%;\n        }\n\n        .status-text {\n            background: #ffffff;\n            color: #333333;\n            padding: 8px 16px;\n            border-radius: 15px;\n            font-weight: bold;\n            font-size: 14px;\n            border: none;\n            margin-bottom: 8px;\n            min-height: 24px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n        }\n\n        .buttons-row {\n            display: flex;\n            flex-wrap: wrap;\n            justify-content: center;\n            gap: 12px;\n            width: 100%;\n        }\n\n        .animal-btn {\n            border-radius: 15px;\n            width: 80px;\n            height: 80px;\n            font-size: 40px;\n            cursor: pointer;\n            transition: transform 0.2s ease;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);\n            user-select: none;\n            border: none;\n            position: relative;\n            overflow: hidden;\n        }\n\n        .animal-btn.perro {\n            background: #ff6b7d;\n        }\n\n        .animal-btn.gato {\n            background: #87ceeb;\n        }\n\n        .animal-btn.vaca {\n            background: #98fb98;\n        }\n\n        .animal-btn.pajarito {\n            background: #ffeb3b;\n        }\n\n        .animal-btn:hover {\n            transform: scale(1.05);\n        }\n\n        .animal-btn:active {\n            transform: scale(0.95);\n        }\n\n        .animal-btn.selected {\n            transform: scale(1.1);\n        }\n\n        .animal-btn.selected::after {\n            content: '✨';\n            position: absolute;\n            top: -3px;\n            right: -3px;\n            font-size: 16px;\n        }\n\n        @media (max-width: 600px) {\n            .animal-buttons-container {\n                max-width: 100%;\n                padding: 12px;\n            }\n\n            .animal-btn {\n                width: 70px;\n                height: 70px;\n                font-size: 35px;\n            }\n\n            .status-text {\n                font-size: 12px;\n                padding: 6px 12px;\n            }\n\n            .buttons-row {\n                gap: 10px;\n            }\n        }\n\n        @media (max-width: 480px) {\n            .animal-btn {\n                width: 60px;\n                height: 60px;\n                font-size: 30px;\n            }\n\n            .status-text {\n                font-size: 11px;\n                padding: 5px 10px;\n            }\n\n            .buttons-row {\n                gap: 8px;\n            }\n        }\n    </style>\n\n    <div class=\"status-text\">\n        <span ng-if=\"!lastSelectedAnimal\">🎵 Elige un animal 🎵</span>\n        <span ng-if=\"lastSelectedAnimal\">🎉 {{lastSelectedAnimal}} 🎉</span>\n    </div>\n\n    <div class=\"buttons-row\">\n        <div class=\"animal-btn perro\" ng-click=\"sendAnimalSound('perro')\"\n            ng-class=\"{selected: selectedAnimal === 'perro'}\" title=\"Sonido de Perro\">\n            🐶\n        </div>\n\n        <div class=\"animal-btn gato\" ng-click=\"sendAnimalSound('gato')\" ng-class=\"{selected: selectedAnimal === 'gato'}\"\n            title=\"Sonido de Gato\">\n            🐱\n        </div>\n\n        <div class=\"animal-btn vaca\" ng-click=\"sendAnimalSound('vaca')\" ng-class=\"{selected: selectedAnimal === 'vaca'}\"\n            title=\"Sonido de Vaca\">\n            🐮\n        </div>\n\n        <div class=\"animal-btn pajarito\" ng-click=\"sendAnimalSound('pajarito')\"\n            ng-class=\"{selected: selectedAnimal === 'pajarito'}\" title=\"Sonido de Pajarito\">\n            🐦\n        </div>\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n    // Inicializar variables\n    scope.selectedAnimal = null;\n    scope.lastSelectedAnimal = null;\n    scope.showButtons = false;\n    \n    scope.sendAnimalSound = function(animal) {\n        // Actualizar el último animal seleccionado\n        scope.lastSelectedAnimal = animal;\n        \n        // Solo mostrar feedback visual temporal\n        scope.selectedAnimal = animal;\n        \n        // Enviar mensaje simple con solo el payload del animal\n        scope.send({\n            payload: animal\n        });\n        \n        // Quitar feedback visual después de animación\n        setTimeout(function() {\n            scope.$apply(function() {\n                scope.selectedAnimal = null;\n            });\n        }, 300);\n    };\n    \n    // Controlar visibilidad basado en el modo\n    scope.$watch('msg', function(newMsg) {\n        if (newMsg && newMsg.payload) {\n            if (newMsg.payload.modo === 'juego') {\n                scope.showButtons = true;\n            } else if (newMsg.payload.modo && newMsg.payload.modo !== 'juego') {\n                scope.showButtons = false;\n            }\n        }\n    });\n})(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1260,
+        "y": 1060,
+        "wires": [
+            [
+                "e7dbb521e727b770"
+            ]
+        ]
+    },
+    {
+        "id": "f901742bbb158a5e",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "f45923fb44a58130",
+        "name": "Botones Sonidos Pared",
+        "order": 7,
+        "width": 10,
+        "height": 4,
+        "format": "<div ng-show=\"showButtons\" class=\"animal-buttons-container\">\n    <style>\n        .animal-buttons-container {\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            gap: 10px;\n            padding: 15px;\n            background: #4A90E2;\n            border-radius: 15px;\n            margin: 5px;\n            border: 2px solid #e0e0e0;\n            max-width: 550px;\n            max-height: 250px;\n            width: 100%;\n        }\n\n        .status-text {\n            background: #ffffff;\n            color: #333333;\n            padding: 8px 16px;\n            border-radius: 15px;\n            font-weight: bold;\n            font-size: 14px;\n            border: none;\n            margin-bottom: 8px;\n            min-height: 24px;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\n        }\n\n        .buttons-row {\n            display: flex;\n            flex-wrap: wrap;\n            justify-content: center;\n            gap: 12px;\n            width: 100%;\n        }\n\n        .animal-btn {\n            border-radius: 15px;\n            width: 80px;\n            height: 80px;\n            font-size: 40px;\n            cursor: pointer;\n            transition: transform 0.2s ease;\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);\n            user-select: none;\n            border: none;\n            position: relative;\n            overflow: hidden;\n        }\n\n        .animal-btn.perro {\n            background: #ff6b7d;\n        }\n\n        .animal-btn.gato {\n            background: #87ceeb;\n        }\n\n        .animal-btn.vaca {\n            background: #98fb98;\n        }\n\n        .animal-btn.pajarito {\n            background: #ffeb3b;\n        }\n\n        .animal-btn:hover {\n            transform: scale(1.05);\n        }\n\n        .animal-btn:active {\n            transform: scale(0.95);\n        }\n\n        .animal-btn.selected {\n            transform: scale(1.1);\n        }\n\n        .animal-btn.selected::after {\n            content: '✨';\n            position: absolute;\n            top: -3px;\n            right: -3px;\n            font-size: 16px;\n        }\n\n        @media (max-width: 600px) {\n            .animal-buttons-container {\n                max-width: 100%;\n                padding: 12px;\n            }\n\n            .animal-btn {\n                width: 70px;\n                height: 70px;\n                font-size: 35px;\n            }\n\n            .status-text {\n                font-size: 12px;\n                padding: 6px 12px;\n            }\n\n            .buttons-row {\n                gap: 10px;\n            }\n        }\n\n        @media (max-width: 480px) {\n            .animal-btn {\n                width: 60px;\n                height: 60px;\n                font-size: 30px;\n            }\n\n            .status-text {\n                font-size: 11px;\n                padding: 5px 10px;\n            }\n\n            .buttons-row {\n                gap: 8px;\n            }\n        }\n    </style>\n\n    <div class=\"status-text\">\n        <span ng-if=\"!lastSelectedAnimal\">🎵 Elige un animal 🎵</span>\n        <span ng-if=\"lastSelectedAnimal\">🎉 {{lastSelectedAnimal}} 🎉</span>\n    </div>\n\n    <div class=\"buttons-row\">\n        <div class=\"animal-btn perro\" ng-click=\"sendAnimalSound('perro')\"\n            ng-class=\"{selected: selectedAnimal === 'perro'}\" title=\"Sonido de Perro\">\n            🐶\n        </div>\n\n        <div class=\"animal-btn gato\" ng-click=\"sendAnimalSound('gato')\" ng-class=\"{selected: selectedAnimal === 'gato'}\"\n            title=\"Sonido de Gato\">\n            🐱\n        </div>\n\n        <div class=\"animal-btn vaca\" ng-click=\"sendAnimalSound('vaca')\" ng-class=\"{selected: selectedAnimal === 'vaca'}\"\n            title=\"Sonido de Vaca\">\n            🐮\n        </div>\n\n        <div class=\"animal-btn pajarito\" ng-click=\"sendAnimalSound('pajarito')\"\n            ng-class=\"{selected: selectedAnimal === 'pajarito'}\" title=\"Sonido de Pajarito\">\n            🐦\n        </div>\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n    // Inicializar variables\n    scope.selectedAnimal = null;\n    scope.lastSelectedAnimal = null;\n    scope.showButtons = false;\n    \n    scope.sendAnimalSound = function(animal) {\n        // Actualizar el último animal seleccionado\n        scope.lastSelectedAnimal = animal;\n        \n        // Solo mostrar feedback visual temporal\n        scope.selectedAnimal = animal;\n        \n        // Enviar mensaje simple con solo el payload del animal\n        scope.send({\n            payload: animal\n        });\n        \n        // Quitar feedback visual después de animación\n        setTimeout(function() {\n            scope.$apply(function() {\n                scope.selectedAnimal = null;\n            });\n        }, 300);\n    };\n    \n    // Controlar visibilidad basado en el modo\n    scope.$watch('msg', function(newMsg) {\n        if (newMsg && newMsg.payload) {\n            if (newMsg.payload.modo === 'juego') {\n                scope.showButtons = true;\n            } else if (newMsg.payload.modo && newMsg.payload.modo !== 'juego') {\n                scope.showButtons = false;\n            }\n        }\n    });\n})(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 1270,
+        "y": 1120,
+        "wires": [
+            [
+                "8a34829d180d174e"
+            ]
+        ]
+    },
+    {
+        "id": "8a34829d180d174e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Sonido Template",
+        "func": "// Solo procesar si el mensaje viene del template con un sonido de animal\nif (msg.payload && typeof msg.payload === 'string' && \n    ['perro', 'gato', 'vaca', 'pajarito'].includes(msg.payload)) {\n    \n    // Crear mensaje con el topic correcto para MQTT\n    return {\n        payload: msg.payload,\n        topic: \"escalera/control/sonido_botones\"\n    };\n}\n\n// Si es mensaje de control de visibilidad, pasarlo al template\nif (msg.payload && typeof msg.payload === 'object' && msg.payload.modo) {\n    return msg;\n}\n\n// Ignorar otros mensajes\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1560,
+        "y": 1120,
+        "wires": [
+            [
+                "354b0beffadc38c4"
+            ]
+        ]
+    },
+    {
+        "id": "42cafc60ad353ba8",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Firebase Check Estado",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/evaluacionActual/activa.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1210,
+        "y": 280,
+        "wires": [
+            [
+                "0602d5c47746367b"
+            ]
+        ]
+    },
+    {
+        "id": "0602d5c47746367b",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Sincronizar Estado Firebase",
+        "func": "// FUNCIÓN: Sincronizar Estado Firebase\nconst firebaseState = msg.payload;\nconst currentState = flow.get('sistemaActivo');\n\n// Convertir valores de Firebase (pueden ser 1/0 o true/false)\nconst firebaseActive = (firebaseState === 1 || firebaseState === true);\n\nnode.warn(`[SYNC] Firebase: ${firebaseState} -> ${firebaseActive}, Estado actual: ${currentState}`);\n\n// SOLO actualizar y enviar si hay un cambio real\nif (firebaseActive !== currentState) {\n    node.warn(`[SYNC] ¡CAMBIO DETECTADO! ${currentState} -> ${firebaseActive}`);\n    \n    // Actualizar el estado interno\n    flow.set('sistemaActivo', firebaseActive);\n    \n    // Mensaje para actualizar el template\n    const templateMsg = {\n        payload: firebaseActive,\n        topic: \"escalera/control/sistema\",\n        fromFirebase: true,\n        forceUpdate: true,\n        timestamp: new Date().getTime()\n    };\n    \n    node.warn(`[SYNC] Enviando actualización al template: ${JSON.stringify(templateMsg)}`);\n    return templateMsg;\n} else {\n    node.warn(`[SYNC] Sin cambios, estado mantenido: ${currentState}`);\n    return null; // No enviar nada si no hay cambios\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1460,
+        "y": 280,
+        "wires": [
+            [
+                "f90ef47f3f358820"
+            ]
+        ]
+    },
+    {
+        "id": "1d65321ba4183548",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Check Firebase Every 3s",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1200,
+        "y": 240,
+        "wires": [
+            [
+                "42cafc60ad353ba8"
+            ]
+        ]
+    },
+    {
+        "id": "9008624a9a23653a",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Validar y Procesar Sistema",
+        "func": "// FUNCIÓN: Validar y Procesar Sistema\n\n// Si el mensaje viene de Firebase (sincronización)\nif (msg.fromFirebase) {\n    node.warn(`[PROC] Mensaje de Firebase recibido: ${msg.payload}`);\n    \n    // Solo enviar a MQTT (para ESP32), NO a Firebase\n    const mqttMsg = {\n        payload: JSON.stringify(msg.payload),\n        topic: \"esp32/comando/sistema\",\n        fromFirebase: true\n    };\n    \n    node.warn(`[PROC] Enviando solo a MQTT: ${JSON.stringify(msg.payload)}`);\n    return [mqttMsg, null]; // MQTT, NO Firebase\n}\n\n// Si el mensaje viene del usuario (click en template)\nif (msg.fromUser) {\n    const sistemaActivo = msg.payload;\n    const sistemaActivoAnterior = flow.get('sistemaActivo') || false;\n    \n    node.warn(`[PROC] Click de usuario detectado. Nuevo estado: ${sistemaActivo}`);\n\n    // Función para reiniciar contadores\n    function resetAllSensorCounts() {\n        const escalones = ['azul', 'verde', 'amarillo', 'anaranjado'];\n        escalones.forEach(color => {\n            flow.set(`escalon_${color}_activation_count`, 0);\n            flow.set(`last_state_escalon_${color}`, 0);\n        });\n        \n        const botones = ['anaranjado', 'azul', 'rosa', 'verde', 'amarillo', 'morado'];\n        botones.forEach(color => {\n            flow.set(`boton_${color}_activation_count`, 0);\n            flow.set(`last_state_boton_${color}`, 0);\n        });\n    }\n\n    // Reiniciar contadores si hay cambio de estado\n    if (sistemaActivo !== sistemaActivoAnterior) {\n        resetAllSensorCounts();\n        node.warn(`[PROC] Contadores reiniciados por cambio de estado`);\n    }\n\n    // Actualizar estado del sistema\n    flow.set('sistemaActivo', sistemaActivo);\n\n    // Preparar mensajes de salida\n    // 1. MQTT para ESP32\n    const mqttMsg = {\n        payload: JSON.stringify(sistemaActivo),\n        topic: \"esp32/comando/sistema\",\n        fromUser: true\n    };\n\n    // 2. Firebase update\n    const firebaseMsg = {\n        payload: sistemaActivo ? 1 : 0\n    };\n    \n    node.warn(`[PROC] Enviando a MQTT: ${JSON.stringify(sistemaActivo)} y Firebase: ${sistemaActivo ? 1 : 0}`);\n\n    return [mqttMsg, firebaseMsg];\n}\n\nnode.warn(`[PROC] Mensaje no procesado: ${JSON.stringify(msg)}`);\nreturn [null, null];",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "// Inicializar estado\nflow.set('activaciones', {});\nif (flow.get('sistemaActivo') === undefined) {\n    flow.set('sistemaActivo', false);\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 1960,
+        "y": 280,
+        "wires": [
+            [
+                "670a946e3266348e"
+            ],
+            [
+                "95640d0914f916d0"
+            ]
+        ]
+    },
+    {
+        "id": "95640d0914f916d0",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Update Firebase Estado",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/evaluacionActual/activa.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 2230,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "670a946e3266348e",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Out ESP32",
+        "topic": "esp32/comando/sistema",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 2190,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "d214020d018f6b4d",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Init Check Firebase",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1210,
+        "y": 320,
+        "wires": [
+            [
+                "42cafc60ad353ba8"
+            ]
+        ]
+    },
+    {
+        "id": "a7db955ade099413",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_escaleras",
+        "name": "Seleccionar Modo",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "format": "<div ng-init=\"init()\">\n    <style>\n        .mode-selector-container {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;\n            background: #ffffff;\n            padding: 15px;\n            border-radius: 10px;\n            border: 2px solid #7aa1a2;\n            display: flex;\n            flex-direction: column;\n            gap: 12px;\n        }\n\n        .mode-buttons-grid {\n            display: flex;\n            justify-content: space-between;\n            gap: 10px;\n        }\n\n        .mode-btn {\n            background: #ffffff;\n            border: 2px solid #7aa1a2;\n            border-radius: 10px;\n            padding: 10px;\n            flex: 1;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            cursor: pointer;\n            transition: background 0.2s ease, transform 0.2s ease;\n        }\n\n        .mode-btn:hover {\n            background: #a6d2d3;\n            border-color: #355c5d;\n        }\n\n        .mode-btn.selected {\n            background: #7aa1a2;\n            color: #ffffff;\n            border-color: #355c5d;\n        }\n\n        .mode-emoji {\n            font-size: 24px;\n        }\n\n        .mode-label {\n            font-size: 14px;\n            font-weight: 600;\n            color: #355c5d;\n        }\n\n        .mode-btn.selected .mode-label {\n            color: #ffffff;\n        }\n\n        @media (max-width: 600px) {\n            .mode-buttons-grid {\n                flex-direction: column;\n            }\n\n            .mode-btn {\n                padding: 12px;\n            }\n\n            .mode-emoji {\n                font-size: 20px;\n            }\n\n            .mode-label {\n                font-size: 12px;\n            }\n        }\n    </style>\n\n    <div class=\"mode-selector-container\">\n        <div class=\"mode-buttons-grid\">\n            <div class=\"mode-btn\" ng-class=\"{'selected': selectedMode === 'evaluacion'}\"\n                ng-click=\"selectMode('evaluacion')\">\n                <span class=\"mode-emoji\">🎯</span>\n                <span class=\"mode-label\">Evaluación</span>\n            </div>\n            <div class=\"mode-btn\" ng-class=\"{'selected': selectedMode === 'juego'}\" ng-click=\"selectMode('juego')\">\n                <span class=\"mode-emoji\">🎮</span>\n                <span class=\"mode-label\">Juego</span>\n            </div>\n            <div class=\"mode-btn\" ng-class=\"{'selected': selectedMode === 'descanso'}\"\n                ng-click=\"selectMode('descanso')\">\n                <span class=\"mode-emoji\">😴</span>\n                <span class=\"mode-label\">Descanso</span>\n            </div>\n        </div>\n    </div>\n</div>\n\n<script>\n    (function(scope) {\n        scope.selectedMode = null;\n\n        scope.init = function () {\n            console.log('Selector de modo iniciado');\n            // Escuchar actualizaciones desde Node-RED\n            scope.$watch('msg', function(msg) {\n                if (msg && msg.ui_update && msg.payload) {\n                    scope.selectedMode = msg.payload;\n                    console.log('UI actualizada:', msg.payload);\n                }\n            });\n        };\n\n        scope.selectMode = function (mode) {\n            scope.selectedMode = mode;\n            scope.send({\n                payload: mode,\n                source: 'user_selection'\n            });\n            console.log('Modo seleccionado por usuario:', mode);\n        };\n    })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1690,
+        "y": 500,
+        "wires": [
+            [
+                "29da4a6c83ca3fc6",
+                "66929b35acaefd70"
+            ]
+        ]
+    },
+    {
+        "id": "e669801c38d5e798",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Out Modo Sesión",
+        "topic": "escalera/control/modo_sesion",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 2310,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "66929b35acaefd70",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "🎯 PROCESADOR CENTRAL MODO",
+        "func": "// =============================================================================\n// PROCESADOR CENTRAL UNIFICADO DE MODO\n// Maneja TODOS los cambios de modo sin importar el origen\n// =============================================================================\n\nlet nuevoModo = msg.payload;\nlet origen = msg.source || 'firebase_sync';\nlet modoActual = flow.get(\"modo_actual\");\n\n// Validar que el modo sea válido\nconst modosValidos = ['evaluacion', 'juego', 'descanso'];\nif (!modosValidos.includes(nuevoModo)) {\n    node.warn(`❌ Modo inválido recibido: '${nuevoModo}' desde ${origen}`);\n    return null;\n}\n\n// 🚀 LÓGICA CENTRAL: Solo proceder si el modo REALMENTE cambió\nif (nuevoModo !== modoActual) {\n    node.log(`🔄 CAMBIO DETECTADO: '${modoActual}' → '${nuevoModo}' (origen: ${origen})`);\n    \n    // Actualizar el estado local INMEDIATAMENTE\n    flow.set(\"modo_actual\", nuevoModo);\n    \n    // Crear mensajes de salida múltiples\n    let mensajes = [];\n    \n    // SALIDA 1: Actualizar Firebase (solo si el cambio NO viene de Firebase)\n    if (origen !== 'firebase_sync') {\n        mensajes[0] = {\n            payload: `\"${nuevoModo}\"`, // Firebase espera string con comillas\n            topic: 'firebase_update',\n            modo: nuevoModo,\n            source: origen\n        };\n        node.log(`📝 Preparando actualización Firebase: ${nuevoModo} (origen: ${origen})`);\n    } else {\n        mensajes[0] = null; // No actualizar Firebase si viene de Firebase\n    }\n    \n    // SALIDA 2: Publicar MQTT (SIEMPRE, sin importar el origen)\n    mensajes[1] = {\n        payload: nuevoModo,\n        topic: 'escalera/control/modo_sesion',\n        modo: nuevoModo,\n        source: origen\n    };\n    node.log(`📡 Preparando publicación MQTT: ${nuevoModo}`);\n    \n    // SALIDA 3: Actualizar UI (SIEMPRE, sin importar el origen)\n    mensajes[2] = {\n        payload: nuevoModo,\n        ui_update: true,\n        modo: nuevoModo,\n        source: origen\n    };\n    node.log(`🖥️ Preparando actualización UI: ${nuevoModo}`);\n    \n    // SALIDA 4: Confirmar a Python (solo si el cambio viene de Python)\n    if (origen === 'python_command') {\n        mensajes[3] = {\n            topic: 'nodered/modo/confirmation',\n            payload: JSON.stringify({\n                action: 'mode_changed',\n                old_mode: modoActual,\n                new_mode: nuevoModo,\n                success: true,\n                timestamp: new Date().toISOString()\n            })\n        };\n        node.log(`🐍 Enviando confirmación a Python: ${modoActual} → ${nuevoModo}`);\n    } else {\n        mensajes[3] = null;\n    }\n    \n    return mensajes;\n    \n} else {\n    node.log(`✅ Modo '${nuevoModo}' ya está activo (origen: ${origen}) - No se requiere acción`);\n    \n    // Si Python intenta cambiar al mismo modo, confirmar anyway\n    if (origen === 'python_command') {\n        let confirmacion = {\n            topic: 'nodered/modo/confirmation',\n            payload: JSON.stringify({\n                action: 'mode_unchanged',\n                current_mode: modoActual,\n                requested_mode: nuevoModo,\n                success: true,\n                message: 'El modo solicitado ya está activo',\n                timestamp: new Date().toISOString()\n            })\n        };\n        return [null, null, null, confirmacion];\n    }\n    \n    return [null, null, null, null];\n}",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1950,
+        "y": 720,
+        "wires": [
+            [
+                "7cd320e05a668977"
+            ],
+            [
+                "e669801c38d5e798"
+            ],
+            [
+                "d10c1dc59c6255b5",
+                "a7db955ade099413"
+            ],
+            [
+                "8f358c39ada50db6"
+            ]
+        ]
+    },
+    {
+        "id": "7cd320e05a668977",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Actualizar Firebase",
+        "method": "PUT",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/modo.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 2330,
+        "y": 660,
+        "wires": [
+            [
+                "032b7c6ee3cf96ec"
+            ]
+        ]
+    },
+    {
+        "id": "032b7c6ee3cf96ec",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Log Firebase Response",
+        "func": "if (msg.statusCode === 200) {\n    node.log(`✅ Firebase actualizado correctamente: ${msg.payload}`);\n} else {\n    node.error(`❌ Error actualizando Firebase: ${msg.statusCode} - ${msg.payload}`);\n}\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2570,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2c7ec40fc7d6a65c",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Leer Firebase cada 3s",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 1530,
+        "y": 580,
+        "wires": [
+            [
+                "251ca1ecc685f714"
+            ]
+        ]
+    },
+    {
+        "id": "251ca1ecc685f714",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Obtener Modo Firebase",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/modo.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 1790,
+        "y": 560,
+        "wires": [
+            [
+                "ad5f14fd5565dc17"
+            ]
+        ]
+    },
+    {
+        "id": "ad5f14fd5565dc17",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Parsear Respuesta Firebase",
+        "func": "try {\n    // Firebase devuelve el string con comillas, necesitamos parsearlo\n    let modoFirebase = JSON.parse(msg.payload);\n    \n    // Preparar mensaje para el procesador central\n    msg.payload = modoFirebase;\n    msg.source = 'firebase_sync';\n    \n    node.log(`📥 Modo leído desde Firebase: '${modoFirebase}'`);\n    return msg;\n    \n} catch (error) {\n    node.error(`❌ Error parseando respuesta de Firebase: ${error.message}`);\n    node.error(`📄 Respuesta recibida: ${msg.payload}`);\n    return null;\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2040,
+        "y": 560,
+        "wires": [
+            [
+                "66929b35acaefd70"
+            ]
+        ]
+    },
+    {
+        "id": "079b947980d402a6",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Inicializar al Deploy",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.5,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 1510,
+        "y": 540,
+        "wires": [
+            [
+                "251ca1ecc685f714"
+            ]
+        ]
+    },
+    {
+        "id": "f028ded14d32ceab",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "🐍 Comandos Python - Modo",
+        "topic": "python/modo/change",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "092067ca52ec1d0e",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1520,
+        "y": 640,
+        "wires": [
+            [
+                "214e5123b8cf020f"
+            ]
+        ]
+    },
+    {
+        "id": "214e5123b8cf020f",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "🔧 Procesador Comandos Python",
+        "func": "// Recibir comando de cambio de modo desde Python\nvar command = msg.payload;\n\n// Validar estructura del comando\nif (!command || !command.action || !command.new_mode) {\n    node.error('❌ Comando Python inválido - falta action o new_mode');\n    node.error(`📄 Comando recibido: ${JSON.stringify(command)}`);\n    return null;\n}\n\nif (command.action === 'change_mode') {\n    // Preparar mensaje para el procesador central\n    msg.payload = command.new_mode;\n    msg.source = 'python_command';\n    msg.python_context = {\n        reason: command.reason || 'no_reason_provided',\n        evaluation_results: command.evaluation_results || null,\n        session_id: command.session_id || null,\n        timestamp: command.timestamp || new Date().toISOString()\n    };\n    \n    node.log(`🐍 Comando Python: cambiar a modo '${command.new_mode}' - Razón: ${command.reason || 'N/A'}`);\n    \n    // Si viene con resultados de evaluación, logearlos\n    if (command.evaluation_results) {\n        node.log(`📊 Resultados evaluación: Correctas: ${command.evaluation_results.correct_answers}, Incorrectas: ${command.evaluation_results.incorrect_answers}`);\n    }\n    \n    return msg;\n}\n\nelse if (command.action === 'get_current_mode') {\n    // Python solicita el modo actual\n    var current_mode = flow.get(\"modo_actual\") || 'descanso';\n    \n    var response = {\n        topic: 'nodered/modo/current_mode',\n        payload: JSON.stringify({\n            action: 'current_mode_response',\n            current_mode: current_mode,\n            timestamp: new Date().toISOString()\n        })\n    };\n    \n    node.log(`🐍 Python solicita modo actual: '${current_mode}'`);\n    return [null, response];\n}\n\nnode.warn(`❌ Acción Python desconocida: ${command.action}`);\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1800,
+        "y": 640,
+        "wires": [
+            [
+                "66929b35acaefd70"
+            ],
+            [
+                "8f358c39ada50db6"
+            ]
+        ]
+    },
+    {
+        "id": "8f358c39ada50db6",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "🐍 Respuestas a Python",
+        "topic": "python/modo/change",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "092067ca52ec1d0e",
+        "x": 2330,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "d10c1dc59c6255b5",
+        "type": "debug",
+        "z": "b986fdac7f3580e8",
+        "name": "UI Update Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2330,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "6a84e9baada8fe02",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "main_group",
+        "name": "Interruptor Sonido",
+        "order": 2,
+        "width": 4,
+        "height": 3,
+        "format": "<div\n    style=\"text-align:center;padding:20px;background:#4A90E2;border-radius:20px;margin:5px;border:2px solid #e0e0e0;display:flex;justify-content:center;align-items:center;gap:15px;\">\n    <!-- Botón ENCENDIDO/APAGADO -->\n    <div style=\"display:flex;flex-direction:column;align-items:center;\">\n        <button ng-click=\"toggleSound()\" style=\"width:86px;height:86px;border:none;border-radius:20px;cursor:pointer;font-size:10px;font-weight:bold;transition:transform 0.2s;user-select:none;background:#e74c3c;color:white;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 8px rgba(0,0,0,0.2);\" id=\"soundSwitchButton\">\n            <span style=\"font-size:30px;\" id=\"soundButtonIcon\">🔴</span>\n            <span id=\"soundButtonText\">APAGADO</span>\n        </button>\n    </div>\n\n    <!-- Indicador de sonido -->\n    <div style=\"display:flex;flex-direction:column;align-items:center;\">\n        <div style=\"width:86px;height:86px;border:none;border-radius:20px;font-size:50px;display:flex;align-items:center;justify-content:center;transition:background 0.3s;background:#666666;box-shadow:0 4px 8px rgba(0,0,0,0.2);\"\n            id=\"soundIndicator\">🔇</div>\n    </div>\n</div>\n\n<style>\n    .sound-on-indicator {\n        background: #FFD700 !important;\n        box-shadow: 0 0 15px #FFD700, 0 4px 8px rgba(0, 0, 0, 0.2) !important;\n    }\n\n    .sound-on-button {\n        background: #27ae60 !important;\n        box-shadow: 0 0 10px rgba(39, 174, 96, 0.5), 0 4px 8px rgba(0, 0, 0, 0.2) !important;\n    }\n\n    #soundSwitchButton:active {\n        transform: scale(0.95);\n    }\n\n    #soundSwitchButton:hover {\n        transform: scale(1.02);\n    }\n</style>\n\n<script>\n    (function(scope) {\n        scope.soundOn = false;\n        \n        // Cache elementos DOM una sola vez\n        const soundIndicator = document.getElementById('soundIndicator');\n        const soundSwitchButton = document.getElementById('soundSwitchButton');\n        const soundButtonText = document.getElementById('soundButtonText');\n        const soundButtonIcon = document.getElementById('soundButtonIcon');\n        \n        scope.toggleSound = function() {\n            scope.soundOn = !scope.soundOn;\n            \n            if (scope.soundOn) {\n                // Encender\n                soundIndicator.className = 'sound-on-indicator';\n                soundIndicator.textContent = '🔊';\n                soundSwitchButton.className = 'sound-on-button';\n                soundButtonText.textContent = 'ENCENDIDO';\n                soundButtonIcon.textContent = '🟢';\n            } else {\n                // Apagar\n                soundIndicator.className = '';\n                soundIndicator.textContent = '🔇';\n                soundSwitchButton.className = '';\n                soundButtonText.textContent = 'APAGADO';\n                soundButtonIcon.textContent = '🔴';\n            }\n            \n            // Enviar datos a Node-RED\n            scope.send({ payload: scope.soundOn, topic: \"sound_power\" });\n        };\n    })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": false,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 2550,
+        "y": 200,
+        "wires": [
+            [
+                "d7799413de8df8f3"
+            ]
+        ]
+    },
+    {
+        "id": "891ab26dba5b9335",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "89c050fa3e558c46",
+        "name": "Control Volumen",
+        "order": 2,
+        "width": 7,
+        "height": 3,
+        "format": "<!-- Control de volumen optimizado para RPi -->\n<div ng-show=\"soundOn\"\n  style=\"text-align: center; padding: 20px; background: #4A90E2; border-radius: 20px; margin: 5px; border: 2px solid #e0e0e0; position: relative; display: flex; justify-content: center; align-items: center; gap: 15px;\">\n\n  <!-- Botón Menos -->\n  <div style=\"display: flex; flex-direction: column; align-items: center;\">\n    <button ng-click=\"decreaseVolume()\"\n            ng-disabled=\"!soundOn\"\n            class=\"volume-btn decrease-btn\">\n      🔉\n    </button>\n  </div>\n\n  <!-- Barra de volumen visual y táctil -->\n  <div style=\"flex: 1; position: relative; height: 80px; display: flex; align-items: center; justify-content: center;\">\n    <div id=\"volumeBar\"\n      style=\"width: 100%; height: 20px; background: rgba(255,255,255,0.3); border-radius: 12px; border: 2px solid #e0e0e0; position: relative; cursor: pointer;\"\n      ng-click=\"clickVolume($event)\">\n      <div id=\"volumeProgress\" style=\"height: 100%;\n                  background: #F9A825;\n                  width: {{((volume-10)/90)*100}}%;\n                  border-radius: 10px;\n                  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);\n                  transition: width 0.1s ease;\"></div>\n    </div>\n  </div>\n\n  <!-- Botón Más -->\n  <div style=\"display: flex; flex-direction: column; align-items: center;\">\n    <button ng-click=\"increaseVolume()\"\n            ng-disabled=\"!soundOn\"\n            class=\"volume-btn increase-btn\">\n      🔊\n    </button>\n  </div>\n</div>\n\n<style>\n  .volume-btn {\n    background: #27ae60;\n    border: none;\n    border-radius: 50%;\n    width: 80px;\n    height: 80px;\n    color: white;\n    font-size: 30px;\n    cursor: pointer;\n    transition: transform 0.2s ease;\n    user-select: none;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n  }\n\n  .decrease-btn {\n    background: #e74c3c;\n  }\n\n  .volume-btn:hover {\n    transform: scale(1.02);\n  }\n\n  .volume-btn:active {\n    transform: scale(0.95);\n  }\n</style>\n\n<script>\n  (function(scope) {\n    scope.soundOn = false;\n    scope.volume = 50;\n    \n    // Función optimizada para actualizar volumen\n    scope.updateVolume = function() {\n      if (!scope.soundOn) return;\n      \n      // Asegurar múltiplos de 10\n      scope.volume = Math.round(scope.volume / 10) * 10;\n      scope.volume = Math.max(10, Math.min(100, scope.volume));\n      \n      scope.send({\n        payload: scope.volume,\n        topic: \"volume_change\"\n      });\n    };\n    \n    scope.increaseVolume = function() {\n      if (!scope.soundOn || scope.volume >= 100) return;\n      scope.volume += 10;\n      scope.updateVolume();\n    };\n    \n    scope.decreaseVolume = function() {\n      if (!scope.soundOn || scope.volume <= 10) return;\n      scope.volume -= 10;\n      scope.updateVolume();\n    };\n    \n    // Click simplificado en la barra\n    scope.clickVolume = function(event) {\n      if (!scope.soundOn) return;\n      \n      const bar = event.currentTarget;\n      const rect = bar.getBoundingClientRect();\n      const x = event.clientX - rect.left;\n      const percentage = Math.max(0, Math.min(1, x / rect.width));\n      const newVolume = Math.round((percentage * 90 + 10) / 10) * 10;\n      \n      if (newVolume !== scope.volume) {\n        scope.volume = newVolume;\n        scope.updateVolume();\n      }\n    };\n    \n    // Watcher optimizado\n    scope.$watch('msg', function(msg) {\n      if (!msg) return;\n      \n      if (msg.topic === 'sound_state_update') {\n        scope.soundOn = msg.payload;\n      } else if (msg.topic === 'volume_update') {\n        scope.volume = msg.payload;\n      }\n    });\n  })(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 2550,
+        "y": 260,
+        "wires": [
+            [
+                "e3cd04647844beb6"
+            ]
+        ]
+    },
+    {
+        "id": "d7799413de8df8f3",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Lógica Interruptor Sonido",
+        "func": "// Procesar el estado del interruptor de sonido\nvar soundState = msg.payload;\nvar soundTopic = msg.topic;\n\nif (soundTopic === \"sound_power\") {\n    // Actualizar el estado del sonido\n    flow.set(\"sound_enabled\", soundState);\n    \n    // Enviar actualización al control de volumen\n    var updateMsg = {\n        payload: soundState,\n        topic: \"sound_state_update\"\n    };\n    \n    // Enviar el estado al MQTT\n    var mqttMsg = {\n        payload: {\n            enabled: soundState,\n            timestamp: new Date().toISOString()\n        },\n        topic: \"rpi/audio/control\"\n    };\n    \n    return [updateMsg, mqttMsg];\n}\n\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2790,
+        "y": 200,
+        "wires": [
+            [
+                "891ab26dba5b9335"
+            ],
+            [
+                "61eb79bb21506b11"
+            ]
+        ]
+    },
+    {
+        "id": "e3cd04647844beb6",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Lógica Control Volumen",
+        "func": "// Procesar los cambios de volumen\nvar volume = msg.payload;\nvar volumeTopic = msg.topic;\nvar soundEnabled = flow.get(\"sound_enabled\") || false;\n\nif (volumeTopic === \"volume_change\") {\n    // Solo procesar si el sonido está habilitado\n    if (soundEnabled) {\n        // Guardar el volumen actual\n        flow.set(\"current_volume\", volume);\n        \n        // Enviar comando MQTT para cambiar volumen\n        var mqttMsg = {\n            payload: {\n                volume: volume,\n                enabled: soundEnabled,\n                action: \"set_volume\",\n                timestamp: new Date().toISOString()\n            },\n            topic: \"rpi/audio/volume\"\n        };\n        \n        return mqttMsg;\n    } else {\n        // Si el sonido está deshabilitado, no enviar nada\n        node.warn(\"Intento de cambiar volumen con sonido deshabilitado\");\n        return null;\n    }\n}\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2790,
+        "y": 260,
+        "wires": [
+            [
+                "61eb79bb21506b11"
+            ]
+        ]
+    },
+    {
+        "id": "61eb79bb21506b11",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Salida",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 3050,
+        "y": 230,
+        "wires": []
+    },
+    {
+        "id": "61c38cbc38595590",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "MQTT Entrada",
+        "topic": "rpi/audio/status",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 2550,
+        "y": 380,
+        "wires": [
+            [
+                "d88a963ab0cabf8e"
+            ]
+        ]
+    },
+    {
+        "id": "d88a963ab0cabf8e",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Procesar Estado",
+        "func": "// Procesar respuestas del sistema Python\nvar data = msg.payload;\n\n// Si viene como string, parsearlo\nif (typeof data === 'string') {\n    try {\n        data = JSON.parse(data);\n    } catch (e) {\n        node.warn(\"Error parsing JSON: \" + e.message);\n        return null;\n    }\n}\n\n// Actualizar el estado en la interfaz\nif (data.hasOwnProperty('volume')) {\n    var volumeMsg = {\n        payload: data.volume,\n        topic: \"volume_update\"\n    };\n    \n    // Actualizar el estado del sonido si viene\n    if (data.hasOwnProperty('enabled')) {\n        var soundMsg = {\n            payload: data.enabled,\n            topic: \"sound_state_update\"\n        };\n        \n        return [volumeMsg, soundMsg];\n    }\n    \n    return [volumeMsg, null];\n}\n\nreturn null;",
+        "outputs": 2,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2770,
+        "y": 380,
+        "wires": [
+            [
+                "891ab26dba5b9335"
+            ],
+            [
+                "6a84e9baada8fe02"
+            ]
+        ]
+    },
+    {
+        "id": "51dc3ccc10d78362",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Inicializar",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "rpi/audio/init",
+        "payload": "{\"action\":\"get_status\"}",
+        "payloadType": "json",
+        "x": 2550,
+        "y": 440,
+        "wires": [
+            [
+                "61eb79bb21506b11"
+            ]
+        ]
+    },
+    {
+        "id": "8b23f4a5f9585b41",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Aplicar Color",
+        "func": "if (!flow.get(\"foco_on\")) return null;\n\nvar color = msg.payload;\n\n// Guardar color actual para Python\nflow.set(\"current_color\", color);\n\n// Enviar color a Python via MQTT\nvar mqtt_msg = {\n    topic: \"nodered/foco/color_applied\",\n    payload: JSON.stringify({\n        action: \"color_applied\",\n        color: color,\n        timestamp: new Date().toISOString()\n    })\n};\n\n// Aplicar color al foco\nmsg.url = \"http://localhost:8123/api/services/light/turn_on\";\nmsg.method = \"POST\";\nmsg.headers = {\n    \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n    \"Content-Type\": \"application/json\"\n};\nmsg.payload = {\n    \"entity_id\": \"light.foco\",\n    \"rgb_color\": [color.r, color.g, color.b]\n};\n\nreturn [msg, mqtt_msg];",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1770,
+        "y": 60,
+        "wires": [
+            [
+                "7b59ba9a7abf57fa"
+            ],
+            [
+                "7f97fba93ffbdd91"
+            ]
+        ]
+    },
+    {
+        "id": "31ab5b9b33fe8699",
+        "type": "mqtt in",
+        "z": "b986fdac7f3580e8",
+        "name": "Python Commands",
+        "topic": "python/foco/command",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 1550,
+        "y": 180,
+        "wires": [
+            [
+                "095aa79386e4eafb"
+            ]
+        ]
+    },
+    {
+        "id": "095aa79386e4eafb",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Manejar Python",
+        "func": "var cmd = msg.payload;\nvar command_id = cmd.id || Date.now().toString();\n\nif (cmd.action === \"set_color\") {\n    // Cambio permanente de color desde Python\n    var new_color = cmd.color; // {r:255, g:0, b:0} formato esperado\n    \n    // Guardar como color actual\n    flow.set(\"current_color\", new_color);\n    \n    msg.url = \"http://localhost:8123/api/services/light/turn_on\";\n    msg.method = \"POST\";\n    msg.headers = {\n        \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n        \"Content-Type\": \"application/json\"\n    };\n    msg.payload = {\n        \"entity_id\": \"light.foco\",\n        \"rgb_color\": [new_color.r, new_color.g, new_color.b]\n    };\n    \n    msg.command_info = {\n        id: command_id,\n        action: \"set_color\",\n        original_command: cmd\n    };\n    \n    return [msg, null];\n}\n\nelse if (cmd.action === \"temp_color\") {\n    // Cambio temporal de color (evaluación)\n    var temp_color = cmd.color;\n    \n    flow.set(\"last_temp_command\", {\n        id: command_id,\n        action: \"temp_color\",\n        color: temp_color,\n        timestamp: new Date().toISOString()\n    });\n    \n    msg.url = \"http://localhost:8123/api/services/light/turn_on\";\n    msg.method = \"POST\";\n    msg.headers = {\n        \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n        \"Content-Type\": \"application/json\"\n    };\n    msg.payload = {\n        \"entity_id\": \"light.foco\",\n        \"rgb_color\": [temp_color.r, temp_color.g, temp_color.b]\n    };\n    \n    msg.command_info = {\n        id: command_id,\n        action: \"temp_color\",\n        original_command: cmd\n    };\n    \n    return [msg, null];\n}\n\nelse if (cmd.action === \"restore_color\") {\n    // Restaurar color original\n    var original_color = flow.get(\"current_color\") || {r:255, g:255, b:255};\n    \n    msg.url = \"http://localhost:8123/api/services/light/turn_on\";\n    msg.method = \"POST\";\n    msg.headers = {\n        \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n        \"Content-Type\": \"application/json\"\n    };\n    msg.payload = {\n        \"entity_id\": \"light.foco\",\n        \"rgb_color\": [original_color.r, original_color.g, original_color.b]\n    };\n    \n    msg.command_info = {\n        id: command_id,\n        action: \"restore_color\",\n        original_command: cmd\n    };\n    \n    return [msg, null];\n}\n\nelse if (cmd.action === \"get_color\") {\n    // Enviar color actual a Python\n    var current_color = flow.get(\"current_color\") || {r:255, g:255, b:255};\n    \n    var response_msg = {\n        topic: \"nodered/foco/current_color\",\n        payload: JSON.stringify({\n            action: \"current_color_response\",\n            color: current_color,\n            id: command_id,\n            timestamp: new Date().toISOString()\n        })\n    };\n    \n    return [null, response_msg];\n}\n\nelse if (cmd.action === \"turn_on\") {\n    // Encender foco\n    flow.set(\"foco_on\", true);\n    \n    msg.url = \"http://localhost:8123/api/services/light/turn_on\";\n    msg.method = \"POST\";\n    msg.headers = {\n        \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n        \"Content-Type\": \"application/json\"\n    };\n    msg.payload = {\n        \"entity_id\": \"light.foco\"\n    };\n    \n    msg.command_info = {\n        id: command_id,\n        action: \"turn_on\",\n        original_command: cmd\n    };\n    \n    return [msg, null];\n}\n\nelse if (cmd.action === \"turn_off\") {\n    // Apagar foco\n    flow.set(\"foco_on\", false);\n    \n    msg.url = \"http://localhost:8123/api/services/light/turn_off\";\n    msg.method = \"POST\";\n    msg.headers = {\n        \"Authorization\": \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkNjRhMDBkODJjYTU0NDk4YmEzODE1MDkxMTE0YzYzNSIsImlhdCI6MTc1MTIwODQxOSwiZXhwIjoyMDY2NTY4NDE5fQ.rhKa9_XJet2Emjq-7zIJUj-mcTH0dUEYLbtTgqwHVSE\",\n        \"Content-Type\": \"application/json\"\n    };\n    msg.payload = {\n        \"entity_id\": \"light.foco\"\n    };\n    \n    msg.command_info = {\n        id: command_id,\n        action: \"turn_off\",\n        original_command: cmd\n    };\n    \n    return [msg, null];\n}\n\nelse if (cmd.action === \"get_state\") {\n    // Solicitar estado actual del foco\n    var current_state = flow.get(\"foco_on\") || false;\n\n    var state_response = {\n        topic: \"nodered/foco/state_update\",\n        payload: JSON.stringify({\n            is_on: current_state,\n            timestamp: new Date().toISOString()\n        })\n    };\n\n    return [null, state_response];\n}\n\nreturn null;",
+        "outputs": 2,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1860,
+        "y": 180,
+        "wires": [
+            [
+                "7b59ba9a7abf57fa"
+            ],
+            [
+                "7f97fba93ffbdd91"
+            ]
+        ]
+    },
+    {
+        "id": "7b59ba9a7abf57fa",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "HTTP Request",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1980,
+        "y": 120,
+        "wires": [
+            [
+                "30b3e376070973a4"
+            ]
+        ]
+    },
+    {
+        "id": "30b3e376070973a4",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Manejar Respuesta",
+        "func": "var response = msg.payload;\nvar command_info = msg.command_info;\n\nif (!command_info) {\n    return null;\n}\n\nvar response_msg = {\n    topic: \"nodered/foco/command_result\",\n    payload: {}\n};\n\nvar success = false;\nvar error_msg = null;\n\nif (msg.statusCode >= 200 && msg.statusCode < 300) {\n    success = true;\n\n    response_msg.payload = JSON.stringify({\n        action: \"command_completed\",\n        success: true,\n        id: command_info.id,\n        command_action: command_info.action,\n        timestamp: new Date().toISOString()\n    });\n} else {\n    success = false;\n    error_msg = `HTTP Error: ${msg.statusCode}`;\n\n    response_msg.payload = JSON.stringify({\n        action: \"command_failed\",\n        success: false,\n        id: command_info.id,\n        command_action: command_info.action,\n        error: error_msg,\n        timestamp: new Date().toISOString()\n    });\n}\n\n// NUEVA LOGICA: Publicar estado cuando comandos de encendido/apagado son exitosos\nif (success && command_info.action === \"turn_on\") {\n    var state_update = {\n        topic: \"nodered/foco/state_update\",\n        payload: JSON.stringify({\n            is_on: true,\n            timestamp: new Date().toISOString()\n        })\n    };\n\n    return [response_msg, state_update];\n} else if (success && command_info.action === \"turn_off\") {\n    var state_update = {\n        topic: \"nodered/foco/state_update\",\n        payload: JSON.stringify({\n            is_on: false,\n            timestamp: new Date().toISOString()\n        })\n    };\n\n    return [response_msg, state_update];\n}\n\nreturn response_msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 2190,
+        "y": 120,
+        "wires": [
+            [
+                "7f97fba93ffbdd91"
+            ]
+        ]
+    },
+    {
+        "id": "7f97fba93ffbdd91",
+        "type": "mqtt out",
+        "z": "b986fdac7f3580e8",
+        "name": "To Python",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "mqtt_broker",
+        "x": 2380,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "reset_contadores_123",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Reset Contadores",
+        "func": "// Verificar si el mensaje viene del interruptor del sistema\nif (msg.topic === \"escalera/control/sistema\" && msg.payload === false) {\n    // El sistema se ha apagado (OFF), resetear todos los contadores\n    \n    // Lista de colores de botones para resetear\n    const coloresBotones = ['anaranjado', 'azul', 'rosa', 'verde', 'amarillo', 'morado'];\n    \n    // Lista de colores de escalones para resetear\n    const coloresEscalones = ['azul', 'verde', 'amarillo', 'anaranjado'];\n    \n    // Resetear contadores y estados de botones\n    coloresBotones.forEach(color => {\n        flow.set(`boton_${color}_activation_count`, 0);\n        flow.set(`last_state_boton_${color}`, 0);\n    });\n    \n    // Resetear contadores y estados de escalones\n    coloresEscalones.forEach(color => {\n        flow.set(`escalon_${color}_activation_count`, 0);\n        flow.set(`last_state_escalon_${color}`, 0);\n    });\n    \n    // Log para confirmar el reset\n    node.log(\"Sistema apagado: Todos los contadores han sido reseteados a 0\");\n    \n    // Enviar mensaje con payload 0 para actualizar todos los contadores en la UI\n    return {\n        payload: 0,\n        topic: \"sistema/reset/contadores\",\n        timestamp: new Date().toISOString()\n    };\n}\n\n// Si no es un mensaje de apagado del sistema, no hacer nada\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 460,
+        "wires": [
+            [
+                "9d2d9868310f9b1b",
+                "d692ca168a5ca083",
+                "0d866ceeb22ca763",
+                "c89864960e2e7c63",
+                "f939911e826f667a",
+                "1adcb72b357503bd",
+                "7711a6d7fd4ad247",
+                "5330c3c61ef37008",
+                "1a2888e1de6cfcc3",
+                "b17792cb56d28500"
+            ]
+        ],
+        "info": "Este nodo detecta cuando el interruptor del sistema se pone en OFF y resetea todos los contadores de activaciones de botones y escalones a 0."
+    },
+    {
+        "id": "f90ef47f3f358820",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "ui_group_escaleras",
+        "name": "Sistema Control Template",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "format": "<!DOCTYPE html>\n<html>\n\n<head>\n    <style>\n        .sistema-container {\n            display: flex;\n            align-items: center;\n            justify-content: center;\n            gap: 20px;\n            padding: 15px;\n            font-family: Arial, sans-serif;\n        }\n\n        .sistema-title {\n            font-size: 18px;\n            font-weight: bold;\n            color: #333;\n        }\n\n        .switch-container {\n            position: relative;\n            width: 80px;\n            height: 40px;\n        }\n\n        .switch {\n            position: absolute;\n            width: 100%;\n            height: 100%;\n            background: #ccc;\n            border-radius: 20px;\n            cursor: pointer;\n            transition: all 0.3s ease;\n        }\n\n        .switch.active {\n            background: #4CAF50;\n        }\n\n        .switch-handle {\n            position: absolute;\n            top: 2px;\n            left: 2px;\n            width: 36px;\n            height: 36px;\n            background: white;\n            border-radius: 50%;\n            transition: all 0.3s ease;\n            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);\n        }\n\n        .switch.active .switch-handle {\n            transform: translateX(40px);\n        }\n    </style>\n</head>\n\n<body>\n    <div class=\"sistema-container\">\n        <div class=\"sistema-title\">Interruptor del Sistema</div>\n        <div class=\"switch-container\">\n            <div class=\"switch\" id=\"sistemaSwitch\" onclick=\"toggleSistema()\">\n                <div class=\"switch-handle\"></div>\n            </div>\n        </div>\n    </div>\n\n    <script>\n        (function(scope) {\n            let currentState = false;\n            let isUpdating = false;\n            let lastFirebaseTimestamp = 0;\n            \n            function updateUI(estado) {\n                const switchEl = document.getElementById('sistemaSwitch');\n                currentState = estado;\n                \n                if (estado) {\n                    switchEl.classList.add('active');\n                } else {\n                    switchEl.classList.remove('active');\n                }\n            }\n            \n            window.toggleSistema = function() {\n                if (isUpdating) return;\n                \n                isUpdating = true;\n                const newState = !currentState;\n                \n                updateUI(newState);\n                \n                const msg = {\n                    payload: newState,\n                    topic: \"escalera/control/sistema\",\n                    fromUser: true,\n                    timestamp: Date.now()\n                };\n                \n                if (scope && scope.send) {\n                    scope.send(msg);\n                }\n                \n                setTimeout(() => {\n                    isUpdating = false;\n                }, 1000);\n            };\n            \n            scope.$watch('msg', function(newMsg) {\n                if (!newMsg || newMsg.payload === undefined) return;\n                \n                if (newMsg.fromFirebase) {\n                    const msgTimestamp = newMsg.timestamp || 0;\n                    if (msgTimestamp !== lastFirebaseTimestamp) {\n                        lastFirebaseTimestamp = msgTimestamp;\n                        if (newMsg.forceUpdate || newMsg.payload !== currentState) {\n                            updateUI(newMsg.payload);\n                        }\n                    }\n                } else {\n                    updateUI(newMsg.payload);\n                }\n            });\n            \n            updateUI(false);\n            \n        })(this.scope);\n    </script>\n</body>\n\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1710,
+        "y": 280,
+        "wires": [
+            [
+                "9008624a9a23653a",
+                "reset_contadores_123",
+                "semaforo_link_123"
+            ]
+        ]
+    },
+    {
+        "id": "semaforo_template_123",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "8179bfdf996c32a6",
+        "name": "Semáforo Sistema",
+        "order": 1,
+        "width": 16,
+        "height": 3,
+        "format": "<style>\n    * {\n        margin: 0;\n        padding: 0;\n        box-sizing: border-box;\n    }\n\n    .step-climb-container {\n        font-family: Arial, sans-serif;\n        background: #f0f8ff;\n        padding: 10px;\n        width: 100%;\n    }\n\n    .header-container {\n        width: 100%;\n        max-width: 1200px;\n        margin: 0 auto;\n        background: #4A90E2;\n        border-radius: 20px;\n        padding: 20px;\n        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);\n        height: 130px;\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n    }\n\n    .content {\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        gap: 15px;\n        flex: 1;\n    }\n\n    .ladybug {\n        font-size: 3.5rem;\n        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));\n    }\n\n    .title {\n        font-size: 2.8rem;\n        font-weight: bold;\n        color: #FFFFFF;\n        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);\n        letter-spacing: 2px;}\n    }\n\n\n    .title .i {\n    color: #B71C1C;\n    }\n\n    .title .scal {\n        color: #FFFFFF;\n    }\n\n    .title .o {\n        color: #F9A825;\n    }\n\n    .indicador-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n        margin-right: 20px;\n    }\n\n    .circulo-indicador {\n        width: 60px;\n        height: 60px;\n        border-radius: 50%;\n        border: 4px solid rgba(255, 255, 255, 0.3);\n        position: relative;\n        transition: background-color 0.3s ease;\n        cursor: default;\n        display: flex;\n        align-items: center;\n        justify-content: center;\n        font-size: 16px;\n        color: white;\n        text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);\n    }\n\n    .circulo-rojo {\n        background: #B71C1C;\n        box-shadow: 0 0 15px rgba(183, 28, 28, 0.4);\n    }\n\n    .circulo-rojo::before {\n        content: '❌';\n    }\n\n    .circulo-verde {\n        background: #2E7D32;\n        box-shadow: 0 0 15px rgba(46, 125, 50, 0.4);\n    }\n\n    .circulo-verde::before {\n        content: '✅';\n    }\n\n    .estado-texto {\n        margin-top: 8px;\n        font-size: 12px;\n        font-weight: bold;\n        text-align: center;\n        padding: 4px 8px;\n        border-radius: 15px;\n        transition: background-color 0.3s ease;\n        min-width: 80px;\n    }\n\n    .estado-activo {\n        background: rgba(46, 125, 50, 0.3);\n        color: #FFFFFF;\n        border: 2px solid rgba(46, 125, 50, 0.8);\n        text-shadow: 0 0 5px rgba(46, 125, 50, 0.8);\n    }\n\n    .estado-inactivo {\n        background: rgba(183, 28, 28, 0.3);\n        color: #FFFFFF;\n        border: 2px solid rgba(183, 28, 28, 0.8);\n        text-shadow: 0 0 5px rgba(183, 28, 28, 0.8);\n    }\n\n    /* Responsivo */\n    @media (max-width: 768px) {\n        .header-container {\n            height: 150px;\n            padding: 15px;\n        }\n\n        .title {\n            font-size: 2.2rem;\n        }\n\n        .ladybug {\n            font-size: 2.8rem;\n        }\n\n        .content {\n            gap: 10px;\n        }\n\n        .circulo-indicador {\n            width: 50px;\n            height: 50px;\n            font-size: 14px;\n        }\n\n        .estado-texto {\n            font-size: 10px;\n            padding: 3px 6px;\n        }\n\n        .indicador-container {\n            margin-right: 10px;\n        }\n    }\n\n    @media (max-width: 480px) {\n        .header-container {\n            height: 130px;\n            padding: 10px;\n        }\n\n        .title {\n            font-size: 1.8rem;\n        }\n\n        .ladybug {\n            font-size: 2.2rem;\n        }\n\n        .content {\n            gap: 8px;\n        }\n\n        .circulo-indicador {\n            width: 40px;\n            height: 40px;\n            font-size: 12px;\n        }\n\n        .estado-texto {\n            font-size: 9px;\n            padding: 2px 4px;\n        }\n\n        .indicador-container {\n            margin-right: 5px;\n        }\n    }\n</style>\n\n<div class=\"step-climb-container\">\n    <div class=\"header-container\">\n        <div class=\"content\">\n            <div class=\"ladybug\">🐞</div>\n            <div class=\"title\">\n                <span class=\"scal\">Scal</span><span class=\"i\">I</span><span class=\"o\">oT</span>\n            </div>\n            <div class=\"ladybug\">🐞</div>\n        </div>\n\n        <div class=\"indicador-container\">\n            <div class=\"circulo-indicador circulo-rojo\" id=\"circuloIndicador\"></div>\n            <div class=\"estado-texto estado-inactivo\" id=\"estadoTexto\">Sistema Apagado</div>\n        </div>\n    </div>\n</div>\n\n<script>\n    (function() {\n        let currentState = false;\n        \n        // Cache de elementos DOM\n        const circuloIndicador = document.getElementById('circuloIndicador');\n        const estadoTexto = document.getElementById('estadoTexto');\n        \n        // Función optimizada para actualizar el estado\n        function updateSemaforo(estado) {\n            if (currentState === estado) return;\n            \n            currentState = estado;\n            \n            if (estado) {\n                // Sistema ON - Círculo verde\n                circuloIndicador.className = 'circulo-indicador circulo-verde';\n                estadoTexto.textContent = 'Sistema Activo';\n                estadoTexto.className = 'estado-texto estado-activo';\n            } else {\n                // Sistema OFF - Círculo rojo\n                circuloIndicador.className = 'circulo-indicador circulo-rojo';\n                estadoTexto.textContent = 'Sistema Apagado';\n                estadoTexto.className = 'estado-texto estado-inactivo';\n            }\n        }\n        \n        // Función para manejar mensajes (Node-RED)\n        function handleMessage(msg) {\n            if (!msg || msg.payload === undefined) return;\n            \n            if (msg.topic === \"escalera/control/sistema\" || \n                msg.fromFirebase || \n                msg.fromUser) {\n                updateSemaforo(msg.payload);\n            }\n        }\n        \n        // Watcher para Node-RED\n        if (typeof this.scope !== 'undefined' && this.scope.$watch) {\n            this.scope.$watch('msg', handleMessage);\n        }\n        \n        // Inicializar\n        updateSemaforo(false);\n        \n        // Exponer función globalmente\n        window.updateSemaforo = updateSemaforo;\n        \n    })();\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1930,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "semaforo_link_123",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Distribuir a Semáforo",
+        "func": "// Función para distribuir el estado del sistema al semáforo\n\n// Reenviar el mensaje al semáforo manteniendo toda la información\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1940,
+        "y": 340,
+        "wires": [
+            [
+                "semaforo_template_123"
+            ]
+        ]
+    },
+    {
+        "id": "8e6d890492aa6047",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Firebase Check Estado",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/evaluacionActual/activa.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 310,
+        "y": 1440,
+        "wires": [
+            [
+                "dbed187dde17830d"
+            ]
+        ]
+    },
+    {
+        "id": "dbed187dde17830d",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Sincronizar Estado Firebase",
+        "func": "// FUNCIÓN: Sincronizar Estado Firebase\nconst firebaseState = msg.payload;\nconst currentState = flow.get('sistemaActivo');\n\n// Convertir valores de Firebase (pueden ser 1/0 o true/false)\nconst firebaseActive = (firebaseState === 1 || firebaseState === true);\n\nnode.warn(`[SYNC] Firebase: ${firebaseState} -> ${firebaseActive}, Estado actual: ${currentState}`);\n\n// SOLO actualizar y enviar si hay un cambio real\nif (firebaseActive !== currentState) {\n    node.warn(`[SYNC] ¡CAMBIO DETECTADO! ${currentState} -> ${firebaseActive}`);\n    \n    // Actualizar el estado interno\n    flow.set('sistemaActivo', firebaseActive);\n    \n    // Mensaje para actualizar el slider (valor 0 o 1)\n    const sliderMsg = {\n        payload: firebaseActive ? 1 : 0,\n        topic: \"escalera/control/sistema\",\n        fromFirebase: true,\n        timestamp: new Date().getTime()\n    };\n    \n    node.warn(`[SYNC] Enviando actualización al slider: ${JSON.stringify(sliderMsg)}`);\n    return sliderMsg;\n} else {\n    node.warn(`[SYNC] Sin cambios, estado mantenido: ${currentState}`);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 1440,
+        "wires": [
+            [
+                "553d16fc4e7c3ad7"
+            ]
+        ]
+    },
+    {
+        "id": "d080dcce97303536",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Check Firebase Every 3s",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 300,
+        "y": 1400,
+        "wires": [
+            [
+                "8e6d890492aa6047"
+            ]
+        ]
+    },
+    {
+        "id": "cb334ed2e5ea99dc",
+        "type": "function",
+        "z": "b986fdac7f3580e8",
+        "name": "Validar y Procesar Sistema",
+        "func": "// FUNCIÓN: Validar y Procesar Sistema\n\n// Si el mensaje viene de Firebase (sincronización)\nif (msg.fromFirebase) {\n    node.warn(`[PROC] Mensaje de Firebase recibido: ${msg.payload}`);\n    \n    // Solo enviar a MQTT (para ESP32), NO a Firebase\n    const mqttMsg = {\n        payload: JSON.stringify(msg.payload === 1),\n        topic: \"esp32/comando/sistema\",\n        fromFirebase: true\n    };\n    \n    node.warn(`[PROC] Enviando solo a MQTT: ${msg.payload === 1}`);\n    return [mqttMsg, null];\n}\n\n// Si el mensaje viene del slider\nif (msg.topic === \"escalera/control/sistema\") {\n    // Convertir valor del slider (0 o 1) a boolean\n    const sistemaActivo = msg.payload === 1;\n    const sistemaActivoAnterior = flow.get('sistemaActivo') || false;\n    \n    node.warn(`[PROC] Slider cambiado. Nuevo estado: ${sistemaActivo}`);\n\n    // Función para reiniciar contadores\n    function resetAllSensorCounts() {\n        const escalones = ['azul', 'verde', 'amarillo', 'anaranjado'];\n        escalones.forEach(color => {\n            flow.set(`escalon_${color}_activation_count`, 0);\n            flow.set(`last_state_escalon_${color}`, 0);\n        });\n        \n        const botones = ['anaranjado', 'azul', 'rosa', 'verde', 'amarillo', 'morado'];\n        botones.forEach(color => {\n            flow.set(`boton_${color}_activation_count`, 0);\n            flow.set(`last_state_boton_${color}`, 0);\n        });\n    }\n\n    // Reiniciar contadores si hay cambio de estado\n    if (sistemaActivo !== sistemaActivoAnterior) {\n        resetAllSensorCounts();\n        node.warn(`[PROC] Contadores reiniciados por cambio de estado`);\n    }\n\n    // Actualizar estado del sistema\n    flow.set('sistemaActivo', sistemaActivo);\n\n    // Preparar mensajes de salida\n    // 1. MQTT para ESP32\n    const mqttMsg = {\n        payload: JSON.stringify(sistemaActivo),\n        topic: \"esp32/comando/sistema\",\n        fromUser: true\n    };\n\n    // 2. Firebase update\n    const firebaseMsg = {\n        payload: sistemaActivo ? 1 : 0\n    };\n    \n    node.warn(`[PROC] Enviando a MQTT: ${sistemaActivo} y Firebase: ${sistemaActivo ? 1 : 0}`);\n\n    return [mqttMsg, firebaseMsg];\n}\n\nnode.warn(`[PROC] Mensaje no procesado: ${JSON.stringify(msg)}`);\nreturn [null, null];",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "// Inicializar estado\nflow.set('activaciones', {});\nif (flow.get('sistemaActivo') === undefined) {\n    flow.set('sistemaActivo', false);\n}",
+        "finalize": "",
+        "libs": [],
+        "x": 1060,
+        "y": 1440,
+        "wires": [
+            [],
+            [
+                "a83597f7f4bbf41e"
+            ]
+        ]
+    },
+    {
+        "id": "a83597f7f4bbf41e",
+        "type": "http request",
+        "z": "b986fdac7f3580e8",
+        "name": "Update Firebase Estado",
+        "method": "PUT",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://db-maldonado-default-rtdb.firebaseio.com/evaluacionActual/activa.json",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Content-Type",
+                "valueType": "other",
+                "valueValue": "application/json"
+            }
+        ],
+        "x": 1330,
+        "y": 1440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f2b93359723308b2",
+        "type": "inject",
+        "z": "b986fdac7f3580e8",
+        "name": "Init Check Firebase",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 310,
+        "y": 1480,
+        "wires": [
+            [
+                "8e6d890492aa6047"
+            ]
+        ]
+    },
+    {
+        "id": "553d16fc4e7c3ad7",
+        "type": "ui_slider",
+        "z": "b986fdac7f3580e8",
+        "name": "Sistema ON/OFF",
+        "label": "Sistema Escaleras",
+        "tooltip": "",
+        "group": "ui_group_escaleras",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "outs": "end",
+        "topic": "escalera/control/sistema",
+        "topicType": "str",
+        "min": 0,
+        "max": "1",
+        "step": 1,
+        "className": "",
+        "x": 810,
+        "y": 1440,
+        "wires": [
+            [
+                "cb334ed2e5ea99dc"
+            ]
+        ]
+    },
+    {
+        "id": "160f3e5feb2f7415",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "f45923fb44a58130",
+        "name": "Juego -  Pared",
+        "order": 8,
+        "width": 4,
+        "height": 4,
+        "format": "<!-- Versión mejorada para compatibilidad con Android 5.1.1 y Chrome 95 -->\n<div id=\"imagen-container\" ng-show=\"msg.payload.show\"\n    style=\"width:200px; height:175px; display:block; text-align:center; border:1px solid #ccc; border-radius:20px; overflow:hidden; position:relative; background-color:#f5f5f5;\">\n\n    <!-- Imagen principal con fallback -->\n    <img id=\"main-image\"\n         src=\"https://m.media-amazon.com/images/I/61ZjpX0ZTHL._UF350,350_QL80_.jpg\"\n         alt=\"Imagen del juego\"\n         style=\"width:100%; height:100%; object-fit:contain; border-radius:20px; display:none;\"\n         onload=\"this.style.display='block'; document.getElementById('fallback-message').style.display='none';\"\n         onerror=\"this.style.display='none'; document.getElementById('fallback-message').style.display='block';\">\n\n    <!-- Mensaje de fallback si la imagen no carga -->\n    <div id=\"fallback-message\"\n        style=\"display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;\">\n        <div style=\"font-size:40px; color:#666; margin-bottom:10px;\">🎮</div>\n        <div style=\"font-size:12px; color:#666;\">Imagen del juego</div>\n    </div>\n</div>\n\n<style>\n    /* Estilos básicos compatibles con Chrome 95 */\n    #imagen-container {\n        -webkit-border-radius: 20px;\n        -moz-border-radius: 20px;\n        border-radius: 20px;\n    }\n\n    #main-image {\n        -webkit-border-radius: 20px;\n        -moz-border-radius: 20px;\n        border-radius: 20px;\n        -webkit-transition: opacity 0.3s ease;\n        -moz-transition: opacity 0.3s ease;\n        transition: opacity 0.3s ease;\n        /* Fallback para navegadores antiguos que no soportan object-fit */\n        -webkit-object-fit: contain;\n        -moz-object-fit: contain;\n        object-fit: contain;\n    }\n\n    #main-image:hover {\n        opacity: 0.8;\n    }\n\n    /* Responsive para pantallas pequeñas */\n    @media (max-width: 480px) {\n        #imagen-container {\n            width: 180px;\n            height: 160px;\n        }\n    }\n</style>\n\n<!-- Script para mayor compatibilidad -->\n<script>\n    // Función para forzar la carga de imagen en dispositivos antiguos\n    function forceImageLoad() {\n        var img = document.getElementById('main-image');\n        if (img && img.complete && img.naturalWidth === 0) {\n            // Si la imagen no cargó, mostrar fallback\n            document.getElementById('fallback-message').style.display = 'block';\n            img.style.display = 'none';\n        }\n    }\n    \n    // Ejecutar después de un breve delay\n    setTimeout(forceImageLoad, 3000);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1240,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5d2af563a5622408",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "f45923fb44a58130",
+        "name": "Juego - Escaleras",
+        "order": 2,
+        "width": 4,
+        "height": 4,
+        "format": "<!-- Versión mejorada para compatibilidad con Android 5.1.1 y Chrome 95 -->\n<div id=\"imagen-container\" ng-show=\"msg.payload.show\"\n    style=\"width:200px; height:175px; display:block; text-align:center; border:1px solid #ccc; border-radius:20px; overflow:hidden; position:relative; background-color:#f5f5f5;\">\n\n    <!-- Mensaje de carga -->\n    <div id=\"loading-message\"\n        style=\"position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:12px; color:#666;\">\n        Cargando imagen...\n    </div>\n\n    <!-- Imagen principal con fallback -->\n    <img id=\"main-image\"\n         src=\"https://media.baamboozle.com/uploads/images/331282/1628224389_98767.png\"\n         alt=\"Imagen del juego\"\n         style=\"width:100%; height:100%; object-fit:cover; border-radius:20px; display:none;\"\n         onload=\"this.style.display='block'; document.getElementById('loading-message').style.display='none'; document.getElementById('fallback-message').style.display='none';\"\n         onerror=\"this.style.display='none'; document.getElementById('loading-message').style.display='none'; document.getElementById('fallback-message').style.display='block';\">\n\n    <!-- Mensaje de fallback si la imagen no carga -->\n    <div id=\"fallback-message\"\n        style=\"display:none; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;\">\n        <div style=\"font-size:40px; color:#666; margin-bottom:10px;\">🎮</div>\n        <div style=\"font-size:12px; color:#666;\">Imagen del juego</div>\n    </div>\n</div>\n\n<style>\n    /* Estilos básicos compatibles con Chrome 95 */\n    #imagen-container {\n        -webkit-border-radius: 20px;\n        -moz-border-radius: 20px;\n        border-radius: 20px;\n    }\n\n    #main-image {\n        -webkit-border-radius: 20px;\n        -moz-border-radius: 20px;\n        border-radius: 20px;\n        -webkit-transition: opacity 0.3s ease;\n        -moz-transition: opacity 0.3s ease;\n        transition: opacity 0.3s ease;\n        /* Fallback para navegadores que no soportan object-fit */\n        background-size: cover;\n        background-position: center;\n    }\n\n    #main-image:hover {\n        opacity: 0.8;\n    }\n\n    /* Responsive para pantallas pequeñas */\n    @media (max-width: 480px) {\n        #imagen-container {\n            width: 180px;\n            height: 160px;\n        }\n    }\n</style>\n\n<!-- Script para mayor compatibilidad -->\n<script>\n    // Función para forzar la carga de imagen en dispositivos antiguos\n    function forceImageLoad() {\n        var img = document.getElementById('main-image');\n        if (img && img.complete && img.naturalWidth === 0) {\n            // Si la imagen no cargó, mostrar fallback\n            document.getElementById('loading-message').style.display = 'none';\n            document.getElementById('fallback-message').style.display = 'block';\n            img.style.display = 'none';\n        }\n    }\n    \n    // Ejecutar después de un breve delay\n    setTimeout(forceImageLoad, 3000);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1250,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6579aa095a5dca3e",
+        "type": "ui_template",
+        "z": "b986fdac7f3580e8",
+        "group": "f45923fb44a58130",
+        "name": "",
+        "order": 12,
+        "width": 1,
+        "height": 1,
+        "format": "<style>\n.info-btn {\n    position: fixed;\n    top: 10px;\n    right: 10px;\n    width: 30px;\n    height: 30px;\n    background: #4CAF50;\n    color: white;\n    border: none;\n    border-radius: 50%;\n    font-size: 16px;\n    cursor: pointer;\n    box-shadow: 0 2px 5px rgba(0,0,0,0.2);\n    z-index: 100;\n}\n\n.info-btn:hover {\n    background: #45a049;\n}\n\n.modal {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0,0,0,0.5);\n    display: none;\n    z-index: 1000;\n}\n\n.modal-content {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    transform: translate(-50%, -50%);\n    background: white;\n    padding: 20px;\n    border-radius: 10px;\n    max-width: 400px;\n    width: 90%;\n    max-height: 80vh;\n    overflow-y: auto;\n}\n\n.close {\n    position: absolute;\n    top: 10px;\n    right: 15px;\n    background: #ff4444;\n    color: white;\n    border: none;\n    width: 25px;\n    height: 25px;\n    border-radius: 50%;\n    font-size: 16px;\n    cursor: pointer;\n}\n\n.close:hover {\n    background: #cc0000;\n}\n\nh2 {\n    color: #4CAF50;\n    margin: 0 0 15px 0;\n    font-size: 20px;\n}\n\nh3 {\n    color: #333;\n    margin: 15px 0 8px 0;\n    font-size: 16px;\n}\n\np {\n    color: #666;\n    margin: 5px 0;\n    font-size: 14px;\n    line-height: 1.4;\n}\n\n.status {\n    background: #f0f8ff;\n    padding: 10px;\n    border-radius: 5px;\n    margin: 10px 0;\n    border-left: 4px solid #4CAF50;\n}\n\n.contact {\n    background: #f8f9fa;\n    padding: 15px;\n    border-radius: 5px;\n    margin-top: 15px;\n}\n\n.team {\n    background: #fff3cd;\n    padding: 10px;\n    border-radius: 5px;\n    margin: 10px 0;\n}\n\n.light {\n    display: inline-block;\n    width: 8px;\n    height: 8px;\n    background: #4CAF50;\n    border-radius: 50%;\n    margin-right: 5px;\n    animation: blink 2s infinite;\n}\n\n@keyframes blink {\n    0%, 50% { opacity: 1; }\n    51%, 100% { opacity: 0.3; }\n}\n\n.modes {\n    background: #e8f5e8;\n    padding: 10px;\n    border-radius: 5px;\n    margin: 10px 0;\n}\n\n.modes p {\n    margin: 3px 0;\n}\n</style>\n\n<button class=\"info-btn\" onclick=\"openModal()\">?</button>\n\n<div id=\"modal\" class=\"modal\">\n    <div class=\"modal-content\">\n        <button class=\"close\" onclick=\"closeModal()\">×</button>\n        \n        <h2>🏗️ ScalIoT</h2>\n        <p><strong>Tu estructura para escalar y jugar</strong></p>\n        \n        <h3>🎮 ¿Qué es?</h3>\n        <p>Una estructura mágica que mientras juegas, ayuda a doctores y terapeutas a conocer cómo te mueves.</p>\n        \n        <div class=\"modes\">\n            <h3>🎯 Modos de Juego</h3>\n            <p><strong>🛋️ Descanso:</strong> Cambias colores y volumen</p>\n            <p><strong>🎮 Juego:</strong> Cada botón hace sonidos diferentes</p>\n            <p><strong>📊 Evaluación:</strong> Sigues instrucciones jugando</p>\n        </div>\n\n        <div class=\"team\">\n            <h3>👥 Equipo ScalIoT</h3>\n            <p>👩‍💻 Rosa Maldonado - Líder</p>\n            <p>👨‍💻 Edwin Arroyo - Hardware</p>\n            <p>👨‍💻 Franklin Espinoza - Software</p>\n            <p>👩‍💻 Jhomayra Vélez - Resultados</p>\n        </div>\n\n        <div class=\"status\">\n            <h3>🚀 Estado</h3>\n            <p><span class=\"light\"></span><strong>Sistema OK</strong></p>\n            <p><strong>Versión:</strong> 2.1.0</p>\n        </div>\n\n        <div class=\"contact\">\n            <h3>📞 Contacto</h3>\n            <p><strong>Email:</strong> info@scaliot.com</p>\n            <p><strong>Web:</strong> www.scaliot.com</p>\n            <p><strong>Soporte:</strong> support@scaliot.com</p>\n        </div>\n\n        <p style=\"text-align: center; margin-top: 15px; color: #4CAF50;\">\n            <strong>🌟 ¡Solo diviértete!</strong>\n        </p>\n    </div>\n</div>\n\n<script>\nfunction openModal() {\n    document.getElementById('modal').style.display = 'block';\n}\n\nfunction closeModal() {\n    document.getElementById('modal').style.display = 'none';\n}\n\n// Cerrar con clic fuera\ndocument.getElementById('modal').onclick = function(e) {\n    if (e.target === this) closeModal();\n}\n\n// Cerrar con ESC\ndocument.onkeydown = function(e) {\n    if (e.key === 'Escape') closeModal();\n}\n\nconsole.log('ScalIoT Info - Cargado');\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1060,
+        "y": 1380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a71a3cf54ac5d9f5",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "ui_group_escaleras",
+        "order": 4,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "2cb3bdb36f028f72",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "ui_group_escaleras",
+        "order": 8,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "0d05e212ae8b0c1c",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "ui_group_escaleras",
+        "order": 9,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "2302f77ccd93aa39",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "ceb969094910cc0b",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 4,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b85c419675acf55c",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "7812abf72248d063",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "71382f3d5d582029",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 9,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "6f31d6f598fa28cf",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 10,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "1dc04535dd3380fe",
+        "type": "ui_spacer",
+        "z": "b986fdac7f3580e8",
+        "name": "spacer",
+        "group": "f45923fb44a58130",
+        "order": 11,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "092067ca52ec1d0e",
+        "type": "mqtt-broker",
+        "name": "Mosquitto Raspberry Pi",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthQos": "0",
+        "willQos": "0",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group_escaleras",
+        "type": "ui_group",
+        "name": "Escaleras",
+        "tab": "a1a3cb1eddba679a",
+        "order": 1,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6b7f1d58578e154c",
+        "type": "ui_group",
+        "name": "Escaleras",
+        "tab": "a1a3cb1eddba679a",
+        "order": 2,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_group_botones_pared",
+        "type": "ui_group",
+        "name": "Pared",
+        "tab": "a1a3cb1eddba679a",
+        "order": 3,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "3f9a2f98584d85ec",
+        "type": "ui_group",
+        "name": "Pared",
+        "tab": "a1a3cb1eddba679a",
+        "order": 4,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "main_group",
+        "type": "ui_group",
+        "name": "Controles",
+        "tab": "ui_tab1",
+        "order": 2,
+        "disp": false,
+        "width": 4,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "89c050fa3e558c46",
+        "type": "ui_group",
+        "name": "Brillo y volumen",
+        "tab": "ui_tab1",
+        "order": 3,
+        "disp": false,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8c66c7995e67b857",
+        "type": "ui_group",
+        "name": "Colores",
+        "tab": "ui_tab1",
+        "order": 4,
+        "disp": false,
+        "width": 4,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f45923fb44a58130",
+        "type": "ui_group",
+        "name": "Sonidos",
+        "tab": "ui_tab1",
+        "order": 5,
+        "disp": false,
+        "width": 15,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "Local MQTT",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": false,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "8179bfdf996c32a6",
+        "type": "ui_group",
+        "name": "Header y Estado",
+        "tab": "ui_tab1",
+        "order": 1,
+        "disp": false,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a1a3cb1eddba679a",
+        "type": "ui_tab",
+        "name": "Estado Sensores",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ui_tab1",
+        "type": "ui_tab",
+        "name": "Gestion y Actuadores",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
