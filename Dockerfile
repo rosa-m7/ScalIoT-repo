@@ -1,34 +1,20 @@
-FROM python:3.11-slim
+FROM python:3.11-slim-buster
 
-WORKDIR /app
+WORKDIR /python-docker
 
-# Instalar dependencias del sistema (más completas para tus librerías)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    # Para MySQL
-    default-libmysqlclient-dev \
-    # Compiladores
-    gcc \
-    g++ \
-    # Para Matplotlib y librerías científicas
-    libfreetype6-dev \
-    libpng-dev \
-    libjpeg-dev \
-    # Para cryptography
-    libssl-dev \
-    libffi-dev \
-    # Para gRPC (Firebase)
-    pkg-config \
-    # Limpiar cache
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copiar requirements e instalar
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# =========================================================================
+# NUEVO: Copiar la carpeta 'my-app/secrets' a /python-docker/my-app/secrets/
+# La ruta de origen es relativa a la ubicación del Dockerfile (proyecto-complexivo)
+# La ruta de destino es relativa al WORKDIR (/python-docker)
+COPY my-app/secrets/ my-app/secrets/
+# =========================================================================
 
-# Copiar todo el código
 COPY . .
 
-EXPOSE 5000
+EXPOSE 8080
 
-CMD ["python", "app.py"]
+CMD [ "python", "-m", "flask", "--app", "my-app/run", "run", "--host=0.0.0.0", "--port=8080"]
+
