@@ -1,34 +1,20 @@
 FROM python:3.11-slim
 
-# Instalar dependencias del sistema necesarias
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    libffi-dev \
-    libssl-dev \
-    pkg-config \
-    && rm -rf /var/lib/apt/lists/*
-
-# Actualizar pip y herramientas de instalación
-RUN pip install --upgrade pip setuptools wheel
-
-# Establecer directorio de trabajo
 WORKDIR /app
 
-# Copiar requirements primero (para mejor cache de Docker)
-COPY requirements.txt .
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    default-libmysqlclient-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Instalar dependencias de Python
+# Copiar requirements e instalar
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Verificar instalación
-RUN pip check
-
-# Copiar el resto del código
+# Copiar todo el código
 COPY . .
 
-# Exponer puerto
-EXPOSE 8080
+EXPOSE 5000
 
-# Comando para ejecutar Flask
-CMD ["python", "-m", "flask", "--app", "my-app.run", "run", "--host=0.0.0.0", "--port=8080"]
+CMD ["python", "app.py"]
