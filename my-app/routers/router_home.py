@@ -191,3 +191,156 @@ def api_get_chart_data():
         print(f"Error en /api/chart_data: {e}")
         return jsonify({"error": "Error interno del servidor al obtener datos para gráficos.", "details": str(e)}), 500
 # Hasta aqui
+# ============================================
+# RUTAS DE CONTROL DE SESIÓN Y MODO
+# ============================================
+
+@app.route('/api/sesion/estado', methods=['GET'])
+def api_sesion_estado():
+    """Obtiene el estado actual de la sesión"""
+    try:
+        ref = db.reference('estado/sesion')
+        sesion = ref.get()
+        
+        if sesion is None:
+            return jsonify({
+                'activa': 0,
+                'modo': 'ninguno',
+                'mensaje': 'Sistema desactivado'
+            }), 200
+        
+        return jsonify({
+            'activa': sesion.get('activa', 0),
+            'modo': sesion.get('modo', 'ninguno'),
+            'id_nino': sesion.get('id_nino', ''),
+            'mensaje': 'Estado obtenido correctamente'
+        }), 200
+        
+    except Exception as e:
+        print(f"Error al obtener el estado de la sesión: {e}")
+        return jsonify({
+            'activa': 0,
+            'modo': 'ninguno',
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/modo/estado', methods=['GET'])
+def api_modo_estado():
+    """Obtiene el modo actual del sistema"""
+    try:
+        ref = db.reference('estado/modo')
+        modo_data = ref.get()
+        
+        if modo_data is None:
+            return jsonify({
+                'modo': 'ninguno',
+                'mensaje': 'Sin modo activo'
+            }), 200
+        
+        if isinstance(modo_data, str):
+            modo = modo_data
+        else:
+            modo = modo_data.get('actual', 'ninguno') if isinstance(modo_data, dict) else 'ninguno'
+        
+        return jsonify({
+            'modo': modo,
+            'mensaje': 'Modo obtenido correctamente'
+        }), 200
+        
+    except Exception as e:
+        print(f"Error al obtener el estado del modo: {e}")
+        return jsonify({
+            'modo': 'ninguno',
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/modo/actualizar', methods=['POST'])
+def api_modo_actualizar():
+    """Actualiza el modo del sistema"""
+    try:
+        from datetime import datetime
+        data = request.get_json()
+        nuevo_modo = data.get('modo', '').lower()
+        
+        modos_validos = ['evaluacion', 'juego', 'descanso', 'ninguno']
+        if nuevo_modo not in modos_validos:
+            return jsonify({
+                'error': f'Modo inválido. Debe ser: {", ".join(modos_validos)}'
+            }), 400
+        
+        ref = db.reference('estado/modo')
+        ref.set({
+            'actual': nuevo_modo,
+            'timestamp': datetime.now().isoformat()
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': f'Modo cambiado a {nuevo_modo}',
+            'modo': nuevo_modo
+        }), 200
+        
+    except Exception as e:
+        print(f"Error al actualizar modo: {e}")
+        return jsonify({
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/sesion/iniciar', methods=['POST'])
+def api_sesion_iniciar():
+    """Inicia una sesión nueva"""
+    try:
+        from datetime import datetime
+        data = request.get_json()
+        id_nino = data.get('id_nino', '')
+        
+        timestamp = datetime.now().isoformat()
+        
+        ref = db.reference('estado/sesion')
+        ref.set({
+            'activa': 1,
+            'id_nino': id_nino,
+            'fecha_inicio': timestamp,
+            'modo': 'evaluacion'
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': 'Sistema activado correctamente'
+        }), 200
+        
+    except Exception as e:
+        print(f"Error al iniciar sesión: {e}")
+        return jsonify({
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/sesion/finalizar', methods=['POST'])
+def api_sesion_finalizar():
+    """Finaliza la sesión actual"""
+    try:
+        from datetime import datetime
+        timestamp = datetime.now().isoformat()
+        
+        ref = db.reference('estado/sesion')
+        ref.set({
+            'activa': 0,
+            'fecha_fin': timestamp,
+            'modo': 'ninguno'
+        })
+        
+        return jsonify({
+            'success': True,
+            'message': 'Sistema desactivado correctamente'
+        }), 200
+        
+    except Exception as e:
+        print(f"Error al finalizar sesión: {e}")
+        return jsonify({
+            'error': str(e)
+        }), 500
+
